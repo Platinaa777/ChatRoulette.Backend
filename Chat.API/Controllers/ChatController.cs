@@ -4,6 +4,7 @@ using Microsoft.Extensions.Options;
 using Twilio;
 using Twilio.AspNet.Core;
 using Twilio.Jwt.AccessToken;
+using Twilio.Rest.Api.V2010.Account;
 using Twilio.Rest.Video.V1;
 
 namespace Chat.API.Controllers;
@@ -17,21 +18,21 @@ public class ChatController : ControllerBase
     public ChatController(IOptions<TwilioSettings> settings)
     {
         _twilioSettings = settings.Value;
-        TwilioClient.Init(_twilioSettings.AccountSid, _twilioSettings.AuthToken);
+        TwilioClient.Init(_twilioSettings.AccountSid,_twilioSettings.AuthToken);
     }
 
     private string name = "";
     [HttpGet("create-room")]
     public IActionResult CreateRoom()
     {
-        var nameRoom = Guid.NewGuid().ToString();
+        var nameRoom = "room-1";//Guid.NewGuid().ToString();
         name = nameRoom;
         var room = RoomResource.Create(uniqueName: nameRoom);
 
-        return Ok(new {NameRoom=nameRoom, Room=room.Sid, Duration=room.Duration,room.Status,room.Type });
+        return Ok(new {NameRoom=nameRoom, Room=room.Sid});
     }
     
-    [HttpGet("get-token")]
+    [HttpGet("get-access-token")]
     public IActionResult GetToken()
     {
         // These are specific to Video
@@ -39,7 +40,7 @@ public class ChatController : ControllerBase
 
         // Create a Video grant for this token
         var grant = new VideoGrant();
-        grant.Room = "cool room";
+        grant.Room = "room-1";
 
         var grants = new HashSet<IGrant> { grant };
 
@@ -47,22 +48,22 @@ public class ChatController : ControllerBase
         var token = new Token(
             _twilioSettings.AccountSid,
             _twilioSettings.ApiKey,
-            _twilioSettings.AuthToken,
+            _twilioSettings.ApiSecret,
             identity: identity,
             grants: grants);
 
         return Ok(token.ToJwt());
     }
-
-    [HttpGet("find-room")]
-    public IActionResult FindRoom()
-    {
-        return Ok();
-    }
-
-    [HttpGet("join-room")]
-    public IActionResult JoinRoom()
-    {
-        return Ok("RM0f904a37c163b299cb6d9aab1cd105e5");
-    }
+    //
+    // [HttpGet("find-room")]
+    // public IActionResult FindRoom()
+    // {
+    //     return Ok();
+    // }
+    //
+    // [HttpGet("join-room")]
+    // public IActionResult JoinRoom()
+    // {
+    //     return Ok("RM0f904a37c163b299cb6d9aab1cd105e5");
+    // }
 }

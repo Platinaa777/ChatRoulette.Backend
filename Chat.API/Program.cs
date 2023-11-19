@@ -2,7 +2,15 @@ using Chat.API.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddCors();
+builder.Services.AddCors(CorsOptions =>
+{
+    CorsOptions.AddDefaultPolicy(builder =>
+    {
+        builder.AllowAnyOrigin()
+            .AllowAnyMethod()
+            .AllowAnyHeader();
+    });
+});
 builder.Services.AddControllers();
 builder.Services.AddSwaggerGen();
 builder.Services.Configure<TwilioSettings>(
