@@ -6,4 +6,14 @@
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\Chat.Core\Chat.Core.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Reference Include="Twilio">
+        <HintPath>..\..\..\.nuget\packages\twilio\6.15.1\lib\netstandard2.0\Twilio.dll</HintPath>
+      </Reference>
+    </ItemGroup>
+
 </Project>

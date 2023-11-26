@@ -8,6 +8,8 @@
     ".NETCoreApp,Version=v7.0": {
       "Chat.API/1.0.0": {
         "dependencies": {
+          "Chat.Application": "1.0.0",
+          "Chat.Infrastructure": "1.0.0",
           "Swashbuckle.AspNetCore": "6.5.0",
           "Twilio": "6.15.1",
           "Twilio.AspNet.Core": "8.0.2"
@@ -340,6 +342,27 @@
             "fileVersion": "8.0.2.0"
           }
         }
+      },
+      "Chat.Application/1.0.0": {
+        "dependencies": {
+          "Chat.Infrastructure": "1.0.0"
+        },
+        "runtime": {
+          "Chat.Application.dll": {}
+        }
+      },
+      "Chat.Core/1.0.0": {
+        "runtime": {
+          "Chat.Core.dll": {}
+        }
+      },
+      "Chat.Infrastructure/1.0.0": {
+        "dependencies": {
+          "Chat.Core": "1.0.0"
+        },
+        "runtime": {
+          "Chat.Infrastructure.dll": {}
+        }
       }
     }
   },
@@ -656,6 +679,21 @@
       "sha512": "sha512-/Cz9WMCObGg0JVVnyhrEjiA+90+kB1hqmbGxsaX/Cz7w5rtLoBVUX3QThIx7/H6mwuQkuINPtij2qm7D7XX3rw==",
       "path": "twilio.aspnet.core/8.0.2",
       "hashPath": "twilio.aspnet.core.8.0.2.nupkg.sha512"
+    },
+    "Chat.Application/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Chat.Core/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Chat.Infrastructure/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
     }
   }
 }

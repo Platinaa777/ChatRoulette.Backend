@@ -1,11 +1,48 @@
 {
   "version": 3,
   "targets": {
-    "net7.0": {}
+    "net7.0": {
+      "Chat.Core/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v7.0",
+        "compile": {
+          "bin/placeholder/Chat.Core.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/Chat.Core.dll": {}
+        }
+      },
+      "Chat.Infrastructure/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v7.0",
+        "dependencies": {
+          "Chat.Core": "1.0.0"
+        },
+        "compile": {
+          "bin/placeholder/Chat.Infrastructure.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/Chat.Infrastructure.dll": {}
+        }
+      }
+    }
   },
-  "libraries": {},
+  "libraries": {
+    "Chat.Core/1.0.0": {
+      "type": "project",
+      "path": "../Chat.Core/Chat.Core.csproj",
+      "msbuildProject": "../Chat.Core/Chat.Core.csproj"
+    },
+    "Chat.Infrastructure/1.0.0": {
+      "type": "project",
+      "path": "../Chat.Infrastructure/Chat.Infrastructure.csproj",
+      "msbuildProject": "../Chat.Infrastructure/Chat.Infrastructure.csproj"
+    }
+  },
   "projectFileDependencyGroups": {
-    "net7.0": []
+    "net7.0": [
+      "Chat.Infrastructure >= 1.0.0"
+    ]
   },
   "packageFolders": {
     "/home/denis/.nuget/packages/": {}
@@ -31,7 +68,11 @@
       "frameworks": {
         "net7.0": {
           "targetAlias": "net7.0",
-          "projectReferences": {}
+          "projectReferences": {
+            "/home/denis/RiderProjects/ChatRoulette/Chat.Infrastructure/Chat.Infrastructure.csproj": {
+              "projectPath": "/home/denis/RiderProjects/ChatRoulette/Chat.Infrastructure/Chat.Infrastructure.csproj"
+            }
+          }
         }
       },
       "warningProperties": {
@@ -59,7 +100,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "/usr/lib/dotnet/sdk/7.0.113/RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "/usr/lib/dotnet/sdk/7.0.114/RuntimeIdentifierGraph.json"
       }
     }
   }

@@ -1,0 +1,63 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v7.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v7.0": {
+      "Chat.Application/1.0.0": {
+        "dependencies": {
+          "Chat.Infrastructure": "1.0.0",
+          "Twilio": "6.15.1.0"
+        },
+        "runtime": {
+          "Chat.Application.dll": {}
+        }
+      },
+      "Chat.Core/1.0.0": {
+        "runtime": {
+          "Chat.Core.dll": {}
+        }
+      },
+      "Chat.Infrastructure/1.0.0": {
+        "dependencies": {
+          "Chat.Core": "1.0.0"
+        },
+        "runtime": {
+          "Chat.Infrastructure.dll": {}
+        }
+      },
+      "Twilio/6.15.1.0": {
+        "runtime": {
+          "Twilio.dll": {
+            "assemblyVersion": "6.15.1.0",
+            "fileVersion": "6.15.1.0"
+          }
+        }
+      }
+    }
+  },
+  "libraries": {
+    "Chat.Application/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Chat.Core/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Chat.Infrastructure/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Twilio/6.15.1.0": {
+      "type": "reference",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}

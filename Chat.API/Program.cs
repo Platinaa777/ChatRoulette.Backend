@@ -1,20 +1,24 @@
-using Chat.API.Configuration;
+using Chat.Application.Handlers;
+using Chat.Core.Repositories;
+using Chat.Core.Secrets;
+using Chat.Infrastructure.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddCors(CorsOptions =>
+builder.Services.AddCors(corsOptions =>
 {
-    CorsOptions.AddDefaultPolicy(builder =>
+    corsOptions.AddDefaultPolicy(policy =>
     {
-        builder.AllowAnyOrigin()
+        policy.AllowAnyOrigin()
             .AllowAnyMethod()
             .AllowAnyHeader();
     });
 });
 builder.Services.AddControllers();
 builder.Services.AddSwaggerGen();
-builder.Services.Configure<TwilioSettings>(
-    builder.Configuration.GetSection(nameof(TwilioSettings)));
+builder.Services.AddSingleton<TwilioSettings>();
+builder.Services.AddSingleton<RoomHandler>();
+builder.Services.AddSingleton<IRoomRepository, GoRoomRepository>();
 
 var app = builder.Build();
 

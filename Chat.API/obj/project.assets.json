@@ -682,6 +682,42 @@
         "frameworkReferences": [
           "Microsoft.AspNetCore.App"
         ]
+      },
+      "Chat.Application/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v7.0",
+        "dependencies": {
+          "Chat.Infrastructure": "1.0.0"
+        },
+        "compile": {
+          "bin/placeholder/Chat.Application.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/Chat.Application.dll": {}
+        }
+      },
+      "Chat.Core/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v7.0",
+        "compile": {
+          "bin/placeholder/Chat.Core.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/Chat.Core.dll": {}
+        }
+      },
+      "Chat.Infrastructure/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v7.0",
+        "dependencies": {
+          "Chat.Core": "1.0.0"
+        },
+        "compile": {
+          "bin/placeholder/Chat.Infrastructure.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/Chat.Infrastructure.dll": {}
+        }
       }
     }
   },
@@ -2690,10 +2726,27 @@
         "twilio.aspnet.core.8.0.2.nupkg.sha512",
         "twilio.aspnet.core.nuspec"
       ]
+    },
+    "Chat.Application/1.0.0": {
+      "type": "project",
+      "path": "../Chat.Application/Chat.Application.csproj",
+      "msbuildProject": "../Chat.Application/Chat.Application.csproj"
+    },
+    "Chat.Core/1.0.0": {
+      "type": "project",
+      "path": "../Chat.Core/Chat.Core.csproj",
+      "msbuildProject": "../Chat.Core/Chat.Core.csproj"
+    },
+    "Chat.Infrastructure/1.0.0": {
+      "type": "project",
+      "path": "../Chat.Infrastructure/Chat.Infrastructure.csproj",
+      "msbuildProject": "../Chat.Infrastructure/Chat.Infrastructure.csproj"
     }
   },
   "projectFileDependencyGroups": {
     "net7.0": [
+      "Chat.Application >= 1.0.0",
+      "Chat.Infrastructure >= 1.0.0",
       "Swashbuckle.AspNetCore >= 6.5.0",
       "Twilio >= 6.15.1",
       "Twilio.AspNet.Core >= 8.0.2"
@@ -2723,7 +2776,14 @@
       "frameworks": {
         "net7.0": {
           "targetAlias": "net7.0",
-          "projectReferences": {}
+          "projectReferences": {
+            "/home/denis/RiderProjects/ChatRoulette/Chat.Application/Chat.Application.csproj": {
+              "projectPath": "/home/denis/RiderProjects/ChatRoulette/Chat.Application/Chat.Application.csproj"
+            },
+            "/home/denis/RiderProjects/ChatRoulette/Chat.Infrastructure/Chat.Infrastructure.csproj": {
+              "projectPath": "/home/denis/RiderProjects/ChatRoulette/Chat.Infrastructure/Chat.Infrastructure.csproj"
+            }
+          }
         }
       },
       "warningProperties": {
@@ -2768,7 +2828,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "/usr/lib/dotnet/sdk/7.0.113/RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "/usr/lib/dotnet/sdk/7.0.114/RuntimeIdentifierGraph.json"
       }
     }
   }

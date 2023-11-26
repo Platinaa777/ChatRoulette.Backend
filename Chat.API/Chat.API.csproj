@@ -12,4 +12,9 @@
       <PackageReference Include="Twilio.AspNet.Core" Version="8.0.2" />
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\Chat.Application\Chat.Application.csproj" />
+      <ProjectReference Include="..\Chat.Infrastructure\Chat.Infrastructure.csproj" />
+    </ItemGroup>
+
 </Project>

@@ -1,11 +1,30 @@
 {
   "version": 3,
   "targets": {
-    "net7.0": {}
+    "net7.0": {
+      "Chat.Core/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v7.0",
+        "compile": {
+          "bin/placeholder/Chat.Core.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/Chat.Core.dll": {}
+        }
+      }
+    }
   },
-  "libraries": {},
+  "libraries": {
+    "Chat.Core/1.0.0": {
+      "type": "project",
+      "path": "../Chat.Core/Chat.Core.csproj",
+      "msbuildProject": "../Chat.Core/Chat.Core.csproj"
+    }
+  },
   "projectFileDependencyGroups": {
-    "net7.0": []
+    "net7.0": [
+      "Chat.Core >= 1.0.0"
+    ]
   },
   "packageFolders": {
     "/home/denis/.nuget/packages/": {}
@@ -31,7 +50,11 @@
       "frameworks": {
         "net7.0": {
           "targetAlias": "net7.0",
-          "projectReferences": {}
+          "projectReferences": {
+            "/home/denis/RiderProjects/ChatRoulette/Chat.Core/Chat.Core.csproj": {
+              "projectPath": "/home/denis/RiderProjects/ChatRoulette/Chat.Core/Chat.Core.csproj"
+            }
+          }
         }
       },
       "warningProperties": {
@@ -59,7 +82,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "/usr/lib/dotnet/sdk/7.0.113/RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "/usr/lib/dotnet/sdk/7.0.114/RuntimeIdentifierGraph.json"
       }
     }
   }

@@ -40,3 +40,9 @@
 /home/denis/RiderProjects/ChatRoulette/Chat.API/obj/Debug/net7.0/Chat.API.pdb
 /home/denis/RiderProjects/ChatRoulette/Chat.API/obj/Debug/net7.0/Chat.API.genruntimeconfig.cache
 /home/denis/RiderProjects/ChatRoulette/Chat.API/obj/Debug/net7.0/ref/Chat.API.dll
+/home/denis/RiderProjects/ChatRoulette/Chat.API/bin/Debug/net7.0/Chat.Core.dll
+/home/denis/RiderProjects/ChatRoulette/Chat.API/bin/Debug/net7.0/Chat.Infrastructure.dll
+/home/denis/RiderProjects/ChatRoulette/Chat.API/bin/Debug/net7.0/Chat.Infrastructure.pdb
+/home/denis/RiderProjects/ChatRoulette/Chat.API/bin/Debug/net7.0/Chat.Core.pdb
+/home/denis/RiderProjects/ChatRoulette/Chat.API/bin/Debug/net7.0/Chat.Application.dll
+/home/denis/RiderProjects/ChatRoulette/Chat.API/bin/Debug/net7.0/Chat.Application.pdb
