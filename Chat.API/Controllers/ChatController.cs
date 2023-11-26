@@ -14,23 +14,26 @@ public class ChatController : ControllerBase
     {
         _roomHandler = roomHandler;
     }
-
-    
-    [HttpGet("create-room")]
-    public async Task<IActionResult> CreateRoom()
-    {
-        return Ok (await _roomHandler.CreateRoom());
-    }
     
     [HttpGet("find-room")]
     public async Task<IActionResult> FindRoom()
     {
-        var tokenRoom = await _roomHandler.JoinRoom();
+        var response = await _roomHandler.JoinRoom();
         
-        if (string.IsNullOrEmpty(tokenRoom))
+        if (string.IsNullOrEmpty(response.AccessToken))
         {
             return BadRequest("room is not found");
         }
-        return Ok(tokenRoom);
+        return Ok(response);
     }
+    
+    /// <summary>
+    /// for admin (in future)
+    /// </summary>
+    /// <returns></returns>
+    // [HttpGet("create-room")]
+    // public async Task<IActionResult> CreateRoom()
+    // {
+    //     return Ok (await _roomHandler.CreateRoom());
+    // }
 }

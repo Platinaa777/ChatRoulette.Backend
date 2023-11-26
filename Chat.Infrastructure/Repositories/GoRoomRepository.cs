@@ -16,6 +16,7 @@ public class GoRoomRepository : IRoomRepository
                 return Task.FromResult(nameRoom);
             }
         }
+
         return Task.FromResult("");
     }
 
@@ -46,11 +47,44 @@ public class GoRoomRepository : IRoomRepository
         return Task.FromResult(true);
     }
 
+    public bool IsAllRoomsFull()
+    {
+        var isFull = rooms.Count == 10;
+
+        if (!isFull)
+        {
+            return false;
+        }
+        
+        foreach (var room in rooms.Keys)
+        {
+            if (rooms[room] < 2)
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    public bool NotAnyRoomToJoin()
+    {
+        foreach (var room in rooms.Keys)
+        {
+            if (rooms[room] < 2)
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
     public Task CreateRoom(string room)
     {
         if (!rooms.ContainsKey(room))
         {
-            rooms[room] = 1;
+            rooms[room] = 0;
         }
 
         return Task.CompletedTask;

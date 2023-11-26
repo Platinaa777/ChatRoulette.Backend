@@ -1,3 +1,4 @@
+using Chat.Application.Responses;
 using Chat.Core.Repositories;
 using Chat.Core.Secrets;
 using Twilio;
@@ -17,22 +18,26 @@ public class RoomHandler
         _repository = repository;
         TwilioClient.Init(_twilioSettings.AccountSid,_twilioSettings.AuthToken);
     }
-    
-    public async Task<string> CreateRoom()
-    {
-        var nameRoom = Guid.NewGuid().ToString();
-        var room = await RoomResource.CreateAsync(uniqueName: nameRoom, type: RoomResource.RoomTypeEnum.Go);
 
-        await _repository.CreateRoom(room.Sid);
-        return room.Sid;
-    }
-
-    public async Task<string> JoinRoom()
+    public async Task<JoinResponse> JoinRoom()
     {
         var room = await _repository.GetFreeRoom();
-        if (string.IsNullOrEmpty(room))
+
+        if (_repository.IsAllRoomsFull())
         {
-            return "";
+            return new JoinResponse()
+            {
+                IsValid = false,
+                Message = "All rooms is filled, join later"
+            };
+        }
+
+        // size is less than 10 but all rooms in active mode (2 people in room)
+        if (_repository.NotAnyRoomToJoin())
+        {
+            // create new room if the size is less than 10
+            room = await CreateRoom();
+            await _repository.CreateRoom(room);
         }
         
         var token = await CreateAccessTokenForRoom(room);
@@ -40,10 +45,23 @@ public class RoomHandler
 
         if (!isConnected)
         {
-            return "";
+            return new JoinResponse()
+            {
+                IsValid = false,
+                Message = "This Room is filled"
+            };
         }
         
-        return token;
+        return new JoinResponse{AccessToken= token, RoomName = room, IsValid = true};
+    }
+    
+    private async Task<string> CreateRoom()
+    {
+        var nameRoom = Guid.NewGuid().ToString();
+        var room = await RoomResource.CreateAsync(uniqueName: nameRoom, type: RoomResource.RoomTypeEnum.Go);
+
+        await _repository.CreateRoom(room.Sid);
+        return room.Sid;
     }
     
     private async Task<string> CreateAccessTokenForRoom(string room)
