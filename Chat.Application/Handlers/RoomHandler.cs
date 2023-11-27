@@ -2,8 +2,10 @@ using Chat.Application.Responses;
 using Chat.Core.Repositories;
 using Chat.Core.Secrets;
 using Twilio;
+using Twilio.Clients;
 using Twilio.Jwt.AccessToken;
 using Twilio.Rest.Video.V1;
+using Twilio.Rest.Video.V1.Room;
 
 namespace Chat.Application.Handlers;
 
@@ -17,6 +19,23 @@ public class RoomHandler
         _twilioSettings = settings;
         _repository = repository;
         TwilioClient.Init(_twilioSettings.AccountSid,_twilioSettings.AuthToken);
+    }
+
+    public async Task<bool> DisconnectFromRoom(string room, string participantSid)
+    {
+        if (string.IsNullOrEmpty(room))
+        {
+            return false;
+        }
+
+        var isActive = await _repository.DisconnectFromRoom(room);
+
+        if (isActive)
+        {
+            var response = await ParticipantResource.UpdateAsync(room, participantSid, ParticipantResource.StatusEnum.Disconnected);
+        }
+
+        return isActive;
     }
 
     public async Task<JoinResponse> JoinRoom()

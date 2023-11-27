@@ -26,14 +26,17 @@ public class ChatController : ControllerBase
         }
         return Ok(response);
     }
-    
-    /// <summary>
-    /// for admin (in future)
-    /// </summary>
-    /// <returns></returns>
-    // [HttpGet("create-room")]
-    // public async Task<IActionResult> CreateRoom()
-    // {
-    //     return Ok (await _roomHandler.CreateRoom());
-    // }
+
+    [HttpGet]
+    public async Task<IActionResult> Disconnect(string room, string participantSid)
+    {
+        var isDiconnectedResponse = await _roomHandler.DisconnectFromRoom(room, participantSid);
+
+        if (!isDiconnectedResponse)
+        {
+            return BadRequest("room is not found");
+        }
+
+        return Ok(isDiconnectedResponse);
+    }
 }
