@@ -1,5 +1,4 @@
 ./WebUI/chat-app/node_modules/*
-./WebUI/chat-app/node_modules
 ./WebUI/chat-app/.pnp
 ./WebUI/chat-app.pnp.js
 
