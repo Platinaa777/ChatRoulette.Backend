@@ -5,6 +5,8 @@ using Chat.Infrastructure.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
+var cfg = builder.Configuration;
+
 builder.Services.AddCors(corsOptions =>
 {
     corsOptions.AddDefaultPolicy(policy =>
@@ -14,9 +16,16 @@ builder.Services.AddCors(corsOptions =>
             .AllowAnyHeader();
     });
 });
+
 builder.Services.AddControllers();
 builder.Services.AddSwaggerGen();
-builder.Services.AddSingleton<TwilioSettings>();
+builder.Services.AddSingleton<TwilioSettings>(x => new TwilioSettings()
+{
+    AccountSid = cfg["AccountSid"],
+    ApiKey = cfg["ApiKey"],
+    AuthToken = cfg["AuthToken"],
+    ApiSecret = cfg["ApiSecret"]
+});
 builder.Services.AddSingleton<RoomHandler>();
 builder.Services.AddSingleton<IRoomRepository, GoRoomRepository>();
 

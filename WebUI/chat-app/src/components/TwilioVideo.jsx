@@ -7,20 +7,25 @@ import '../styles/TwilioVideo.css'
 const TwilioVideo = () => {
     const { connect } = require('twilio-video');
     const [token, setToken] = useState('');
-    // const [localVideoTrack, setLocalVideoTrack] = useState(null);
-    //
-    // useEffect(() => {
-    //     // Получаем доступ к медиапотокам браузера
-    //     navigator.mediaDevices.getUserMedia({ video: true, audio: true })
-    //         .then(mediaStream => {
-    //             // Создаем видео трек из медиапотока
-    //             const videoTrack = new Video.LocalVideoTrack(mediaStream.getVideoTracks()[0]);
-    //             setLocalVideoTrack(videoTrack);
-    //         })
-    //         .catch(error => {
-    //             console.error('Error accessing media devices:', error);
-    //         });
-    // }, []);
+    const [localVideoTrack, setLocalVideoTrack] = useState(null);
+
+    
+    const ShowMedia = async () =>  {
+        // Получаем доступ к медиапотокам браузера
+        navigator.mediaDevices.getUserMedia({ video: true, audio: true })
+            .then(mediaStream => {
+                // Создаем видео трек из медиапотока
+                const videoTrack = new Video.LocalVideoTrack(mediaStream.getVideoTracks()[0]);
+                setLocalVideoTrack(videoTrack);
+            })
+            .catch(error => {
+                console.error('Error accessing media devices:', error);
+            });
+    };
+    
+    const DisconnectFromRoom = async () => {
+        
+    }
 
     const ShowVideo = () => {
         
@@ -59,6 +64,8 @@ const TwilioVideo = () => {
             }, error => {
             console.error(`Unable to connect to Room123 : ${error.message}`);
         });
+
+        ShowMedia();
     }
    
     return (

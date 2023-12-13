@@ -1,5 +1,4 @@
 using Chat.Application.Handlers;
-using Chat.Core.Repositories;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Chat.API.Controllers;

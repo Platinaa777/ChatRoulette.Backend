@@ -1,0 +1,39 @@
+/WebUI/chat-app/node_modules
+/WebUI/chat-app/node_modules
+/WebUI/chat-app/.pnp
+/WebUI/chat-app.pnp.js
+
+# testing
+/WebUI/chat-app/coverage
+
+# production
+/WebUI/chat-app/build
+
+# misc
+/WebUI/chat-app/.DS_Store
+/WebUI/chat-app/.env.local
+/WebUI/chat-app/.env.development.local
+/WebUI/chat-app/.env.test.local
+/WebUI/chat-app/.env.production.local
+
+/WebUI/chat-app/npm-debug.log*
+/WebUI/chat-app/yarn-debug.log*
+/WebUI/chat-app/yarn-error.log*/.pnp
+/WebUI/chat-app/.pnp.js
+
+# testing
+/WebUI/chat-app/coverage
+
+# production
+/WebUI/chat-app/build
+
+# misc
+/WebUI/chat-app/.DS_Store
+/WebUI/chat-app/.env.local
+/WebUI/chat-app/.env.development.local
+/WebUI/chat-app/.env.test.local
+/WebUI/chat-app/.env.production.local
+
+/WebUI/chat-app/npm-debug.log*
+/WebUI/chat-app/yarn-debug.log*
+/WebUI/chat-app/yarn-error.log*
