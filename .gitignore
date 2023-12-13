@@ -47,3 +47,4 @@ Chat.Core/bin
 Chat.Core/obj
 Chat.Infrastructure/bin
 Chat.Infrastructure/obj
+.idea/*
