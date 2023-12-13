@@ -22,10 +22,10 @@ builder.Services.AddControllers();
 builder.Services.AddSwaggerGen();
 builder.Services.AddSingleton<TwilioSettings>(x => new TwilioSettings()
 {
-    AccountSid = cfg["AccountSid"],
-    ApiKey = cfg["ApiKey"],
-    AuthToken = cfg["AuthToken"],
-    ApiSecret = cfg["ApiSecret"]
+    AccountSid = cfg["TwilioSettings:AccountSid"],
+    ApiKey = cfg["TwilioSettings:ApiKey"],
+    AuthToken = cfg["TwilioSettings:AuthToken"],
+    ApiSecret = cfg["TwilioSettings:ApiSecret"]
 });
 builder.Services.AddSingleton<RoomHandler>();
 builder.Services.AddSingleton<IRoomRepository, GoRoomRepository>();

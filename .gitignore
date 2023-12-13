@@ -36,3 +36,8 @@ WebUI/chat-app/.env.production.local
 WebUI/chat-app/npm-debug.log*
 WebUI/chat-app/yarn-debug.log*
 WebUI/chat-app/yarn-error.log*
+
+#backend
+Chat.API/appsettings.json
+Chat.API/obj
+Chat.API/bin
