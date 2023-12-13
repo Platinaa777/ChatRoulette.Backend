@@ -41,3 +41,9 @@ WebUI/chat-app/yarn-error.log*
 Chat.API/appsettings.json
 Chat.API/obj
 Chat.API/bin
+Chat.Application/bin
+Chat.Application/obj
+Chat.Core/bin
+Chat.Core/obj
+Chat.Infrastructure/bin
+Chat.Infrastructure/obj
