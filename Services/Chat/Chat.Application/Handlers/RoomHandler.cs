@@ -38,7 +38,7 @@ public class RoomHandler
         return isActive;
     }
 
-    public async Task<JoinResponse> JoinRoom()
+    public async Task<JoinResponse> JoinRoom(string participantSid)
     {
         var room = await _repository.GetFreeRoom();
 
@@ -74,7 +74,7 @@ public class RoomHandler
         return new JoinResponse{AccessToken= token, RoomName = room, IsValid = true};
     }
     
-    private async Task<string> CreateRoom()
+    public async Task<string> CreateRoom()
     {
         var nameRoom = Guid.NewGuid().ToString();
         var room = await RoomResource.CreateAsync(uniqueName: nameRoom, type: RoomResource.RoomTypeEnum.Go);

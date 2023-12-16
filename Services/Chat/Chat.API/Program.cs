@@ -17,8 +17,6 @@ builder.Services.AddCors(corsOptions =>
     });
 });
 
-int x = 5 + 10;
-
 builder.Services.AddControllers();
 builder.Services.AddSwaggerGen();
 builder.Services.AddSingleton<TwilioSettings>(x => new TwilioSettings()

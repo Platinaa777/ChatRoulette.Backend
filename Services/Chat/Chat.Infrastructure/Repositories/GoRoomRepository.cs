@@ -5,7 +5,7 @@ namespace Chat.Infrastructure.Repositories;
 
 public class GoRoomRepository : IRoomRepository
 {
-    private readonly ConcurrentDictionary<string, int> rooms = new ConcurrentDictionary<string, int>();
+    private readonly ConcurrentDictionary<string, int> rooms = new();
     
     public Task<string> GetFreeRoom()
     {
