@@ -15,4 +15,9 @@
       <ProjectReference Include="..\Chat.Core\Chat.Core.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Handlers\" />
+      <Folder Include="Responses\" />
+    </ItemGroup>
+
 </Project>

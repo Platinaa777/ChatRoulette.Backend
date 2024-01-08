@@ -1,8 +1,3 @@
-using Chat.Application.Handlers;
-using Chat.Core.Repositories;
-using Chat.Core.Secrets;
-using Chat.Infrastructure.Repositories;
-
 var builder = WebApplication.CreateBuilder(args);
 
 var cfg = builder.Configuration;
@@ -19,15 +14,6 @@ builder.Services.AddCors(corsOptions =>
 
 builder.Services.AddControllers();
 builder.Services.AddSwaggerGen();
-builder.Services.AddSingleton<TwilioSettings>(x => new TwilioSettings()
-{
-    AccountSid = cfg["TwilioSettings:AccountSid"],
-    ApiKey = cfg["TwilioSettings:ApiKey"],
-    AuthToken = cfg["TwilioSettings:AuthToken"],
-    ApiSecret = cfg["TwilioSettings:ApiSecret"]
-});
-builder.Services.AddSingleton<RoomHandler>();
-builder.Services.AddSingleton<IRoomRepository, GoRoomRepository>();
 
 var app = builder.Build();
 
