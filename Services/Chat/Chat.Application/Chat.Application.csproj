@@ -7,11 +7,6 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="Twilio" Version="6.15.2" />
-      <PackageReference Include="Twilio.AspNet.Core" Version="8.0.2" />
-    </ItemGroup>
-
-    <ItemGroup>
       <ProjectReference Include="..\Chat.Core\Chat.Core.csproj" />
     </ItemGroup>
 
