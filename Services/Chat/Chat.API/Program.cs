@@ -1,5 +1,6 @@
 using Chat.Application.Handlers;
 using Chat.Core.Repositories;
+using Chat.Infrastructure.Communication;
 using Chat.Infrastructure.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -17,6 +18,7 @@ builder.Services.AddCors(corsOptions =>
 });
 builder.Services.AddSingleton<DialogRoomHandler>();
 builder.Services.AddSingleton<IDialogRoomRepository, DialogRoomRepository>();
+builder.Services.AddSingleton<ZoomClient>();
 builder.Services.AddControllers();
 builder.Services.AddSwaggerGen();
 

@@ -8,9 +8,11 @@
 
     <ItemGroup>
       <ProjectReference Include="..\Chat.Core\Chat.Core.csproj" />
+      <ProjectReference Include="..\Chat.Infrastructure\Chat.Infrastructure.csproj" />
     </ItemGroup>
 
     <ItemGroup>
+      <Folder Include="Constants\" />
       <Folder Include="Responses\" />
     </ItemGroup>
 

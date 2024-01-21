@@ -7,36 +7,53 @@ public class DialogRoomRepository : IDialogRoomRepository
 {
     private List<TwoSeatsRoom> _meetings = new();
     
-    public string CreateRoom(string id)
+    public string CreateRoom(string id, string connectionString)
     {
         var meeting = new TwoSeatsRoom()
         {
             Id = id,
-            CountUsersInRoom = 0,
+            ConnectionString = connectionString,
             Duration = 60,
-            FirstTalker = null,
-            SecondTalker = null
         };
         
         _meetings.Add(meeting);
         return id;
     }
 
-    public string JoinRoom()
+    public string JoinRoom(string roomId, string userEmail)
     {
-        throw new NotImplementedException();
+        foreach (var room in _meetings)
+        {
+            if (room.Id == roomId)
+            {
+                room.Talkers.Add(userEmail);
+                room.IsInitial = false;
+                return room.ConnectionString;
+            }
+        }
+        
+        return String.Empty;
     }
 
-    public string LeaveRoom()
+    public bool LeaveRoom(string roomId, string userEmail)
     {
-        throw new NotImplementedException();
+        foreach (var meeting in _meetings)
+        {
+            if (meeting.Id == roomId && meeting.Talkers.Contains(userEmail))
+            {
+                meeting.Talkers.Remove(userEmail);
+                return true;
+            }
+        }
+
+        return false;
     }
 
     public TwoSeatsRoom? CanConnectToAnyRoom()
     {
         foreach (var room in _meetings)
         {
-            if (room.CountUsersInRoom == 1)
+            if (room.Talkers.Count == 1)
             {
                 return room;
             }

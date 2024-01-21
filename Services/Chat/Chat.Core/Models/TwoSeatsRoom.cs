@@ -4,7 +4,7 @@ public class TwoSeatsRoom
 {
     public string Id { get; set; }
     public int Duration { get; set; }
-    public byte CountUsersInRoom { get; set; }
-    public string FirstTalker { get; set; } = null;
-    public string SecondTalker { get; set; } = null;
+    public List<string> Talkers { get; } = new();
+    public bool IsInitial { get; set; } = true;
+    public string ConnectionString { get; set; }
 }
