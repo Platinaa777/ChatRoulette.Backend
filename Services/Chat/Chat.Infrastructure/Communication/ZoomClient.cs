@@ -1,5 +1,7 @@
 using System.Text;
+using Chat.Infrastructure.Models;
 using Chat.Infrastructure.Responses;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 namespace Chat.Infrastructure.Communication;
@@ -22,7 +24,7 @@ public class ZoomClient
         _client.DefaultRequestHeaders.Clear();
         return null;
     }
-
+    
     public async Task<object> GetAllMeetingsId(string token)
     {
         var url = "https://api.zoom.us/v2/users/me/meetings";
@@ -30,14 +32,9 @@ public class ZoomClient
         client.DefaultRequestHeaders.Add("Authorization", "Bearer " + token);
         
         var response = await client.GetAsync(url);
-
-        if (response.IsSuccessStatusCode)
-        {
-            return await response.Content.ReadAsStringAsync();
-        }
         
-        _client.DefaultRequestHeaders.Clear();
-        return response.Content.ReadAsStringAsync();
+        _client.DefaultRequestHeaders.Clear();;
+        return JsonConvert.DeserializeObject<MeetingDataJson>(await response.Content.ReadAsStringAsync());
     }
 
     public async Task<ZoomRoomCreated> CreateRoom(string token)
