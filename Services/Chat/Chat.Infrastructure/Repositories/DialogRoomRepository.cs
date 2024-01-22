@@ -7,7 +7,7 @@ public class DialogRoomRepository : IDialogRoomRepository
 {
     private List<TwoSeatsRoom> _meetings = new();
     
-    public string CreateRoom(string id, string connectionString)
+    public void CreateRoom(string id, string connectionString)
     {
         var meeting = new TwoSeatsRoom()
         {
@@ -17,7 +17,6 @@ public class DialogRoomRepository : IDialogRoomRepository
         };
         
         _meetings.Add(meeting);
-        return id;
     }
 
     public string JoinRoom(string roomId, string userEmail)
@@ -56,6 +55,19 @@ public class DialogRoomRepository : IDialogRoomRepository
             if (room.Talkers.Count == 1)
             {
                 return room;
+            }
+        }
+
+        return null;
+    }
+
+    public TwoSeatsRoom? FindRoomById(string id)
+    {
+        foreach (var meeting in _meetings)
+        {
+            if (meeting.Id == id)
+            {
+                return meeting;
             }
         }
 

@@ -13,7 +13,6 @@
 
     <ItemGroup>
       <Folder Include="Constants\" />
-      <Folder Include="Responses\" />
     </ItemGroup>
 
 </Project>

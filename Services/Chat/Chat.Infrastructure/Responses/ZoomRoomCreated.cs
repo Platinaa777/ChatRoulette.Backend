@@ -6,4 +6,5 @@ public class ZoomRoomCreated
     public string HostUrl { get; set; }
     public string JoinUrl { get; set; }
     public string Password { get; set; }
+    public bool IsCreated { get; set; }
 }

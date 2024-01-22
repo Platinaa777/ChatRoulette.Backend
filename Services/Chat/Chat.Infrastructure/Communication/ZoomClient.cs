@@ -75,9 +75,14 @@ public class ZoomClient
             Id = (string)jObject["id"],
             HostUrl = (string)jObject["start_url"],
             JoinUrl = (string)jObject["join_url"],
-            Password = (string)jObject["password"]
+            Password = (string)jObject["password"],
+            IsValid = true
         };
-        
+
+        if (String.IsNullOrEmpty(room.Id))
+        {
+            room.IsValid = false;
+        }
         
         _client.DefaultRequestHeaders.Clear();
         return room;

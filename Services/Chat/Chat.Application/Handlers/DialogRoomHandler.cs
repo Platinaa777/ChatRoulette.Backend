@@ -1,3 +1,4 @@
+using Chat.Application.Responses;
 using Chat.Core.Repositories;
 using Chat.Infrastructure.Communication;
 using Chat.Infrastructure.Responses;
@@ -21,20 +22,55 @@ public class DialogRoomHandler
         return await _zoomClient.GetAllMeetingsId(token);
     }
 
-    public async Task<object> GetMeetingById(string id, string token)
+    public async Task<ZoomInfo> GetMeetingById(string id, string token)
     {
-        return await _zoomClient.GetInfoAboutRoom(id, token);
+        var room = _repository.FindRoomById(id);
+
+        if (room == null)
+        {
+            return new()
+            {
+                IsValid = false
+            };
+        }
+        
+        // todo: automapper
+        return new()
+        {
+            Id = room.Id,
+            HostUrl = room.ConnectionString,
+            IsValid = true,
+        };
     }
 
-    public async Task<object> GetZakToken(string token)
+    public async Task<ZakTokenInfo> GetZakToken(string token)
     {
-        return await _zoomClient.GetZakToken(token);
+        var response = await _zoomClient.GetZakToken(token);
+        var zakTokenResponse = new ZakTokenInfo();
+        
+        zakTokenResponse.IsValid = true;
+        zakTokenResponse.Signature = response;
+        
+        if (response == null)
+        {
+            zakTokenResponse.IsValid = false;
+        }
+
+        return zakTokenResponse;
     }
 
     public async Task<ZoomRoomCreated> CreateRoom(string token)
     {
         var result = await _zoomClient.CreateRoom(token);
-        
+
+        if (String.IsNullOrEmpty(result.Id))
+        {
+            return new ZoomRoomCreated() { IsCreated = false };
+        }
+
+        _repository.CreateRoom(result.Id, result.JoinUrl);
+
+        result.IsCreated = true;
         return result;
     }
     
