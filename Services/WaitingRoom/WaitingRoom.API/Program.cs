@@ -1,6 +1,5 @@
 using WaitingRoom.Application.Handlers;
 using WaitingRoom.Core.Repositories;
-using WaitingRoom.Infrastructure.Communication;
 using WaitingRoom.Infrastructure.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -16,9 +15,9 @@ builder.Services.AddCors(corsOptions =>
             .AllowAnyHeader();
     });
 });
+builder.Services.AddAutoMapper(typeof(Program));
 builder.Services.AddSingleton<DialogRoomHandler>();
 builder.Services.AddSingleton<IDialogRoomRepository, DialogRoomRepository>();
-builder.Services.AddSingleton<ZoomClient>();
 builder.Services.AddControllers();
 builder.Services.AddSwaggerGen();
 

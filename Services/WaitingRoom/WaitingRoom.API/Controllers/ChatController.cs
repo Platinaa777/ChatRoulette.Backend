@@ -1,12 +1,8 @@
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Security.Cryptography;
-using System.Text;
+using Chat.Application.Requests;
 using Microsoft.AspNetCore.Mvc;
-using WaitingRoom.API.Configuration;
-using WaitingRoom.API.Requests;
-using WaitingRoom.API.Responses;
+using WaitingRoom.API.HttpRequests;
 using WaitingRoom.Application.Handlers;
+using Mapper = AutoMapper.Mapper;
 
 namespace WaitingRoom.API.Controllers;
 
@@ -15,51 +11,39 @@ namespace WaitingRoom.API.Controllers;
 public class ChatController : ControllerBase
 {
     private readonly DialogRoomHandler _dialogRoomHandler;
-    private string _token = "";
-    public ChatController(DialogRoomHandler dialogRoomHandler)
+    private readonly Mapper  _mapper;
+
+    public ChatController(
+        DialogRoomHandler dialogRoomHandler,
+        Mapper mapper)
     {
         _dialogRoomHandler = dialogRoomHandler;
+        _mapper = mapper;
     }
 
-    [HttpGet("get-zak-token/{token}")]
-    public async Task<IActionResult> GetZakToken(string token)
+    [HttpGet("get-all-meetings")]
+    public async Task<IActionResult> GetAllMeetings()
     {
-        return Ok(await _dialogRoomHandler.GetZakToken(token));
+        return Ok(await _dialogRoomHandler.GetAllMeetings());
     }
     
-    [HttpGet("join-room/{token}")]
-    public async Task<IActionResult> JoinRoom(string token)
+    [HttpGet("join-room")]
+    public async Task<IActionResult> JoinRoom(UserJoinRequest user)
     {
-        return Ok(await _dialogRoomHandler.CreateRoom(token));
+        return Ok(await _dialogRoomHandler
+                            .JoinFreeRoom(_mapper.Map<UserRequest>(user)));
     }
 
     [HttpGet("get-meeting/{id}")]
-    public async Task<IActionResult> GetMeeting(string id, string token)
+    public async Task<IActionResult> GetRoomById(string id)
     {
-        return Ok(await _dialogRoomHandler.GetMeetingById(id, token));
+        return Ok(await _dialogRoomHandler.GetRoomById(id));
     }
-    
 
-    [HttpGet("get-all-meetings/{token}")]
-    public async Task<IActionResult> GetAllMeetings(string token)
+
+    [HttpGet]
+    public async Task<IActionResult> LeaveRoom(string id)
     {
-        return Ok(await _dialogRoomHandler.GetAllMeetings(token));
-    }
-    
-    [HttpPost("generate-jwt-token")]
-    public async Task<IActionResult> GenerateJwtToken([FromBody] ZoomRequest body)
-    {
-        return Ok(new JwtTokenResponse() {Signature = JwtConfigure.GenerateJwtToken(body)});
-    }
-    
-    [HttpGet("generate-access-token")]
-    public async Task<string?> GetToken()
-    {
-        if (_token == "")
-        {
-            _token = await ZoomConfigure.GenerateAccessToken();
-        }
-        
-        return _token;
+        return Ok(await _dialogRoomHandler.CreateRoom(id));
     }
 }

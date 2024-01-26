@@ -1,7 +1,7 @@
+using Chat.Application.Requests;
 using Chat.Infrastructure.Models;
 using WaitingRoom.Application.Responses;
 using WaitingRoom.Core.Repositories;
-using WaitingRoom.Infrastructure.Communication;
 using WaitingRoom.Infrastructure.Responses;
 
 namespace WaitingRoom.Application.Handlers;
@@ -9,22 +9,20 @@ namespace WaitingRoom.Application.Handlers;
 public class DialogRoomHandler
 {
     private readonly IDialogRoomRepository _repository;
-    private readonly ZoomClient _zoomClient;
 
-    public DialogRoomHandler(IDialogRoomRepository repository, ZoomClient zoomClient)
+    public DialogRoomHandler(IDialogRoomRepository repository)
     {
         _repository = repository;
-        _zoomClient = zoomClient;
     }
 
-    public async Task<MeetingsData> GetAllMeetings(string token)
+    public async Task<MeetingsData> GetAllMeetings()
     {
-        var result = await _zoomClient.GetAllMeetings(token);
+        var result = await _repository.GetAllMeetings();
 
         return result;
     }
 
-    public async Task<ZoomInfo> GetMeetingById(string id, string token)
+    public async Task<RoomInfo> GetMeetingById(string id)
     {
         var room = _repository.FindRoomById(id);
 
@@ -32,36 +30,19 @@ public class DialogRoomHandler
         {
             return new()
             {
-                IsValid = false
+                IsExist = false
             };
         }
         
-        // todo: automapper
         return new()
         {
             Id = room.Id,
-            HostUrl = room.ConnectionString,
-            IsValid = true,
+            Listeners = room.Talkers,
+            IsExist = true
         };
     }
 
-    public async Task<ZakTokenInfo> GetZakToken(string token)
-    {
-        var response = await _zoomClient.GetZakToken(token);
-        var zakTokenResponse = new ZakTokenInfo();
-        
-        zakTokenResponse.IsValid = true;
-        zakTokenResponse.Signature = response;
-        
-        if (response == null)
-        {
-            zakTokenResponse.IsValid = false;
-        }
-
-        return zakTokenResponse;
-    }
-
-    public async Task<ZoomRoomCreated> CreateRoom(string token)
+    public async Task<ZoomRoomCreated> JoinFreeRoom(UserRequest user)
     {
         var result = await _zoomClient.CreateRoom(token);
 
