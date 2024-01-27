@@ -4,8 +4,9 @@ using WaitingRoom.API.HttpRequests;
 
 namespace WaitingRoom.API.Profiles;
 
-public class Mapper: Profile {
-    public Mapper() {
-        CreateMap<UserJoinRequest, UserRequest>();
+public class RequestMapper : Profile {
+    public RequestMapper() {
+        CreateMap<UserJoinRequest, UserAdd>();
+        CreateMap<UserLeaveRequest, UserLeave>();
     }
 }

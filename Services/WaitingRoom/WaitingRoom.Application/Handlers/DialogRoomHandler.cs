@@ -1,8 +1,7 @@
 using Chat.Application.Requests;
-using Chat.Infrastructure.Models;
 using WaitingRoom.Application.Responses;
+using WaitingRoom.Core.Models;
 using WaitingRoom.Core.Repositories;
-using WaitingRoom.Infrastructure.Responses;
 
 namespace WaitingRoom.Application.Handlers;
 
@@ -15,16 +14,21 @@ public class DialogRoomHandler
         _repository = repository;
     }
 
-    public async Task<MeetingsData> GetAllMeetings()
+    public async Task<List<RoomGetInfo>> GetAllMeetings()
     {
-        var result = await _repository.GetAllMeetings();
+        var response = await _repository.GetAllRooms();
 
-        return result;
+        return response.Select(room => 
+            new RoomGetInfo() {
+                Id = room.Id,
+                Host = room.Host,
+                Participant = room.Participant
+            }).ToList();
     }
 
-    public async Task<RoomInfo> GetMeetingById(string id)
+    public async Task<RoomInfo> GetRoomById(string id)
     {
-        var room = _repository.FindRoomById(id);
+        var room = await _repository.FindRoomById(id);
 
         if (room == null)
         {
@@ -37,25 +41,46 @@ public class DialogRoomHandler
         return new()
         {
             Id = room.Id,
-            Listeners = room.Talkers,
+            Host = room.Host,
+            Participant = room.Participant,
             IsExist = true
         };
     }
 
-    public async Task<ZoomRoomCreated> JoinFreeRoom(UserRequest user)
+    public async Task<RoomGetInfo> JoinFreeRoom(UserAdd userAdd)
     {
-        var result = await _zoomClient.CreateRoom(token);
+        var anyRoom = await _repository.CanConnectToAnyRoom();
 
-        if (String.IsNullOrEmpty(result.Id))
+        if (anyRoom == null)
         {
-            return new ZoomRoomCreated() { IsCreated = false };
+            anyRoom = await _repository.CreateRoom();
         }
+        
+        var response = await _repository.JoinRoom(new UserInfo()
+        {
+            Email = userAdd.Email
+        }, anyRoom.Id);
 
-        _repository.CreateRoom(result.Id, result.JoinUrl);
-
-        result.IsCreated = true;
-        return result;
+        return new RoomGetInfo()
+        {
+            Id = response.Id,
+            Talkers = response.Talkers
+        };
     }
-    
-    
+
+    public async Task<bool> LeaveRoom(UserLeave user)
+    {
+        return await _repository.LeaveRoom(user.RoomId,
+            new UserInfo()
+            {
+                Email = user.Email
+            });
+    }
+
+    public async Task<bool> UserCanConnect()
+    {
+        var response = await _repository.CanConnectToAnyRoom() != null;
+
+        return response;
+    }
 }

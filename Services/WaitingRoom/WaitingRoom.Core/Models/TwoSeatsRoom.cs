@@ -3,6 +3,7 @@ namespace WaitingRoom.Core.Models;
 public class TwoSeatsRoom
 {
     public string Id { get; set; }
-    public List<UserInfo> Talkers { get; } = new();
+    public UserInfo Host { get; set; }
+    public UserInfo Participant { get; set; }
     public bool IsInitial { get; set; } = true;
 }

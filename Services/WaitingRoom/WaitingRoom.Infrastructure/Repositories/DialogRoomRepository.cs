@@ -5,44 +5,44 @@ namespace WaitingRoom.Infrastructure.Repositories;
 
 public class DialogRoomRepository : IDialogRoomRepository
 {
-    private List<TwoSeatsRoom> _meetings = new();
+    private List<TwoSeatsRoom> _rooms = new();
     
-    public void CreateRoom(string id, string connectionString)
+    public async Task<TwoSeatsRoom> CreateRoom()
     {
-        var meeting = new TwoSeatsRoom()
+        var room = new TwoSeatsRoom()
         {
-            Id = id,
-            ConnectionString = connectionString,
-            Duration = 60,
+            Id = Guid.NewGuid().ToString()
         };
         
-        _meetings.Add(meeting);
-    }
-    
-    
+        _rooms.Add(room);
 
-    public string JoinRoom(string roomId, string userEmail)
+        return room;
+    }
+
+    public async Task<TwoSeatsRoom> JoinRoom(UserInfo user, string roomId)
     {
-        foreach (var room in _meetings)
+        foreach (var room in _rooms)
         {
             if (room.Id == roomId)
             {
-                room.Talkers.Add(userEmail);
-                room.IsInitial = false;
-                return room.ConnectionString;
+                room.Talkers.Add(user);
+                return room;
             }
         }
-        
-        return String.Empty;
+
+        return new TwoSeatsRoom();
     }
 
-    public bool LeaveRoom(string roomId, string userEmail)
+    public async Task<bool> LeaveRoom(string roomId, UserInfo user)
     {
-        foreach (var meeting in _meetings)
+        foreach (var room in _rooms)
         {
-            if (meeting.Id == roomId && meeting.Talkers.Contains(userEmail))
+            if (room.Id == roomId)
             {
-                meeting.Talkers.Remove(userEmail);
+                room.Talkers.Remove(user);
+
+                var roomShouldDelete 
+                    = room.Talkers.Count == 0 && _rooms.Remove(room);
                 return true;
             }
         }
@@ -50,9 +50,9 @@ public class DialogRoomRepository : IDialogRoomRepository
         return false;
     }
 
-    public TwoSeatsRoom? CanConnectToAnyRoom()
+    public async Task<TwoSeatsRoom?> CanConnectToAnyRoom()
     {
-        foreach (var room in _meetings)
+        foreach (var room in _rooms)
         {
             if (room.Talkers.Count == 1)
             {
@@ -63,9 +63,9 @@ public class DialogRoomRepository : IDialogRoomRepository
         return null;
     }
 
-    public TwoSeatsRoom? FindRoomById(string id)
+    public async Task<TwoSeatsRoom?> FindRoomById(string id)
     {
-        foreach (var meeting in _meetings)
+        foreach (var meeting in _rooms)
         {
             if (meeting.Id == id)
             {
@@ -74,5 +74,10 @@ public class DialogRoomRepository : IDialogRoomRepository
         }
 
         return null;
+    }
+
+    public async Task<List<TwoSeatsRoom>> GetAllRooms()
+    {
+        return _rooms;
     }
 }

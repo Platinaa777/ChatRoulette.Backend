@@ -1,8 +1,8 @@
+using AutoMapper;
 using Chat.Application.Requests;
 using Microsoft.AspNetCore.Mvc;
 using WaitingRoom.API.HttpRequests;
 using WaitingRoom.Application.Handlers;
-using Mapper = AutoMapper.Mapper;
 
 namespace WaitingRoom.API.Controllers;
 
@@ -11,11 +11,11 @@ namespace WaitingRoom.API.Controllers;
 public class ChatController : ControllerBase
 {
     private readonly DialogRoomHandler _dialogRoomHandler;
-    private readonly Mapper  _mapper;
+    private readonly IMapper  _mapper;
 
     public ChatController(
         DialogRoomHandler dialogRoomHandler,
-        Mapper mapper)
+        IMapper mapper)
     {
         _dialogRoomHandler = dialogRoomHandler;
         _mapper = mapper;
@@ -27,11 +27,11 @@ public class ChatController : ControllerBase
         return Ok(await _dialogRoomHandler.GetAllMeetings());
     }
     
-    [HttpGet("join-room")]
-    public async Task<IActionResult> JoinRoom(UserJoinRequest user)
+    [HttpPost("join-room")]
+    public async Task<IActionResult> JoinRoom([FromBody] UserJoinRequest user)
     {
         return Ok(await _dialogRoomHandler
-                            .JoinFreeRoom(_mapper.Map<UserRequest>(user)));
+                            .JoinFreeRoom(_mapper.Map<UserAdd>(user)));
     }
 
     [HttpGet("get-meeting/{id}")]
@@ -41,9 +41,20 @@ public class ChatController : ControllerBase
     }
 
 
-    [HttpGet]
-    public async Task<IActionResult> LeaveRoom(string id)
+    [HttpPost("leave-room")]
+    public async Task<IActionResult> LeaveRoom([FromBody] UserLeaveRequest user)
     {
-        return Ok(await _dialogRoomHandler.CreateRoom(id));
+        if (await _dialogRoomHandler.LeaveRoom(_mapper.Map<UserLeave>(user)))
+        {
+            return Ok("user successfully leaved");
+        }
+
+        return BadRequest("some errors");
+    }
+
+    [HttpGet("connect")]
+    public async Task<IActionResult> CanConnectToRoom()
+    {
+        return Ok(await _dialogRoomHandler.UserCanConnect());
     }
 }

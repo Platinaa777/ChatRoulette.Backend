@@ -1,6 +1,7 @@
 namespace WaitingRoom.API.HttpRequests;
 
-public class UserJoinRequest
+public class UserLeaveRequest
 {
+    public string RoomId { get; set; }
     public string Email { get; set; }
 }

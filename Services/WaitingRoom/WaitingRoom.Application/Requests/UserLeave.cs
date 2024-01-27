@@ -1,7 +1,7 @@
 namespace Chat.Application.Requests;
 
-public class UserRequest
+public class UserLeave
 {
+    public string RoomId { get; set; }
     public string Email { get; set; }
-    public string VideoData { get; set; }
 }

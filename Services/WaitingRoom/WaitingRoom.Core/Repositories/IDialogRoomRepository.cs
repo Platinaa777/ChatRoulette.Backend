@@ -5,9 +5,10 @@ namespace WaitingRoom.Core.Repositories;
 
 public interface IDialogRoomRepository
 {
-    void CreateRoom(string roomId);
-    string JoinRoom(string use);
-    bool LeaveRoom(string roomId, UserInfo user);
-    public TwoSeatsRoom? CanConnectToAnyRoom();
-    public TwoSeatsRoom FindRoomById(string id);
+    Task<TwoSeatsRoom> CreateRoom();
+    Task<TwoSeatsRoom> JoinRoom(UserInfo user, string roomId);
+    Task<bool> LeaveRoom(string roomId, UserInfo user);
+    Task<TwoSeatsRoom?> CanConnectToAnyRoom();
+    Task<TwoSeatsRoom?> FindRoomById(string id);
+    Task<List<TwoSeatsRoom>> GetAllRooms();
 }
