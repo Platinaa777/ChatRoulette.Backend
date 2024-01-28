@@ -10,9 +10,19 @@ public class ChatHub : Hub
     public async Task Send(string message, string roomId)
     {
         Console.WriteLine($"user id = {Context.ConnectionId}; roomId = {roomId}; message = {message}");
-        await Clients.Group(roomId).SendAsync("Receive", "RESPONSE: " + message);
+        await Clients.Group(roomId).SendAsync("Receive", $"{Context.ConnectionId}: " + message);
     }
-    
+
+    public override Task OnConnectedAsync()
+    {
+        return base.OnConnectedAsync();
+    }
+
+    public override Task OnDisconnectedAsync(Exception exception)
+    {
+        return base.OnDisconnectedAsync(exception);
+    }
+
     // for client side
     public async Task GetConnectionId()
     {
