@@ -31,12 +31,9 @@ public class ChatController : ControllerBase
     [HttpPost("leave-room")]
     public async Task<IActionResult> LeaveRoom([FromBody] UserLeaveRequest user)
     {
-        if (await _dialogRoomHandler.LeaveRoom(_mapper.Map<UserLeave>(user)))
-        {
-            return Ok("user successfully leaved");
-        }
+        await _dialogRoomHandler.LeaveRoom(_mapper.Map<UserLeave>(user));
 
-        return BadRequest("some errors");
+        return Ok("room is disbanded");
     }
 
     [HttpGet("get-all-meetings")]

@@ -22,6 +22,7 @@ builder.Services.AddSignalR(options =>
     options.ClientTimeoutInterval = TimeSpan.MaxValue;
 });
 
+builder.Services.AddSingleton<ChatHub>();
 builder.Services.AddAutoMapper(typeof(Program));
 builder.Services.AddSingleton<DialogRoomHandler>();
 builder.Services.AddSingleton<IDialogRoomRepository, DialogRoomRepository>();

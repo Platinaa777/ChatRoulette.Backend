@@ -49,22 +49,18 @@ public class DialogRoomRepository : IDialogRoomRepository
         return new TwoSeatsRoom();
     }
 
-    public async Task<bool> LeaveRoom(string roomId, UserInfo user)
+    public async Task<TwoSeatsRoom?> LeaveRoom(string roomId, UserInfo user)
     {
         foreach (var room in _rooms)
         {
             if (room.Id == roomId)
             {
-                //todo
-                // room.Remove(user);
-                //
-                // var roomShouldDelete 
-                //     = room.Talkers.Count == 0 && _rooms.Remove(room);
-                return true;
+                _rooms.Remove(room);
+                return room;
             }
         }
 
-        return false;
+        return null;
     }
 
     

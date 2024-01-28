@@ -10,15 +10,15 @@ namespace WaitingRoom.Application.Handlers;
 public class DialogRoomHandler
 {
     private readonly IDialogRoomRepository _repository;
-    private readonly IHubContext<ChatHub> _hub;
+    private readonly ChatHub _hub;
 
-    public DialogRoomHandler(IDialogRoomRepository repository, IHubContext<ChatHub> hub)
+    public DialogRoomHandler(IDialogRoomRepository repository, ChatHub hub)
     {
         _repository = repository;
         _hub = hub;
     }
     
-    public async Task<RoomGetInfo> JoinFreeRoom(UserAdd userAdd)
+    public async Task<RoomJoinInfo> JoinFreeRoom(UserAdd userAdd)
     {
         var anyRoom = await _repository.CanConnectToAnyRoom();
 
@@ -27,18 +27,30 @@ public class DialogRoomHandler
             anyRoom = await _repository.CreateRoom();
         }
         
-        // join user to found-free room
+        // join user to found-free room (in database)
         var response = await _repository.JoinRoom(new UserInfo()
         {
             Email = userAdd.Email,
             ConnectionId = userAdd.ConnectionId
         }, anyRoom.Id);
 
-        return new RoomGetInfo()
+        // add user to text-hub (for signalR)
+        await _hub.AddToSpecialHub(userAdd.ConnectionId, response.Id);
+
+        if (response.Participant == null)
         {
-            Id = response.Id,
-            Host = response.Host,
-            Participant = response.Participant
+            return new()
+            {
+                IsHost = true,
+                roomId = response.Id,
+                User = response.Host
+            };
+        }
+        return new()
+        {
+            IsHost = false,
+            roomId = response.Id,
+            User = response.Participant
         };
     }
 
@@ -76,13 +88,15 @@ public class DialogRoomHandler
         };
     }
 
-    public async Task<bool> LeaveRoom(UserLeave user)
+    public async Task LeaveRoom(UserLeave user)
     {
-        return await _repository.LeaveRoom(user.RoomId,
+        var response = await _repository.LeaveRoom(user.RoomId,
             new UserInfo()
             {
                 Email = user.Email
             });
+
+        await _hub.DisbandHub(response?.Host?.ConnectionId, response?.Participant?.ConnectionId, response!.Id);
     }
 
     public async Task<bool> UserCanConnect()
