@@ -7,15 +7,24 @@ public class DialogRoomRepository : IDialogRoomRepository
 {
     private List<TwoSeatsRoom> _rooms = new();
     
+    public async Task<TwoSeatsRoom?> CanConnectToAnyRoom()
+    {
+        foreach (var room in _rooms)
+        {
+            if (room.Participant == null)
+            {
+                return room;
+            }
+        }
+
+        return null;
+    }
+    
     public async Task<TwoSeatsRoom> CreateRoom()
     {
-        var room = new TwoSeatsRoom()
-        {
-            Id = Guid.NewGuid().ToString()
-        };
-        
+        // generate room with guid id
+        var room = new TwoSeatsRoom();
         _rooms.Add(room);
-
         return room;
     }
 
@@ -25,7 +34,14 @@ public class DialogRoomRepository : IDialogRoomRepository
         {
             if (room.Id == roomId)
             {
-                room.Talkers.Add(user);
+                if (room.Host == null)
+                {
+                    room.Host = user;
+                }
+                else
+                {
+                    room.Participant = user;
+                }
                 return room;
             }
         }
@@ -39,10 +55,11 @@ public class DialogRoomRepository : IDialogRoomRepository
         {
             if (room.Id == roomId)
             {
-                room.Talkers.Remove(user);
-
-                var roomShouldDelete 
-                    = room.Talkers.Count == 0 && _rooms.Remove(room);
+                //todo
+                // room.Remove(user);
+                //
+                // var roomShouldDelete 
+                //     = room.Talkers.Count == 0 && _rooms.Remove(room);
                 return true;
             }
         }
@@ -50,18 +67,7 @@ public class DialogRoomRepository : IDialogRoomRepository
         return false;
     }
 
-    public async Task<TwoSeatsRoom?> CanConnectToAnyRoom()
-    {
-        foreach (var room in _rooms)
-        {
-            if (room.Talkers.Count == 1)
-            {
-                return room;
-            }
-        }
-
-        return null;
-    }
+    
 
     public async Task<TwoSeatsRoom?> FindRoomById(string id)
     {

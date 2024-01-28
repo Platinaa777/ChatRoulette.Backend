@@ -20,27 +20,14 @@ public class ChatController : ControllerBase
         _dialogRoomHandler = dialogRoomHandler;
         _mapper = mapper;
     }
-
-    [HttpGet("get-all-meetings")]
-    public async Task<IActionResult> GetAllMeetings()
-    {
-        return Ok(await _dialogRoomHandler.GetAllMeetings());
-    }
     
     [HttpPost("join-room")]
     public async Task<IActionResult> JoinRoom([FromBody] UserJoinRequest user)
     {
         return Ok(await _dialogRoomHandler
-                            .JoinFreeRoom(_mapper.Map<UserAdd>(user)));
+            .JoinFreeRoom(_mapper.Map<UserAdd>(user)));
     }
-
-    [HttpGet("get-meeting/{id}")]
-    public async Task<IActionResult> GetRoomById(string id)
-    {
-        return Ok(await _dialogRoomHandler.GetRoomById(id));
-    }
-
-
+    
     [HttpPost("leave-room")]
     public async Task<IActionResult> LeaveRoom([FromBody] UserLeaveRequest user)
     {
@@ -52,6 +39,18 @@ public class ChatController : ControllerBase
         return BadRequest("some errors");
     }
 
+    [HttpGet("get-all-meetings")]
+    public async Task<IActionResult> GetAllMeetings()
+    {
+        return Ok(await _dialogRoomHandler.GetAllMeetings());
+    }
+
+    [HttpGet("get-meeting/{id}")]
+    public async Task<IActionResult> GetRoomById(string id)
+    {
+        return Ok(await _dialogRoomHandler.GetRoomById(id));
+    }
+    
     [HttpGet("connect")]
     public async Task<IActionResult> CanConnectToRoom()
     {

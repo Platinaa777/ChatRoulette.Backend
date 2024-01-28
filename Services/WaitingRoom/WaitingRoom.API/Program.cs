@@ -1,3 +1,4 @@
+using Chat.Application.Hubs;
 using WaitingRoom.Application.Handlers;
 using WaitingRoom.Core.Repositories;
 using WaitingRoom.Infrastructure.Repositories;
@@ -15,6 +16,12 @@ builder.Services.AddCors(corsOptions =>
             .AllowAnyHeader();
     });
 });
+
+builder.Services.AddSignalR(options =>
+{
+    options.ClientTimeoutInterval = TimeSpan.MaxValue;
+});
+
 builder.Services.AddAutoMapper(typeof(Program));
 builder.Services.AddSingleton<DialogRoomHandler>();
 builder.Services.AddSingleton<IDialogRoomRepository, DialogRoomRepository>();
@@ -33,7 +40,18 @@ if (app.Environment.IsDevelopment())
     });
 }
 
-app.UseCors();
+app.UseRouting();
+
+app.UseCors(x => x
+    .AllowAnyMethod()
+    .AllowAnyHeader()
+    .SetIsOriginAllowed(origin => true) // allow any origin
+    .AllowCredentials()); // allow credentials
+
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapHub<ChatHub>("/chat");
+});
 app.MapControllers();
 
 app.Run();

@@ -2,8 +2,7 @@ namespace WaitingRoom.Core.Models;
 
 public class TwoSeatsRoom
 {
-    public string Id { get; set; }
-    public UserInfo Host { get; set; }
-    public UserInfo Participant { get; set; }
-    public bool IsInitial { get; set; } = true;
+    public string Id { get; set; } = Guid.NewGuid().ToString();
+    public UserInfo? Host { get; set; } = null;
+    public UserInfo? Participant { get; set; } = null;
 }
