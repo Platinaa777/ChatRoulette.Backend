@@ -67,10 +67,13 @@ public class DialogRoomRepository : IDialogRoomRepository
 
     public async Task<TwoSeatsRoom?> FindRoomById(string id)
     {
+        Console.WriteLine($"request id METHOD:[FindRoomById] = {id}");
         foreach (var meeting in _rooms)
         {
+            Console.WriteLine($"room id (repo level) = {meeting.Id}");
             if (meeting.Id == id)
             {
+                Console.WriteLine("yes (found)");
                 return meeting;
             }
         }

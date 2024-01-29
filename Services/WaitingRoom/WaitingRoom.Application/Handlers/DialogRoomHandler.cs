@@ -35,7 +35,7 @@ public class DialogRoomHandler
         }, anyRoom.Id);
 
         // add user to text-hub (for signalR)
-        await _hub.AddToSpecialHub(userAdd.ConnectionId, response.Id);
+        await _hub.AddToSpecialHub(userAdd.ConnectionId, response.Id); 
 
         if (response.Participant == null)
         {
