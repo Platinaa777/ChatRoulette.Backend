@@ -1,4 +1,5 @@
 using Chat.Application.Hubs;
+using SwaggerConfigurations.Extensions;
 using WaitingRoom.Application.Handlers;
 using WaitingRoom.Core.Repositories;
 using WaitingRoom.Infrastructure.Repositories;
@@ -22,6 +23,7 @@ builder.Services.AddSignalR(options =>
     options.ClientTimeoutInterval = TimeSpan.MaxValue;
 });
 
+builder.AddSwagger();
 builder.Services.AddSingleton<ChatHub>();
 builder.Services.AddAutoMapper(typeof(Program));
 builder.Services.AddSingleton<DialogRoomHandler>();

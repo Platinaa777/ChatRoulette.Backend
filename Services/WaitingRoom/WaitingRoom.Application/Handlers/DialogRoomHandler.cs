@@ -28,7 +28,7 @@ public class DialogRoomHandler
         }
         
         // join user to found-free room (in database)
-        var response = await _repository.JoinRoom(new UserInfo()
+        var response = await _repository.JoinRoom(new ChatUser()
         {
             Email = userAdd.Email,
             ConnectionId = userAdd.ConnectionId
@@ -43,23 +43,23 @@ public class DialogRoomHandler
             {
                 IsHost = true,
                 roomId = response.Id,
-                User = response.Host
+                ChatUser = response.Host
             };
         }
         return new()
         {
             IsHost = false,
             roomId = response.Id,
-            User = response.Participant
+            ChatUser = response.Participant
         };
     }
 
-    public async Task<List<RoomGetInfo>> GetAllMeetings()
+    public async Task<List<RoomInfo>> GetAllMeetings()
     {
         var response = await _repository.GetAllRooms();
 
         return response.Select(room =>
-            new RoomGetInfo()
+            new RoomInfo()
             {
                 Id = room.Id,
                 Host = room.Host,
@@ -91,7 +91,7 @@ public class DialogRoomHandler
     public async Task LeaveRoom(UserLeave user)
     {
         var response = await _repository.LeaveRoom(user.RoomId,
-            new UserInfo()
+            new ChatUser()
             {
                 Email = user.Email
             });

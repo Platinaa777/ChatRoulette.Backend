@@ -23,12 +23,12 @@ public class ChatHub : Hub
     public async Task PingFromPeer(string roomId)
     {
         Console.WriteLine("METHOD: PingFromPeer");
-        Console.WriteLine($"user id = {Context.ConnectionId}");
+        Console.WriteLine($"user id = {Context.ConnectionId}"); // from peer
         var room = await _repository.FindRoomById(roomId);
         Console.WriteLine($"room id after find: {room.Id}");
         if (room == null) return;
         Console.WriteLine("after null checks");
-        await Clients.Client(room.Host.ConnectionId).SendAsync("HostPort", "peer is ready", roomId);
+        await Clients.Client(room.Host.ConnectionId).SendAsync("HostPort", roomId); // to host
     }    
     
     public async Task GetOfferFromHost(string roomId, string offer)
@@ -40,7 +40,7 @@ public class ChatHub : Hub
         if (room == null) return;
         Console.WriteLine("get response from host");
         Console.WriteLine($"offer: {offer}");
-        await Clients.Client(room.Participant.ConnectionId).SendAsync("PeerPort", offer, roomId);
+        await Clients.Client(room.Participant.ConnectionId).SendAsync("PeerPort", offer, roomId); // to peer
     }
 
     public async Task TransportAnswer(string roomId, string answer)
@@ -59,7 +59,9 @@ public class ChatHub : Hub
     // for client side
     public async Task GetConnectionId()
     {
-        await Clients.Caller.SendAsync("GettingConnId", Context.ConnectionId);
+        Console.WriteLine("call");
+        Console.WriteLine(Context.ConnectionId);
+        await Clients.Caller.SendAsync("GetId", Context.ConnectionId);
     }
 
     public async Task AddToSpecialHub(string userId, string roomId)

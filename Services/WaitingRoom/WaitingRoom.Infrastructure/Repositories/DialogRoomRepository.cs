@@ -28,7 +28,7 @@ public class DialogRoomRepository : IDialogRoomRepository
         return room;
     }
 
-    public async Task<TwoSeatsRoom> JoinRoom(UserInfo user, string roomId)
+    public async Task<TwoSeatsRoom> JoinRoom(ChatUser chatUser, string roomId)
     {
         foreach (var room in _rooms)
         {
@@ -36,11 +36,11 @@ public class DialogRoomRepository : IDialogRoomRepository
             {
                 if (room.Host == null)
                 {
-                    room.Host = user;
+                    room.Host = chatUser;
                 }
                 else
                 {
-                    room.Participant = user;
+                    room.Participant = chatUser;
                 }
                 return room;
             }
@@ -49,7 +49,7 @@ public class DialogRoomRepository : IDialogRoomRepository
         return new TwoSeatsRoom();
     }
 
-    public async Task<TwoSeatsRoom?> LeaveRoom(string roomId, UserInfo user)
+    public async Task<TwoSeatsRoom?> LeaveRoom(string roomId, ChatUser chatUser)
     {
         foreach (var room in _rooms)
         {
