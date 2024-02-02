@@ -1,0 +1,32 @@
+{
+  "Routes": [
+    // AuthEndpoint
+    {
+      "UpstreamPathTemplate": "/auth",
+      "UpstreamHttpMethod": [ "POST" ],
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Port": 8001,
+          "Host": "localhost"
+        }
+      ],
+      "DownstreamPathTemplate": "/auth"
+    },
+    {
+      "UpstreamPathTemplate": "/",
+      "UpstreamHttpMethod": [ "GET" ],
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Port": 8001,
+          "Host": "localhost"
+        }
+      ],
+      "DownstreamPathTemplate": "/auth/get"
+    }
+  ],
+  "GlobalConfiguration": {
+    "BaseUrl": "http://localhost:8009"
+  }
+}

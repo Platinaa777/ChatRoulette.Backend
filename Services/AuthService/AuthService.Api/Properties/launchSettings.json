@@ -3,7 +3,6 @@
     "http": {
       "commandName": "Project",
       "dotnetRunMessages": true,
-      "launchBrowser": true,
       "launchUrl": "swagger",
       "applicationUrl": "http://localhost:8001",
       "environmentVariables": {
@@ -13,7 +12,6 @@
     "https": {
       "commandName": "Project",
       "dotnetRunMessages": true,
-      "launchBrowser": true,
       "launchUrl": "swagger",
       "applicationUrl": "https://localhost:7255;http://localhost:8001",
       "environmentVariables": {

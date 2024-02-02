@@ -1,9 +1,13 @@
+using AuthService;
+using AuthService.Extensions;
 using SwaggerConfigurations.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.AddSwagger();
 builder.Services.AddControllers();
+builder.AddJwtAuthentication();
+builder.Services.AddSingleton<JwtTokenHandler>();
+builder.AddSwagger();
 
 var app = builder.Build();
 

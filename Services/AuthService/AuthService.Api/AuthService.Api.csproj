@@ -13,6 +13,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\..\..\Infrastructure\SwaggerConfigurations\SwaggerConfigurations.csproj" />
+      <ProjectReference Include="..\AuthService\AuthService.csproj" />
     </ItemGroup>
 
 </Project>
