@@ -1,32 +1,38 @@
-using AuthService.Api.Constants;
-using AuthService.Requests;
-using AuthService.Responses;
+using AuthService.Application.Services;
+using AuthService.HttpModels.Requests;
+using AuthService.HttpModels.Responses;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AuthService.Api.Controllers;
 
 [ApiController]
-[Route($"{AuthServiceName.AUTH}")]
+[Route($"[controller]")]
 public class AuthController : ControllerBase
 {
-    private readonly JwtTokenHandler _authHandler;
+    private readonly IUserService _userService;
 
-    public AuthController(JwtTokenHandler authHandler)
+    public AuthController(IUserService userService)
     {
-        _authHandler = authHandler;
+        _userService = userService;
+    }
+    
+    [HttpGet, Authorize(Roles = "Admin")]
+    public async Task<IActionResult> GetSecuredData()
+    {
+        return Ok("This Secured Data is available only for Authenticated Users.");
+    }
+    
+    [HttpPost("register")]
+    public async Task<ActionResult<bool>> Register(RegisterRequest request)
+    {
+        var result = await _userService.RegisterAsync(request);
+        return Ok(result);
     }
 
-    [Authorize]
-    [HttpGet("get")]
-    public string Get() => "132";
-    [HttpPost]
-    public ActionResult<UserAuthResponse> Authenticate(UserAuthRequest request)
+    [HttpPost("token")]
+    public async Task<ActionResult<AuthenticationResponse>> GetToken(TokenRequest request)
     {
-        var response = _authHandler.GenerateJwtToken(request);
-
-        if (response == null) return Unauthorized();
-
-        return Ok(response);
+        return Ok(await _userService.GetTokenAsync(request));
     }
 }

@@ -1,6 +1,4 @@
-
 using Microsoft.AspNetCore.SignalR;
-using WaitingRoom.Application.Handlers;
 using WaitingRoom.Core.Repositories;
 
 namespace Chat.Application.Hubs;

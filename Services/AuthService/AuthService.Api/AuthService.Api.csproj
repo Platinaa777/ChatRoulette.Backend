@@ -8,12 +8,20 @@
 
     <ItemGroup>
         <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="7.0.15"/>
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.15">
+          <PrivateAssets>all</PrivateAssets>
+          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
         <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0"/>
     </ItemGroup>
 
     <ItemGroup>
       <ProjectReference Include="..\..\..\Infrastructure\SwaggerConfigurations\SwaggerConfigurations.csproj" />
-      <ProjectReference Include="..\AuthService\AuthService.csproj" />
+      <ProjectReference Include="..\AuthService.DataContext\AuthService.DataContext.csproj" />
+      <ProjectReference Include="..\AuthService.HttpModels\AuthService.HttpModels.csproj" />
+      <ProjectReference Include="..\AuthService.Infrastructure\AuthService.Infrastructure.csproj" />
+      <ProjectReference Include="..\AuthService.Migrations\AuthService.Migrations.csproj" />
+      <ProjectReference Include="..\AuthService.Application\AuthService.Application.csproj" />
     </ItemGroup>
 
 </Project>

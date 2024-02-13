@@ -1,15 +1,14 @@
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 
-namespace AuthService.Extensions;
+namespace AuthService.Infrastructure.Extensions;
 
 public static class JwtExtensions
 {
-    public static WebApplicationBuilder AddJwtAuthentication(this WebApplicationBuilder builder)
+    public static WebApplicationBuilder AddJwtAuthentication(this WebApplicationBuilder builder, string key)
     {
         builder.Services.AddAuthentication(opt =>
             {
@@ -19,13 +18,13 @@ public static class JwtExtensions
             .AddJwtBearer(opt =>
             {
                 opt.RequireHttpsMetadata = false;
-                opt.SaveToken = true;
+                opt.SaveToken = false;
                 opt.TokenValidationParameters = new TokenValidationParameters()
                 {
                     ValidateIssuerSigningKey = true,
                     ValidateAudience = false,
                     ValidateIssuer = false,
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(JwtTokenHandler.KEY))
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key))
                 };
             });
         

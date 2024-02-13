@@ -1,4 +1,4 @@
-using AuthService.Extensions;
+using AuthService.Infrastructure.Extensions;
 using Ocelot.DependencyInjection;
 using Ocelot.Middleware;
 
@@ -9,7 +9,7 @@ builder.Configuration.SetBasePath(builder.Environment.ContentRootPath)
     .AddEnvironmentVariables()
     .Build();
 
-builder.AddJwtAuthentication();
+builder.AddJwtAuthentication(builder.Configuration.GetSection("Jwt:Key").Value!);
 builder.Services.AddOcelot(builder.Configuration);
 
 var app = builder.Build();
