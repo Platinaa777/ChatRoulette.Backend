@@ -1,4 +1,5 @@
 using AuthService.Infrastructure.Extensions;
+using AuthService.Infrastructure.Extensions.Jwt;
 using Ocelot.DependencyInjection;
 using Ocelot.Middleware;
 

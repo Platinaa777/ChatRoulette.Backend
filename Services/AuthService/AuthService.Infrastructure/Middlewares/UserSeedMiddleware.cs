@@ -1,5 +1,9 @@
+using AuthService.DataContext.Database;
 using AuthService.Domain.Models;
+using AuthService.Domain.Models.UserAggregate.Entities;
+using AuthService.Domain.Models.UserAggregate.Repos;
 using AuthService.Infrastructure.Extensions;
+using AuthService.Infrastructure.Extensions.UsersSeed;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -31,9 +35,9 @@ public class UserSeedMiddleware
         try
         {
             //Seed Default Users
-            var userManager = services.GetRequiredService<UserManager<UserAccount>>();
-            var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
-            await SeedExtensions.SeedEssentialsAsync(userManager, roleManager);
+            var repo = services.GetRequiredService<IUserRepository>();
+            var db = services.GetRequiredService<UserDb>();
+            await SeedExtensions.SeedEssentialsAsync(repo, db);
         }
         catch (Exception ex)
         {

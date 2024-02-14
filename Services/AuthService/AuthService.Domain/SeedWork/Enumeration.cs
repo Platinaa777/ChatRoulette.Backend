@@ -4,6 +4,8 @@ namespace AuthService.Domain.SeedWork;
 
 public abstract class Enumeration : IComparable
 {
+    public Enumeration() { }
+    
     public string Name { get; private set; }
 
     public int Id { get; private set; }

@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 
-namespace AuthService.Infrastructure.Extensions;
+namespace AuthService.Infrastructure.Extensions.Jwt;
 
 public static class JwtExtensions
 {

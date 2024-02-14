@@ -1,9 +1,10 @@
-using AuthService.Application.Services;
+using AuthService.Application.Handlers;
 using AuthService.DataContext.Database;
 using AuthService.Domain.JwtConfig;
-using AuthService.Domain.Models;
-using AuthService.Infrastructure.Extensions;
-using Microsoft.AspNetCore.Identity;
+using AuthService.Domain.Models.UserAggregate.Repos;
+using AuthService.Infrastructure.Extensions.Jwt;
+using AuthService.Infrastructure.Extensions.UsersSeed;
+using AuthService.Infrastructure.Repos;
 using Microsoft.EntityFrameworkCore;
 using SwaggerConfigurations.Extensions;
 
@@ -12,16 +13,10 @@ var builder = WebApplication.CreateBuilder(args);
 var configuration = builder.Configuration;
 
 builder.Services.AddControllers();
-builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
 
-builder.Services.AddIdentity<UserAccount, IdentityRole>(opt =>
-    {
-        opt.Password.RequireDigit = false;
-        opt.Password.RequireNonAlphanumeric = false;
-        opt.Password.RequireUppercase = false;
-        opt.Password.RequireLowercase = false;
-    })
-    .AddEntityFrameworkStores<UserDb>();
+builder.Services.AddMediatR(cfg => 
+    cfg.RegisterServicesFromAssemblyContaining<CreateUserCommandHandler>());
 
 builder.Services.AddDbContext<UserDb>(options =>
 {
