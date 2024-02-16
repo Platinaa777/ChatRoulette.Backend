@@ -5,4 +5,4 @@
 .idea/*
 
 
-./Services/AuthService/pgdata/
+./Services/AuthService/pgdata/*
