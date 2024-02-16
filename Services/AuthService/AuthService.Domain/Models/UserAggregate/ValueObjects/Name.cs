@@ -5,7 +5,7 @@ namespace AuthService.Domain.Models.UserAggregate.ValueObjects;
  
 public class Name : ValueObject
 {
-    public string Value { get; set; }
+    public string Value { get; private set; }
     
     public Name(string name)
     {

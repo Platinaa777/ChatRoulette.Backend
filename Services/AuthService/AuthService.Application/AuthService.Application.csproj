@@ -11,10 +11,5 @@
       <ProjectReference Include="..\AuthService.HttpModels\AuthService.HttpModels.csproj" />
       <ProjectReference Include="..\AuthService.Infrastructure\AuthService.Infrastructure.csproj" />
     </ItemGroup>
-    
-    <ItemGroup>
-      <Folder Include="Queries\" />
-      <Folder Include="Repos\" />
-    </ItemGroup>
 
 </Project>

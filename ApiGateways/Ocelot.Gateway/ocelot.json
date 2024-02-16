@@ -1,6 +1,5 @@
 {
   "Routes": [
-    // AuthEndpoint
     {
       "UpstreamPathTemplate": "/auth",
       "UpstreamHttpMethod": [ "POST" ],

@@ -33,5 +33,5 @@ public class User : Entity<string>
     public Password PasswordHash { get; private set; }
 
     // todo chanage to role 
-    public RoleType Role { get; set; }
+    public RoleType Role { get; private set; }
 }

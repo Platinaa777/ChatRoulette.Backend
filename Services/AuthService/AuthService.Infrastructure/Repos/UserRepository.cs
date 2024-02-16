@@ -1,6 +1,7 @@
 using AuthService.DataContext.Database;
 using AuthService.Domain.Models.UserAggregate.Entities;
 using AuthService.Domain.Models.UserAggregate.Repos;
+using AuthService.Domain.Models.UserAggregate.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 
 namespace AuthService.Infrastructure.Repos;
@@ -14,14 +15,18 @@ public class UserRepository : IUserRepository
         _context = context;
     }
     
-    public Task<User> FindUserByIdAsync(int id)
+    public async Task<User?> FindUserByIdAsync(string id)
     {
-        throw new NotImplementedException();
+        var existingUser = await _context.Users.FirstOrDefaultAsync(u => u.Id == id);
+
+        return existingUser;
     }
 
-    public Task<User> FindUserByEmailAsync(string email)
+    public async Task<User?> FindUserByEmailAsync(string email)
     {
-        throw new NotImplementedException();
+        User? existingUser = await _context.Users.FirstOrDefaultAsync(u => u.Email.Value == email);
+        
+        return existingUser;
     }
 
     public async Task<bool> AddUserAsync(User user)

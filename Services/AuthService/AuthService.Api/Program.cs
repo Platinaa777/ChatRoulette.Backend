@@ -4,6 +4,7 @@ using AuthService.Domain.JwtConfig;
 using AuthService.Domain.Models.UserAggregate.Repos;
 using AuthService.Infrastructure.Extensions.Jwt;
 using AuthService.Infrastructure.Extensions.UsersSeed;
+using AuthService.Infrastructure.JwtGenerator;
 using AuthService.Infrastructure.Repos;
 using Microsoft.EntityFrameworkCore;
 using SwaggerConfigurations.Extensions;
@@ -14,6 +15,7 @@ var configuration = builder.Configuration;
 
 builder.Services.AddControllers();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<JwtTokenCreator>();
 
 builder.Services.AddMediatR(cfg => 
     cfg.RegisterServicesFromAssemblyContaining<CreateUserCommandHandler>());

@@ -4,7 +4,7 @@ namespace AuthService.Domain.Models.UserAggregate.ValueObjects;
 
 public class Age : ValueObject
 {
-    public int Value { get; set; }
+    public int Value { get; private set; }
 
     public Age(int age)
     {

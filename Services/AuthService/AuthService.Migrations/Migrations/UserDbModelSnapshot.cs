@@ -54,11 +54,13 @@ namespace AuthService.Migrations.Migrations
                                 .HasColumnType("text");
 
                             b1.Property<int>("Id")
-                                .HasColumnType("integer");
+                                .HasColumnType("integer")
+                                .HasColumnName("RoleId");
 
                             b1.Property<string>("Name")
                                 .IsRequired()
-                                .HasColumnType("text");
+                                .HasColumnType("text")
+                                .HasColumnName("Role");
 
                             b1.HasKey("UserId");
 
@@ -74,11 +76,13 @@ namespace AuthService.Migrations.Migrations
                                 .HasColumnType("text");
 
                             b1.Property<bool>("IsSubmitted")
-                                .HasColumnType("boolean");
+                                .HasColumnType("boolean")
+                                .HasColumnName("IsSubmitted");
 
                             b1.Property<string>("Value")
                                 .IsRequired()
-                                .HasColumnType("text");
+                                .HasColumnType("text")
+                                .HasColumnName("Email");
 
                             b1.HasKey("UserId");
 

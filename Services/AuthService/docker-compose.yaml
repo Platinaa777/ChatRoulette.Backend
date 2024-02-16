@@ -1,0 +1,21 @@
+version: '3.9'
+
+networks:
+  chat-net:
+    driver: bridge
+
+services: 
+  postgres_db:
+    image: postgres
+    container_name: chat-auth-db
+    ports:
+      - 5434:5432
+    environment:
+      POSTGRES_USER: denis
+      POSTGRES_PASSWORD: denis123
+    networks: [ chat-net ]
+    volumes:
+      - ./pgdata:/var/lib/postgresql/data
+
+volumes:
+  postgres_db:

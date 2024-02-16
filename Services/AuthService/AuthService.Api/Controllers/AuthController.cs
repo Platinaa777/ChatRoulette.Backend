@@ -1,5 +1,4 @@
 using AuthService.Api.Mappers;
-using AuthService.Application.Services;
 using AuthService.HttpModels.Requests;
 using AuthService.HttpModels.Responses;
 using MediatR;
@@ -20,9 +19,20 @@ public class AuthController : ControllerBase
     }
     
     [HttpGet, Authorize(Roles = "Admin")]
-    public async Task<IActionResult> GetSecuredData()
+    public async Task<ActionResult<string>> GetSecuredData()
     {
         return Ok("This Secured Data is available only for Authenticated Users.");
+    }
+
+    [HttpGet("user")]
+    public async Task<ActionResult<UserInformationResponse>> GetUserInfo(
+        [FromQuery] string email,
+        [FromQuery] string password)
+    {
+        var request = new GetUserDataRequest() { Email = email, Password = password }; 
+        var result = await _mediator.Send(request.ToQuery());
+
+        return Ok(result);
     }
     
     [HttpPost("register")]
@@ -32,9 +42,11 @@ public class AuthController : ControllerBase
         return Ok(result);
     }
 
-    // [HttpPost("token")]
-    // public async Task<ActionResult<AuthenticationResponse>> GetToken(TokenRequest request)
-    // {
-    //     return Ok(await _userService.GetTokenAsync(request));
-    // }
+    [HttpPost("token")]
+    public async Task<ActionResult<AuthenticationResponse>> GetToken(TokenRequest request)
+    {
+        var result = await _mediator.Send(request.ToCommand());
+        
+        return Ok(result);
+    }
 }

@@ -20,6 +20,12 @@ public static class CreateUserCommandToDomain
 {
     public static User ToDomain(this CreateUserCommand command)
     {
+        var roleType = RoleType.FromName(command.Role);
+        var role = new Role(
+                roleType == null 
+                ? RoleType.UnactivatedUser.Id 
+                : roleType.Id);
+        
         return new User(
             id: Guid.NewGuid().ToString(),
             new Name(command.UserName),
@@ -27,7 +33,6 @@ public static class CreateUserCommandToDomain
             new Name(command.NickName),
             new Age(command.Age),
             new Password(command.Password),
-            RoleType.FromName(command.Role) ?? RoleType.UnactivatedUser
-        );
+            roleType ?? RoleType.UnactivatedUser);
     }
 }

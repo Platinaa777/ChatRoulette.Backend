@@ -17,6 +17,9 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WaitingRoom.Infrastructure", "Services\WaitingRoom\WaitingRoom.Infrastructure\WaitingRoom.Infrastructure.csproj", "{5629692A-B184-4F3A-8B81-E6BA6E5CE88F}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "AuthService", "AuthService", "{0BFDBBB9-6CDD-4B89-90FD-CBBB948D8B87}"
+	ProjectSection(SolutionItems) = preProject
+		Services\AuthService\docker-compose.yaml = Services\AuthService\docker-compose.yaml
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuthService.Api", "Services\AuthService\AuthService.Api\AuthService.Api.csproj", "{C6EEAD3E-C586-4CB9-9D6C-7A80DBF82D9F}"
 EndProject
@@ -35,6 +38,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuthService.Infrastructure", "Services\AuthService\AuthService.Infrastructure\AuthService.Infrastructure.csproj", "{AAA4D7F8-5554-4D92-AFD0-EBCA37A11468}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuthService.DataContext", "Services\AuthService\AuthService.DataContext\AuthService.DataContext.csproj", "{3C0916B4-E236-4566-9994-A347B31C2AC8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WaitingRoom.HttpModels", "Services\WaitingRoom\WaitingRoom.HttpModels\WaitingRoom.HttpModels.csproj", "{8A8FB760-A82E-4914-A39B-CFE1056FADF4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -94,6 +99,10 @@ Global
 		{3C0916B4-E236-4566-9994-A347B31C2AC8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3C0916B4-E236-4566-9994-A347B31C2AC8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3C0916B4-E236-4566-9994-A347B31C2AC8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8A8FB760-A82E-4914-A39B-CFE1056FADF4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8A8FB760-A82E-4914-A39B-CFE1056FADF4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8A8FB760-A82E-4914-A39B-CFE1056FADF4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8A8FB760-A82E-4914-A39B-CFE1056FADF4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{38ACED50-1C63-4340-A28A-0D90C04628BB} = {015FC6CF-628C-4696-BDBA-8B838535BCE7}
@@ -111,5 +120,6 @@ Global
 		{99D9B71B-4035-4747-AA95-2D818BCF9F4C} = {0BFDBBB9-6CDD-4B89-90FD-CBBB948D8B87}
 		{AAA4D7F8-5554-4D92-AFD0-EBCA37A11468} = {0BFDBBB9-6CDD-4B89-90FD-CBBB948D8B87}
 		{3C0916B4-E236-4566-9994-A347B31C2AC8} = {0BFDBBB9-6CDD-4B89-90FD-CBBB948D8B87}
+		{8A8FB760-A82E-4914-A39B-CFE1056FADF4} = {38ACED50-1C63-4340-A28A-0D90C04628BB}
 	EndGlobalSection
 EndGlobal

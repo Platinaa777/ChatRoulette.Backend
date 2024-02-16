@@ -4,7 +4,7 @@ namespace AuthService.Domain.Models.UserAggregate.ValueObjects;
 
 public class Password : ValueObject
 {
-    public string Value { get; set; }
+    public string Value { get; private set; }
 
     public Password(string password)
     {
