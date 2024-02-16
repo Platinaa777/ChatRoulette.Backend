@@ -1,4 +1,4 @@
-namespace WaitingRoom.API.HttpRequests;
+namespace WaitingRoom.HttpModels.HttpRequests;
 
 public class UserJoinRequest
 {

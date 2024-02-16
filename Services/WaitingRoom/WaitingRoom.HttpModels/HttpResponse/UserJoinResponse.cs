@@ -1,6 +1,6 @@
 using Chat.Application.Models;
 
-namespace WaitingRoom.API.HttpResponse;
+namespace WaitingRoom.HttpModels.HttpResponse;
 
 public class UserJoinResponse
 {

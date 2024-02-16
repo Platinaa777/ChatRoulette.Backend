@@ -1,6 +1,6 @@
 using Chat.Application.Models;
-using WaitingRoom.API.HttpResponse;
 using WaitingRoom.Application.Responses;
+using WaitingRoom.HttpModels.HttpResponse;
 
 namespace WaitingRoom.API.Extensions.Mappers;
 

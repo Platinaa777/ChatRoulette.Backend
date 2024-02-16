@@ -9,6 +9,7 @@
     <ItemGroup>
       <ProjectReference Include="..\..\..\Infrastructure\SwaggerConfigurations\SwaggerConfigurations.csproj" />
       <ProjectReference Include="..\WaitingRoom.Application\WaitingRoom.Application.csproj" />
+      <ProjectReference Include="..\WaitingRoom.HttpModels\WaitingRoom.HttpModels.csproj" />
       <ProjectReference Include="..\WaitingRoom.Infrastructure\WaitingRoom.Infrastructure.csproj" />
     </ItemGroup>
 
