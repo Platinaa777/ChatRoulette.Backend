@@ -2,7 +2,6 @@ using AuthService.Api.Mappers;
 using AuthService.HttpModels.Requests;
 using AuthService.HttpModels.Responses;
 using MediatR;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AuthService.Api.Controllers;
