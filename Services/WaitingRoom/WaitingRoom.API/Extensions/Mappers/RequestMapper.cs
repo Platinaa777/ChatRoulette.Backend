@@ -1,5 +1,4 @@
 using Chat.Application.Requests;
-using WaitingRoom.API.HttpRequests;
 using WaitingRoom.HttpModels.HttpRequests;
 
 namespace WaitingRoom.API.Extensions.Mappers;
