@@ -1,10 +1,9 @@
 using AutoMapper;
-using Chat.Application.Requests;
 using Microsoft.AspNetCore.Mvc;
 using WaitingRoom.API.Extensions.Mappers;
-using WaitingRoom.API.HttpRequests;
-using WaitingRoom.API.HttpResponse;
 using WaitingRoom.Application.Handlers;
+using WaitingRoom.HttpModels.HttpRequests;
+using WaitingRoom.HttpModels.HttpResponse;
 
 namespace WaitingRoom.API.Controllers;
 
