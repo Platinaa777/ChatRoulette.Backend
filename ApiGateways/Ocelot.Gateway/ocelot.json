@@ -2,7 +2,8 @@
   "Routes": [
     {
       "UpstreamPathTemplate": "/auth",
-      "UpstreamHttpMethod": [ "POST" ],
+      "UpstreamHttpMethod": [ "GET" ],
+      "DownstreamPathTemplate": "/auth",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
@@ -10,11 +11,14 @@
           "Host": "localhost"
         }
       ],
-      "DownstreamPathTemplate": "/auth"
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+      }
     },
     {
-      "UpstreamPathTemplate": "/",
+      "UpstreamPathTemplate": "/auth/user",
       "UpstreamHttpMethod": [ "GET" ],
+      "DownstreamPathTemplate": "/auth/user",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
@@ -22,7 +26,33 @@
           "Host": "localhost"
         }
       ],
-      "DownstreamPathTemplate": "/auth/get"
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+      }
+    },
+    {
+      "UpstreamPathTemplate": "/auth/register",
+      "UpstreamHttpMethod": [ "POST" ],
+      "DownstreamPathTemplate": "/auth/register",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Port": 8001,
+          "Host": "localhost"
+        }
+      ]
+    },
+    {
+      "UpstreamPathTemplate": "/auth/token",
+      "UpstreamHttpMethod": [ "POST" ],
+      "DownstreamPathTemplate": "/auth/token",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Port": 8001,
+          "Host": "localhost"
+        }
+      ]
     }
   ],
   "GlobalConfiguration": {

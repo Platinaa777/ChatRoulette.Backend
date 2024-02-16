@@ -18,7 +18,7 @@ public class AuthController : ControllerBase
         _mediator = mediator;
     }
     
-    [HttpGet, Authorize(Roles = "Admin")]
+    [HttpGet]
     public async Task<ActionResult<string>> GetSecuredData()
     {
         return Ok("This Secured Data is available only for Authenticated Users.");
