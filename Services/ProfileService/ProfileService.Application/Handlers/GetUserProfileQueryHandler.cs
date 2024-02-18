@@ -18,6 +18,8 @@ public class GetUserProfileQueryHandler : IRequestHandler<GetUserProfileQuery, U
     {
         var result = await _userRepository.FindUserByEmailAsync(request.Email);
 
+        if (result == null) return new UserProfileResponse();
+        
         return new UserProfileResponse()
         {
             UserName = result.UserName.Value,

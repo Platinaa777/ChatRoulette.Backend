@@ -12,33 +12,52 @@ namespace ProfileService.Infrastructure.Repos.Implementations;
 public class UserProfileRepository : IUserProfileRepository
 {
     private readonly IDbConnectionFactory<NpgsqlConnection> _factory;
+    private readonly IChangeTracker _tracker;
 
-    public UserProfileRepository(IDbConnectionFactory<NpgsqlConnection> factory)
+    public UserProfileRepository(IDbConnectionFactory<NpgsqlConnection> factory, IChangeTracker tracker)
     {
         _factory = factory;
+        _tracker = tracker;
     }
     
-    public Task<UserProfile?> FindUserByIdAsync(string id)
+    public async Task<UserProfile?> FindUserByIdAsync(string id)
     {
-        throw new NotImplementedException();
+        var parameters = new { Id = id };
+
+        var connection = await _factory.CreateConnection(default);
+        
+        IEnumerable<UserDb> result = await connection
+            .QueryAsync<UserDb>(NpgsqlQuery.sqlFindById, 
+                param: parameters);
+
+        var userDb = result.FirstOrDefault();
+        
+        if (userDb == null) return null;
+        
+        var user = new UserProfile(
+            userDb.Id,
+            new Name(userDb.UserName),
+            new Name(userDb.NickName),
+            new Email(userDb.Email));
+        
+        _tracker.Track(user);
+
+        return user;
     }
 
     public async Task<UserProfile?> FindUserByEmailAsync(string email)
     {
-        const string sql = $@"
-            SELECT id, user_name UserName, nick_name NickName, email 
-            FROM user_profiles
-            WHERE email = @email;
-         ";
-
         var parameters = new { Email = email };
 
         var connection = await _factory.CreateConnection(default);
 
-        var result = await connection
-            .QueryAsync<UserDb>(sql, param: parameters);
+        IEnumerable<UserDb> result = await connection
+                                .QueryAsync<UserDb>(NpgsqlQuery.sqlFindByEmail, 
+                                                    param: parameters);
 
         var userDb = result.FirstOrDefault();
+
+        if (userDb == null) return null;
 
         var user = new UserProfile(
             userDb.Id,
@@ -46,16 +65,51 @@ public class UserProfileRepository : IUserProfileRepository
             new Name(userDb.NickName),
             new Email(userDb.Email));
         
+        _tracker.Track(user);
+        
         return user;
     }
 
-    public Task<bool> AddUserAsync(UserProfile user)
+    public async Task<bool> AddUserAsync(UserProfile user)
     {
-        throw new NotImplementedException();
+        var userDb = await FindUserByEmailAsync(user.Email.Value);
+
+        if (userDb != null) return false;
+
+        var parameteres = new
+        {
+            Id = user.Id,
+            UserName = user.UserName.Value,
+            NickName = user.NickName.Value,
+            Email = user.Email.Value
+        };
+
+        var command = new CommandDefinition(NpgsqlQuery.sqlAddUser, parameteres);
+
+        var connection = await _factory.CreateConnection(default);
+        var result = await connection.ExecuteAsync(command);
+
+        return result == 1;
     }
 
-    public Task<bool> UpdateUserAsync(UserProfile user)
+    public async Task<bool> UpdateUserAsync(UserProfile user)
     {
-        throw new NotImplementedException();
+        var userDb = await FindUserByEmailAsync(user.Email.Value);
+
+        if (userDb != null) return false;
+
+        var parameteres = new
+        {
+            UserName = user.UserName.Value,
+            NickName = user.NickName.Value,
+            Email = user.Email.Value
+        };
+
+        var command = new CommandDefinition(NpgsqlQuery.sqlUpdateUser, parameteres);
+
+        var connection = await _factory.CreateConnection(default);
+        var result = await connection.ExecuteAsync(command);
+
+        return result == 1;
     }
 }

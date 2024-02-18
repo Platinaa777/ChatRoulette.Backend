@@ -7,10 +7,6 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <Folder Include="Commands\" />
-    </ItemGroup>
-
-    <ItemGroup>
       <ProjectReference Include="..\ProfileService.Domain\ProfileService.Domain.csproj" />
       <ProjectReference Include="..\ProfileService.HttpModels\ProfileService.HttpModels.csproj" />
     </ItemGroup>
