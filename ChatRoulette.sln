@@ -65,11 +65,19 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{519709
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MessageBroker", "MessageBroker", "{4C3CABC0-485C-4D7B-9049-4B1DDFFA6C58}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MessageBroker.RabbitMQ.Consumer", "Infrastructure\MessageBroker\MessageBroker.RabbitMQ.Consumer\MessageBroker.RabbitMQ.Consumer.csproj", "{444C5760-33F6-4AA4-8D9C-ECE4B59D578D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MassTransit.Client", "Infrastructure\MessageBroker\MassTransit.Client\MassTransit.Client.csproj", "{D32CABDF-E19C-416E-9B8C-D2F7AEE5822F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MessageBroker.RabbitMQ.Publisher", "Infrastructure\MessageBroker\MessageBroker.RabbitMQ.Publisher\MessageBroker.RabbitMQ.Publisher.csproj", "{D32CABDF-E19C-416E-9B8C-D2F7AEE5822F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MassTransit.Contracts", "Infrastructure\MessageBroker\MassTransit.Contracts\MassTransit.Contracts.csproj", "{9B5A3288-5E16-49A0-A1C1-D273355BE88D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MessageBroker.RabbitMQ.Contracts", "Infrastructure\MessageBroker\MessageBroker.RabbitMQ.Contracts\MessageBroker.RabbitMQ.Contracts.csproj", "{9B5A3288-5E16-49A0-A1C1-D273355BE88D}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "EmailingService", "EmailingService", "{07599640-AD54-4A11-B521-1C304EBABBCC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmailingService.Api", "Services\EmailingService\EmailingService.Api\EmailingService.Api.csproj", "{2E0895C7-3C78-4B38-A6FD-C2F6247099C9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmailingService.Application", "Services\EmailingService\EmailingService.Application\EmailingService.Application.csproj", "{827A253C-107B-477F-B259-C8828454FDF7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmailingService.Infrastructure", "Services\EmailingService\EmailingService.Infrastructure\EmailingService.Infrastructure.csproj", "{49A1C268-7D56-4592-93A8-678CFDE42FF7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmailingService.Domain", "Services\EmailingService\EmailingService.Domain\EmailingService.Domain.csproj", "{F4866E7B-F022-42E5-B034-2D215F15C8B4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -157,10 +165,6 @@ Global
 		{60869BF4-BB5B-4292-9D27-579F29D6DFC2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{60869BF4-BB5B-4292-9D27-579F29D6DFC2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{60869BF4-BB5B-4292-9D27-579F29D6DFC2}.Release|Any CPU.Build.0 = Release|Any CPU
-		{444C5760-33F6-4AA4-8D9C-ECE4B59D578D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{444C5760-33F6-4AA4-8D9C-ECE4B59D578D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{444C5760-33F6-4AA4-8D9C-ECE4B59D578D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{444C5760-33F6-4AA4-8D9C-ECE4B59D578D}.Release|Any CPU.Build.0 = Release|Any CPU
 		{D32CABDF-E19C-416E-9B8C-D2F7AEE5822F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{D32CABDF-E19C-416E-9B8C-D2F7AEE5822F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D32CABDF-E19C-416E-9B8C-D2F7AEE5822F}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -169,6 +173,22 @@ Global
 		{9B5A3288-5E16-49A0-A1C1-D273355BE88D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9B5A3288-5E16-49A0-A1C1-D273355BE88D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9B5A3288-5E16-49A0-A1C1-D273355BE88D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2E0895C7-3C78-4B38-A6FD-C2F6247099C9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2E0895C7-3C78-4B38-A6FD-C2F6247099C9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2E0895C7-3C78-4B38-A6FD-C2F6247099C9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2E0895C7-3C78-4B38-A6FD-C2F6247099C9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{827A253C-107B-477F-B259-C8828454FDF7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{827A253C-107B-477F-B259-C8828454FDF7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{827A253C-107B-477F-B259-C8828454FDF7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{827A253C-107B-477F-B259-C8828454FDF7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{49A1C268-7D56-4592-93A8-678CFDE42FF7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{49A1C268-7D56-4592-93A8-678CFDE42FF7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{49A1C268-7D56-4592-93A8-678CFDE42FF7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{49A1C268-7D56-4592-93A8-678CFDE42FF7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F4866E7B-F022-42E5-B034-2D215F15C8B4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F4866E7B-F022-42E5-B034-2D215F15C8B4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F4866E7B-F022-42E5-B034-2D215F15C8B4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F4866E7B-F022-42E5-B034-2D215F15C8B4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{38ACED50-1C63-4340-A28A-0D90C04628BB} = {015FC6CF-628C-4696-BDBA-8B838535BCE7}
@@ -195,8 +215,12 @@ Global
 		{1F1523DB-0269-4FAB-80D7-2A6146F323EC} = {9BC76B2B-69B8-42AC-A6BF-4649677731A0}
 		{60869BF4-BB5B-4292-9D27-579F29D6DFC2} = {9BC76B2B-69B8-42AC-A6BF-4649677731A0}
 		{4C3CABC0-485C-4D7B-9049-4B1DDFFA6C58} = {61F9CE89-6FE9-41E6-A47E-9C9EB2FBB141}
-		{444C5760-33F6-4AA4-8D9C-ECE4B59D578D} = {4C3CABC0-485C-4D7B-9049-4B1DDFFA6C58}
 		{D32CABDF-E19C-416E-9B8C-D2F7AEE5822F} = {4C3CABC0-485C-4D7B-9049-4B1DDFFA6C58}
 		{9B5A3288-5E16-49A0-A1C1-D273355BE88D} = {4C3CABC0-485C-4D7B-9049-4B1DDFFA6C58}
+		{07599640-AD54-4A11-B521-1C304EBABBCC} = {015FC6CF-628C-4696-BDBA-8B838535BCE7}
+		{2E0895C7-3C78-4B38-A6FD-C2F6247099C9} = {07599640-AD54-4A11-B521-1C304EBABBCC}
+		{827A253C-107B-477F-B259-C8828454FDF7} = {07599640-AD54-4A11-B521-1C304EBABBCC}
+		{49A1C268-7D56-4592-93A8-678CFDE42FF7} = {07599640-AD54-4A11-B521-1C304EBABBCC}
+		{F4866E7B-F022-42E5-B034-2D215F15C8B4} = {07599640-AD54-4A11-B521-1C304EBABBCC}
 	EndGlobalSection
 EndGlobal

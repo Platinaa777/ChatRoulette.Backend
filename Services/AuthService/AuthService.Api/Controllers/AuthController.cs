@@ -16,12 +16,6 @@ public class AuthController : ControllerBase
     {
         _mediator = mediator;
     }
-    
-    [HttpGet]
-    public async Task<ActionResult<string>> GetSecuredData()
-    {
-        return Ok("This Secured Data is available only for Authenticated Users.");
-    }
 
     [HttpGet("user")]
     public async Task<ActionResult<UserInformationResponse>> GetUserInfo(
@@ -47,5 +41,11 @@ public class AuthController : ControllerBase
         var result = await _mediator.Send(request.ToCommand());
         
         return Ok(result);
+    }
+    
+    [HttpGet]
+    public async Task<ActionResult<string>> GetSecuredData()
+    {
+        return Ok("This Secured Data is available only for Authenticated Users.");
     }
 }

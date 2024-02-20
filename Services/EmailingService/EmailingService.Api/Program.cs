@@ -1,21 +1,17 @@
-using AuthService.Api.Infrastructure;
-using AuthService.Infrastructure.Extensions.UsersSeed;
+using EmailingService.Api.Infrastructure;
 using MassTransit.Client.Extensions;
 using SwaggerConfigurations.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.AddSecurity();
-builder.AddDataLayer();
-builder.AddApplicationServices();
+builder.Services.AddControllers();
 builder.AddSwagger();
-builder.AddUsersSeed();
 builder.AddEventBusClient();
+builder.AddEmailConfig();
 builder.AddMassTransit();
 
 var app = builder.Build();
 
-app.UseAuthentication();
-app.UseAuthorization();
 app.MapControllers();
+
 app.Run();
