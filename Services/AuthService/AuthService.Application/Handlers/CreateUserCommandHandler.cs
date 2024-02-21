@@ -1,6 +1,7 @@
 using AuthService.Application.BusMapper;
 using AuthService.Application.Commands;
 using AuthService.Domain.Models.UserAggregate.Repos;
+using AuthService.Infrastructure.Security;
 using MassTransit.Client.EventBus;
 using MediatR;
 

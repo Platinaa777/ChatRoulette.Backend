@@ -31,7 +31,7 @@ public class UserRepository : IUserRepository
 
     public async Task<bool> AddUserAsync(User user)
     {
-        var existingUser = await _context.Users.FirstOrDefaultAsync(u => u.Id == user.Id);
+        var existingUser = await _context.Users.FirstOrDefaultAsync(u => u.Email == user.Email);
         if (existingUser != null)
             return false;
 

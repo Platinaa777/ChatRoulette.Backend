@@ -8,7 +8,7 @@ public class RoleType : Enumeration
     public static RoleType UnactivatedUser = new RoleType(2, nameof(UnactivatedUser));
     public static RoleType ActivatedUser = new RoleType(3, nameof(ActivatedUser));
 
-    public RoleType() { }
+    private RoleType() { }
     
     protected RoleType(int id, string name) : base(id, name)
     {

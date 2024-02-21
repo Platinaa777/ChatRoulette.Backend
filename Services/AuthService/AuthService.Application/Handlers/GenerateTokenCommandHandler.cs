@@ -3,6 +3,7 @@ using AuthService.Domain.Models.UserAggregate.Repos;
 using AuthService.Domain.Models.UserAggregate.ValueObjects;
 using AuthService.HttpModels.Responses;
 using AuthService.Infrastructure.JwtGenerator;
+using AuthService.Infrastructure.Security;
 using MediatR;
 
 namespace AuthService.Application.Handlers;
@@ -11,11 +12,13 @@ public class GenerateTokenCommandHandler : IRequestHandler<GenerateTokenCommand,
 {
     private readonly IUserRepository _userRepository;
     private readonly JwtTokenCreator _jwtCreator;
+    private readonly IPasswordRepository _passwords;
 
-    public GenerateTokenCommandHandler(IUserRepository userRepository, JwtTokenCreator jwtCreator)
+    public GenerateTokenCommandHandler(IUserRepository userRepository, JwtTokenCreator jwtCreator, IPasswordRepository passwords)
     {
         _userRepository = userRepository;
         _jwtCreator = jwtCreator;
+        _passwords = passwords;
     }
     
     public async Task<AuthenticationResponse> Handle(GenerateTokenCommand request, CancellationToken cancellationToken)
@@ -24,8 +27,11 @@ public class GenerateTokenCommandHandler : IRequestHandler<GenerateTokenCommand,
 
         if (user == null)
             return new AuthenticationResponse() { IsAuthenticate = false };
-
-        if (!user.PasswordHash.Equals(new Password(request.Password)))
+        
+        var saltDb = await _passwords.FindSaltByUserId(user.Id);
+        var hashedPassword = PasswordHasher.HashPasswordWithSalt(request.Password, saltDb);
+        
+        if (!PasswordHasher.Verify(user.PasswordHash.Value, hashedPassword))
             return new AuthenticationResponse() { IsAuthenticate = false };
 
         var token = _jwtCreator.CreateToken(user);

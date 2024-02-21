@@ -2,6 +2,7 @@
 using AuthService.DataContext.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -10,9 +11,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace AuthService.Migrations.Migrations
 {
     [DbContext(typeof(UserDb))]
-    partial class UserDbModelSnapshot : ModelSnapshot
+    [Migration("20240221204643_Initial")]
+    partial class Initial
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -66,8 +69,6 @@ namespace AuthService.Migrations.Migrations
                         .HasColumnName("username");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("Email");
 
                     b.ToTable("users", (string)null);
                 });

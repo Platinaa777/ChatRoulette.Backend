@@ -17,7 +17,7 @@ public class AuthController : ControllerBase
         _mediator = mediator;
     }
 
-    [HttpGet("user")]
+    [HttpGet("/user")]
     public async Task<ActionResult<UserInformationResponse>> GetUserInfo(
         [FromQuery] string email,
         [FromQuery] string password)
@@ -28,15 +28,25 @@ public class AuthController : ControllerBase
         return Ok(result);
     }
     
-    [HttpPost("register")]
+    /// <summary>
+    /// register user in the system
+    /// </summary>
+    /// <param name="request"></param>
+    /// <returns></returns>
+    [HttpPost("/register")]
     public async Task<ActionResult<bool>> Register(RegisterRequest request)
     {
         var result = await _mediator.Send(request.ToCommand());
         return Ok(result);
     }
 
-    [HttpPost("token")]
-    public async Task<ActionResult<AuthenticationResponse>> GetToken(TokenRequest request)
+    /// <summary>
+    /// for getting token by email and password
+    /// </summary>
+    /// <param name="request"></param>
+    /// <returns></returns>
+    [HttpPost("/token")]
+    public async Task<ActionResult<AuthenticationResponse>> Login(TokenRequest request)
     {
         var result = await _mediator.Send(request.ToCommand());
         

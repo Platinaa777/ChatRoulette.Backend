@@ -9,8 +9,6 @@ namespace AuthService.DataContext.Configurations;
 
 public class UserConfiguration : IEntityTypeConfiguration<User>
 {
-    private IEntityTypeConfiguration<User> _entityTypeConfigurationImplementation;
-    
     public void Configure(EntityTypeBuilder<User> builder)
     {
         ConfigureUser(builder);
@@ -18,57 +16,43 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
 
     private void ConfigureUser(EntityTypeBuilder<User> builder)
     {
-        builder.ToTable("Users");
+        builder.ToTable("users");
 
         // for id
         builder.HasKey(u => u.Id);
         builder.Property(id => id.Id)
+            .HasColumnName("id")
             .ValueGeneratedNever();
 
         // for name
         builder.Property(n => n.UserName)
+            .HasColumnName("username")
             .HasConversion(
                 name => name.Value, // to database
                 value => new Name(value) // from database
             );
 
-        builder.OwnsOne<Email>(e => e.Email, eb =>
-        {
-            eb.Property(e => e.Value)
-                .HasColumnName("Email")
-                .HasConversion(
-                    email => email,
-                    valueDb => valueDb);
-            
-            eb.Property(e => e.IsSubmitted)
-                .HasColumnName("IsSubmitted")
-                .HasConversion(
-                    submit => submit,
-                    valueDb => valueDb);
-        });
-        // {
-        //     eb.Property(e => e.Value)
-        //         .HasColumnName("Email")
-        //         .HasConversion(
-        //             email => email,
-        //             emailDatabase => emailDatabase);
-        //     
-        //     eb.Property(e => e.IsSubmitted)
-        //         .HasColumnName("IsSubmitted")
-        //         .HasConversion(
-        //             // to database
-        //             submit => submit, 
-        //             // from database to field Email.IsSubmitted;
-        //             submitDb => submitDb); 
-        // });
+        builder.Property(u => u.Email)
+            .HasColumnName("email")
+            .HasConversion(
+                email => email.Value, // to database
+                value => new Email(value) // from database
+            );;
+
+        builder.Property(u => u.IsSubmittedEmail)
+            .HasColumnName("confirmation");
+
+        builder.HasIndex(u => u.Email);
         
         builder.Property(n => n.NickName)
+            .HasColumnName("nickname")
             .HasConversion(
                 name => name.Value, // to database
                 value => new Name(value) // from database
             );
         
         builder.Property(n => n.Age)
+            .HasColumnName("age")
             .HasConversion(
                 name => name.Value, // to database
                 value => new Age(value) // from database
@@ -76,25 +60,24 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
 
         
         builder.Property(n => n.PasswordHash)
+            .HasColumnName("password")
             .HasConversion(
                 name => name.Value, // to database
                 value => new Password(value) // from database
             );
         
-        // builder.Property(role => role.Role)
-        //     .HasColumnName("RoleId")
-        //     .HasConversion(
-        //         r => r.Id,
-        //         id => new Role(id));
+        builder.Property(n => n.Salt)
+            .HasColumnName("salt")
+            .HasConversion(
+                salt => salt.Value, // to database
+                value => new Salt(value) // from database
+            );
 
-        builder.OwnsOne<RoleType>(r => r.Role, rb =>
-        {
-            rb.Property(r => r.Id)
-                .HasColumnName("RoleId");
-        
-            rb.Property(r => r.Name)
-                .HasColumnName("Role");
-        });
-        
+        builder.Property<RoleType>(r => r.Role)
+            .HasColumnName("role")
+            .HasConversion(
+                role => role.Name,
+                roleName => RoleType.FromName(roleName)!
+            );
     }
 }

@@ -28,7 +28,7 @@ public class GetUserQueryHandler : IRequestHandler<GetUserQuery, UserInformation
             NickName = user.NickName.Value,
             Age = user.Age.Value,
             Email = user.Email.Value,
-            IsSubmitted = user.Email.IsSubmitted
+            IsSubmitted = user.IsSubmittedEmail
         };
     }
 }

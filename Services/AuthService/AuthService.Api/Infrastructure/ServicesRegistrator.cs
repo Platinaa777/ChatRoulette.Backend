@@ -39,6 +39,7 @@ public static class ServicesRegistrator
     {
         var configuration = builder.Configuration;
 
+        builder.Services.AddScoped<IPasswordRepository, PasswordRepository>();
         builder.Services.AddScoped<JwtTokenCreator>();
         builder.Services.Configure<Jwt>(configuration.GetSection("Jwt"));
         builder.AddJwtAuthentication(configuration.GetSection("Jwt:Key").Value!);
