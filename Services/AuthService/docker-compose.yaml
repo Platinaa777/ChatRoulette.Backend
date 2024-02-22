@@ -16,6 +16,13 @@ services:
     networks: [ chat-net ]
     volumes:
       - ./pgdata:/var/lib/postgresql/data
+    
+  redis_cache:
+    image: redis
+    container_name: auth-redis-cache
+    ports:
+      - 6380:6379
+    networks: [ chat-net ]
 
 volumes:
   postgres_db:

@@ -12,8 +12,6 @@ public class User : Entity<string>
         Id = id;
         UserName = userName;
         Email = email;
-        NickName = nickName;
-        Age = age;
         PasswordHash = passwordHash;
         Salt = salt;
         Role = role;
@@ -38,6 +36,11 @@ public class User : Entity<string>
     {
         IsSubmittedEmail = true;
     }
-    
+
+    public void AddUserExtraInformation(Name nickname, Age age)
+    {
+        NickName = nickname;
+        Age = age;
+    }
     private User() { }
 }

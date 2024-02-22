@@ -25,8 +25,6 @@ public class GetUserQueryHandler : IRequestHandler<GetUserQuery, UserInformation
         return new UserInformationResponse()
         {
             UserName = user.UserName.Value,
-            NickName = user.NickName.Value,
-            Age = user.Age.Value,
             Email = user.Email.Value,
             IsSubmitted = user.IsSubmittedEmail
         };

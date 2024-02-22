@@ -43,20 +43,23 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
             .HasColumnName("confirmation");
 
         builder.HasIndex(u => u.Email);
+
+        builder.Ignore(u => u.Age);
+        builder.Ignore(u => u.NickName);
         
-        builder.Property(n => n.NickName)
-            .HasColumnName("nickname")
-            .HasConversion(
-                name => name.Value, // to database
-                value => new Name(value) // from database
-            );
-        
-        builder.Property(n => n.Age)
-            .HasColumnName("age")
-            .HasConversion(
-                name => name.Value, // to database
-                value => new Age(value) // from database
-            );
+        // builder.Property(n => n.NickName)
+        //     .HasColumnName("nickname")
+        //     .HasConversion(
+        //         name => name.Value, // to database
+        //         value => new Name(value) // from database
+        //     );
+        //
+        // builder.Property(n => n.Age)
+        //     .HasColumnName("age")
+        //     .HasConversion(
+        //         name => name.Value, // to database
+        //         value => new Age(value) // from database
+        //     );
 
         
         builder.Property(n => n.PasswordHash)

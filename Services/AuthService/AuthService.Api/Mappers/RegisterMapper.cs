@@ -14,6 +14,7 @@ public static class RegisterMapper
             Age = request.Age ?? -1,
             Email = request.Email,
             Password = request.Password,
+            Preferences = request.Preferences
         };
     }
 }

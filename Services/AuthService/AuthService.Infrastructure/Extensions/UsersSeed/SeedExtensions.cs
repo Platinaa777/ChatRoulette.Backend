@@ -32,36 +32,9 @@ public static class SeedExtensions
             hashedPassword1,
             salt1,
             RoleType.Admin);
-        
-        var salt2 = new Salt(PasswordHasher.GenerateSalt());
-        var hashedPassword2 = new Password(PasswordHasher.HashPasswordWithSalt("active123", salt2.Value));
-        
-        var activeUser = new User(
-            id: Guid.NewGuid().ToString(),
-            new Name("petya"),
-            new Email("p@edu.hse.ru"),
-            new Name("gamer228"),
-            new Age(19),
-            hashedPassword2,
-            salt2,
-            RoleType.ActivatedUser);
-        
-        var salt3 = new Salt(PasswordHasher.GenerateSalt());
-        var hashedPassword3 = new Password(PasswordHasher.HashPasswordWithSalt("inactive123", salt3.Value));
-        
-        var inactiveUser = new User(
-            id: Guid.NewGuid().ToString(),
-            new Name("vova"),
-            new Email("v@edu.hse.ru"),
-            new Name("vovantus"),
-            new Age(19),
-            hashedPassword3,
-            salt3,
-            RoleType.UnactivatedUser);
+        admin.SubmitEmail();
 
         await repository.AddUserAsync(admin);
-        await repository.AddUserAsync(activeUser);
-        await repository.AddUserAsync(inactiveUser);
     }
 
     public static WebApplicationBuilder AddUsersSeed(this WebApplicationBuilder builder)

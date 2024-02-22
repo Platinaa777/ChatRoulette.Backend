@@ -12,6 +12,7 @@ builder.AddSwagger();
 builder.AddUsersSeed();
 builder.AddEventBusClient();
 builder.AddMassTransit();
+builder.AddCacheUserConfirmation();
 
 var app = builder.Build();
 

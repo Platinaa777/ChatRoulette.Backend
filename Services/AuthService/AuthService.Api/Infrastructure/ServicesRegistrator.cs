@@ -46,4 +46,16 @@ public static class ServicesRegistrator
 
         return builder;
     }
+
+    public static WebApplicationBuilder AddCacheUserConfirmation(this WebApplicationBuilder builder)
+    {
+        var configuration = builder.Configuration;
+
+        builder.Services.AddStackExchangeRedisCache(setup =>
+        {
+            setup.Configuration = configuration["Redis:Host"];
+        });
+
+        return builder;
+    }
 }

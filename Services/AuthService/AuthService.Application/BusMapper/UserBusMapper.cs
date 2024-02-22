@@ -10,6 +10,5 @@ public static class UserBusMapper
         {
             Email = user.Email.Value,
             UserName = user.UserName.Value,
-            NickName = user.NickName.Value
         };
 }
