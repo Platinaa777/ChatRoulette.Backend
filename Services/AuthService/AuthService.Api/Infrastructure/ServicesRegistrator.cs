@@ -6,6 +6,7 @@ using AuthService.Infrastructure.Extensions.Jwt;
 using AuthService.Infrastructure.JwtGenerator;
 using AuthService.Infrastructure.Repos;
 using Microsoft.EntityFrameworkCore;
+using StackExchange.Redis;
 
 namespace AuthService.Api.Infrastructure;
 

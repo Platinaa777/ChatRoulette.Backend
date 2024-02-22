@@ -18,7 +18,10 @@ public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, bool>
     private readonly IEventBusClient _eventBusClient;
     private readonly IDistributedCache _cache;
 
-    public CreateUserCommandHandler(IUserRepository userRepository, IEventBusClient eventBusClient, IDistributedCache cache)
+    public CreateUserCommandHandler(
+        IUserRepository userRepository,
+        IEventBusClient eventBusClient,
+        IDistributedCache cache)
     {
         _userRepository = userRepository;
         _eventBusClient = eventBusClient;
@@ -37,7 +40,11 @@ public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, bool>
             await _eventBusClient.PublishAsync(user.ToBusMessage(), cancellationToken);
             await _cache.SetStringAsync(user.Id, 
                 JsonConvert.SerializeObject(user.ToCache(request.Preferences)),
-                cancellationToken);
+                        new DistributedCacheEntryOptions()
+                        {
+                            AbsoluteExpirationRelativeToNow = TimeSpan.FromHours(1)
+                        },
+                        cancellationToken);
         }
 
         return response;
