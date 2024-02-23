@@ -35,6 +35,7 @@ public class RegisterUserConsumer : IConsumer<UserRegistered>
         email.Subject = "Confirmation Email";
         email.Body = new TextPart(MimeKit.Text.TextFormat.Html);
         int code = ConfirmCodeGenerator.GenerateCode();
+        _logger.LogInformation($"Code = {code}");
         email.Body = new TextPart(MimeKit.Text.TextFormat.Html)
         {
             Text = $"Confirm email: Enter your code in our app: {code}"

@@ -24,7 +24,7 @@ public class UserRepository : IUserRepository
 
     public async Task<User?> FindUserByEmailAsync(string email)
     {
-        User? existingUser = await _context.Users.FirstOrDefaultAsync(u => u.Email.Value == email);
+        User? existingUser = await _context.Users.Where(u => u.Email.Value == email).FirstOrDefaultAsync(u => true);
         
         return existingUser;
     }

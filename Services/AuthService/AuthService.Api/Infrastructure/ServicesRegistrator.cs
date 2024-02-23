@@ -1,3 +1,4 @@
+using AuthService.Application.Commands;
 using AuthService.Application.Handlers;
 using AuthService.DataContext.Database;
 using AuthService.Domain.JwtConfig;
@@ -16,7 +17,6 @@ public static class ServicesRegistrator
     {
         builder.Services.AddControllers();
         builder.Services.AddScoped<IUserRepository, UserRepository>();
-
 
         builder.Services.AddMediatR(cfg => 
             cfg.RegisterServicesFromAssemblyContaining<CreateUserCommandHandler>());

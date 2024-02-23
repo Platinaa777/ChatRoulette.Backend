@@ -1,25 +1,30 @@
 using AuthService.Application.Commands;
 using MassTransit;
 using MassTransit.Contracts.UserEvents;
-using MassTransit.Mediator;
+using MediatR;
 
 namespace AuthService.Api.Consumers;
 
 public class UserSubmitEmailConsumer : IConsumer<UserSubmittedEmail>
 {
-    private readonly IMediator _mediator;
+    private readonly IServiceScopeFactory _provider;
     private readonly ILogger<UserSubmittedEmail> _logger;
 
-    public UserSubmitEmailConsumer(IMediator mediator, ILogger<UserSubmittedEmail> logger)
+    public UserSubmitEmailConsumer(IServiceScopeFactory provider, ILogger<UserSubmittedEmail> logger)
     {
-        _mediator = mediator;
+        _provider = provider;
         _logger = logger;
     }
-    
+
     public async Task Consume(ConsumeContext<UserSubmittedEmail> context)
     {
-        await _mediator.Send(new ConfirmEmailCommand(context.Message.Email),
-            context.CancellationToken);
-        _logger.LogInformation($"Confirmation email: {context.Message.Email}");
+        using (var scope = _provider.CreateScope())
+        {
+            var mediator = scope.ServiceProvider.GetRequiredService<IMediator>();
+            
+            await mediator.Send(new ConfirmEmailCommand(context.Message.Email),
+                context.CancellationToken);
+            _logger.LogInformation($"Confirmation email: {context.Message.Email}");
+        }
     }
 }

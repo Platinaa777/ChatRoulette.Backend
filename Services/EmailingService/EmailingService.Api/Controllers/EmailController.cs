@@ -25,7 +25,7 @@ public class EmailController : ControllerBase
         _bus = bus;
     }
 
-    [HttpPost("/confirm/{code}")]
+    [HttpPost("/confirm")]
     public async Task<ActionResult<bool>> ActivateAccount([FromBody] ConfirmEmailRequest req, CancellationToken token = default)
     {
         var storedCode = await _cache.GetStringAsync(req.Email);
