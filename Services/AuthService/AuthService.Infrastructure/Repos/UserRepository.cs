@@ -41,8 +41,12 @@ public class UserRepository : IUserRepository
         return true;
     }
 
-    public Task<bool> UpdateUserAsync(User user)
+    public async Task<bool> UpdateUserAsync(User user)
     {
-        throw new NotImplementedException();
+        var result = await _context.Users.Where(u => u.Email == user.Email)
+            .ExecuteUpdateAsync(u1 => u1
+                .SetProperty(u2 => u2.IsSubmittedEmail, u1 => true));
+
+        return result == 1;
     }
 }

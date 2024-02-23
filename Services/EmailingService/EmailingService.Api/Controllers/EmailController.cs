@@ -1,9 +1,9 @@
+using Emailing.HttpModels.Requests;
 using EmailingService.Api.Configuration;
-using EmailingService.Api.Consumers;
-using MailKit.Net.Smtp;
-using MailKit.Security;
+using MassTransit.Client.EventBus;
+using MassTransit.Contracts.UserEvents;
 using Microsoft.AspNetCore.Mvc;
-using MimeKit;
+using Microsoft.Extensions.Caching.Distributed;
 
 namespace EmailingService.Api.Controllers;
 
@@ -11,32 +11,33 @@ namespace EmailingService.Api.Controllers;
 [Route("[controller]")]
 public class EmailController : ControllerBase
 {
-    
     private readonly SmtpClientConfig _emailConfiguration;
+    private readonly IDistributedCache _cache;
+    private readonly IEventBusClient _bus;
 
-    public EmailController(SmtpClientConfig emailConfiguration)
+    public EmailController(
+        SmtpClientConfig emailConfiguration,
+        IDistributedCache cache,
+        IEventBusClient bus)
     {
         _emailConfiguration = emailConfiguration;
+        _cache = cache;
+        _bus = bus;
     }
 
-    [HttpGet]
-    public async Task<ActionResult<string>> Get()
+    [HttpPost("/confirm/{code}")]
+    public async Task<ActionResult<bool>> ActivateAccount([FromBody] ConfirmEmailRequest req, CancellationToken token = default)
     {
-        var email = new MimeMessage();
-        email.From.Add(MailboxAddress.Parse(_emailConfiguration.Email));
-        email.To.Add(MailboxAddress.Parse(_emailConfiguration.Email));
-        email.Subject = "Confirmation Email";
-        email.Body = new TextPart(MimeKit.Text.TextFormat.Html)
-        {
-            Text = "Confirm email"
-        };
+        var storedCode = await _cache.GetStringAsync(req.Email);
 
-        using var smtpClient = new SmtpClient();
-        smtpClient.Connect("smtp.ethereal.email", 587, SecureSocketOptions.StartTls);
-        smtpClient.Authenticate(_emailConfiguration.Email, _emailConfiguration.Password);
-        smtpClient.Send(email);
-        smtpClient.Disconnect(true);
+        if (storedCode == null)
+            return NotFound();
+
+        if (req.Code != storedCode)
+            return BadRequest();
         
-        return Ok(Task.FromResult("hello"));
-    } 
+        await _bus.PublishAsync(new UserSubmittedEmail(req.Email), token);
+        
+        return Ok(true);
+    }
 }

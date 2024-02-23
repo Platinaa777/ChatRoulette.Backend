@@ -9,6 +9,7 @@ builder.AddSwagger();
 builder.AddEventBusClient();
 builder.AddEmailConfig();
 builder.AddMassTransit();
+builder.AddCacheRedis();
 
 var app = builder.Build();
 

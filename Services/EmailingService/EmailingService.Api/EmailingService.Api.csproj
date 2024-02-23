@@ -10,6 +10,8 @@
       <ProjectReference Include="..\..\..\Infrastructure\MessageBroker\MassTransit.Client\MassTransit.Client.csproj" />
       <ProjectReference Include="..\..\..\Infrastructure\MessageBroker\MassTransit.Contracts\MassTransit.Contracts.csproj" />
       <ProjectReference Include="..\..\..\Infrastructure\SwaggerConfigurations\SwaggerConfigurations.csproj" />
+      <ProjectReference Include="..\Emailing.HttpModels\Emailing.HttpModels.csproj" />
+      <ProjectReference Include="..\EmailingService\EmailingService.csproj" />
     </ItemGroup>
 
     <ItemGroup>

@@ -1,5 +1,7 @@
+using AuthService.Api.Consumers;
 using MassTransit;
 using MassTransit.Client.Configuration;
+using MassTransit.Contracts.UserEvents;
 using Microsoft.Extensions.Options;
 
 namespace AuthService.Api.Infrastructure;
@@ -11,6 +13,7 @@ public static class EventBusExtension
         builder.Services.AddMassTransit(cfg =>
         {
             cfg.SetKebabCaseEndpointNameFormatter();
+            cfg.AddConsumer<UserSubmitEmailConsumer>();
             
             cfg.UsingRabbitMq((context, cfg) =>
             {
