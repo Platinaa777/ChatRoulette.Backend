@@ -4,7 +4,7 @@ namespace AuthService.Domain.SeedWork;
 
 public abstract class Enumeration : IComparable
 {
-    public Enumeration() { }
+    private Enumeration() { }
     
     public string Name { get; private set; }
 
@@ -14,12 +14,19 @@ public abstract class Enumeration : IComparable
 
     public override string ToString() => Name;
 
-    public static IEnumerable<T> GetAll<T>() where T : Enumeration =>
-        typeof(T).GetFields(BindingFlags.Public |
-                            BindingFlags.Static |
-                            BindingFlags.DeclaredOnly)
-            .Select(f => f.GetValue(null))
-            .Cast<T>();
+    public static IEnumerable<T> GetAll<T>() where T : Enumeration
+    {
+        var enumerationType = typeof(T);
+
+        var fields = enumerationType.GetFields(
+                BindingFlags.Public |
+                BindingFlags.Static |
+                BindingFlags.FlattenHierarchy)
+            .Where(field => enumerationType.IsAssignableFrom(field.FieldType))
+            .Select(field => (T)field.GetValue(default)!);
+
+        return fields;
+    }
 
     public override bool Equals(object obj)
     {

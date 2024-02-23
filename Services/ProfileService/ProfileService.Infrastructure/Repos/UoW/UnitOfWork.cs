@@ -9,12 +9,15 @@ namespace ProfileService.Infrastructure.Repos.UoW;
 
 public class UnitOfWork : IUnitOfWork
 {
-    private readonly NpgsqlConnectionFactory _factory;
+    private readonly IDbConnectionFactory<NpgsqlConnection> _factory;
     private readonly IChangeTracker _tracker;
     private readonly IPublisher _publisher;
     private NpgsqlTransaction? _transaction;
 
-    public UnitOfWork(NpgsqlConnectionFactory factory, IChangeTracker tracker, IPublisher publisher)
+    public UnitOfWork(
+        IDbConnectionFactory<NpgsqlConnection> factory, 
+        IChangeTracker tracker,
+        IPublisher publisher)
     {
         _factory = factory;
         _tracker = tracker;

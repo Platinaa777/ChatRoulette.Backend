@@ -1,9 +1,9 @@
 using Dapper;
+using Newtonsoft.Json;
 using Npgsql;
 using ProfileService.Domain.Models.UserProfileAggregate.Entities;
 using ProfileService.Domain.Models.UserProfileAggregate.Repos;
 using ProfileService.Domain.Models.UserProfileAggregate.ValueObjects;
-using ProfileService.Infrastructure.Repos.ConnectionFactories;
 using ProfileService.Infrastructure.Repos.Interfaces;
 using ProfileService.Infrastructure.Repos.Models;
 
@@ -14,7 +14,9 @@ public class UserProfileRepository : IUserProfileRepository
     private readonly IDbConnectionFactory<NpgsqlConnection> _factory;
     private readonly IChangeTracker _tracker;
 
-    public UserProfileRepository(IDbConnectionFactory<NpgsqlConnection> factory, IChangeTracker tracker)
+    public UserProfileRepository(
+        IDbConnectionFactory<NpgsqlConnection> factory,
+        IChangeTracker tracker)
     {
         _factory = factory;
         _tracker = tracker;
@@ -36,9 +38,10 @@ public class UserProfileRepository : IUserProfileRepository
         
         var user = new UserProfile(
             userDb.Id,
-            new Name(userDb.UserName),
             new Name(userDb.NickName),
-            new Email(userDb.Email));
+            new Email(userDb.Email),
+            new Age(userDb.Age),
+            userDb.GetDomainPreferenceList());
         
         _tracker.Track(user);
 
@@ -61,9 +64,10 @@ public class UserProfileRepository : IUserProfileRepository
 
         var user = new UserProfile(
             userDb.Id,
-            new Name(userDb.UserName),
             new Name(userDb.NickName),
-            new Email(userDb.Email));
+            new Email(userDb.Email),
+            new Age(userDb.Age),
+            userDb.GetDomainPreferenceList());
         
         _tracker.Track(user);
         
@@ -76,15 +80,17 @@ public class UserProfileRepository : IUserProfileRepository
 
         if (userDb != null) return false;
 
-        var parameteres = new
+        var parameters = new
         {
             Id = user.Id,
-            UserName = user.UserName.Value,
             NickName = user.NickName.Value,
-            Email = user.Email.Value
+            Email = user.Email.Value,
+            Age = user.Age.Value,
+            Preferences = JsonConvert.SerializeObject(user.Preferences
+                .Select(x => x.Name).ToList())
         };
 
-        var command = new CommandDefinition(NpgsqlQuery.sqlAddUser, parameteres);
+        var command = new CommandDefinition(NpgsqlQuery.sqlAddUser, parameters);
 
         var connection = await _factory.CreateConnection(default);
         var result = await connection.ExecuteAsync(command);
@@ -98,14 +104,17 @@ public class UserProfileRepository : IUserProfileRepository
 
         if (userDb != null) return false;
 
-        var parameteres = new
+        var parameters = new
         {
-            UserName = user.UserName.Value,
+            Id = user.Id,
             NickName = user.NickName.Value,
-            Email = user.Email.Value
+            Email = user.Email.Value,
+            Age = user.Age.Value,
+            Preferences = JsonConvert.SerializeObject(user.Preferences
+                .Select(x => x.Name).ToArray())
         };
 
-        var command = new CommandDefinition(NpgsqlQuery.sqlUpdateUser, parameteres);
+        var command = new CommandDefinition(NpgsqlQuery.sqlUpdateUser, parameters);
 
         var connection = await _factory.CreateConnection(default);
         var result = await connection.ExecuteAsync(command);

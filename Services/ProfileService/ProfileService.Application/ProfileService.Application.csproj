@@ -7,6 +7,7 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\..\..\Infrastructure\MessageBroker\MassTransit.Contracts\MassTransit.Contracts.csproj" />
       <ProjectReference Include="..\ProfileService.Domain\ProfileService.Domain.csproj" />
       <ProjectReference Include="..\ProfileService.HttpModels\ProfileService.HttpModels.csproj" />
     </ItemGroup>

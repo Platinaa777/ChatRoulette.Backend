@@ -22,9 +22,10 @@ public class GetUserProfileQueryHandler : IRequestHandler<GetUserProfileQuery, U
         
         return new UserProfileResponse()
         {
-            UserName = result.UserName.Value,
             NickName = result.NickName.Value,
-            Email = result.Email.Value
+            Email = result.Email.Value,
+            Age = result.Age.Value,
+            Preferences = result.Preferences.Select(p => p.Name).ToArray()
         };
     }
 }

@@ -11,9 +11,10 @@ public class CreateUserProfile : Migration
         Execute.Sql(@"
             CREATE TABLE if not exists user_profiles (
                 id text PRIMARY KEY,
-                user_name TEXT NOT NULL,
                 nick_name TEXT NOT NULL,
                 email TEXT NOT NULL,
+                age int,
+                preferences text,
                 CONSTRAINT EMAIL_UNIQUE_CHECK UNIQUE (email));
         ");
     }
@@ -23,7 +24,5 @@ public class CreateUserProfile : Migration
         Execute.Sql(@"
             DROP TABLE if exists user_profiles;
         ");
-        
-        
     }
 }

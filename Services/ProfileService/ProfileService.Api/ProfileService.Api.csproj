@@ -7,10 +7,18 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\..\..\Infrastructure\MessageBroker\MassTransit.Client\MassTransit.Client.csproj" />
+      <ProjectReference Include="..\..\..\Infrastructure\MessageBroker\MassTransit.Contracts\MassTransit.Contracts.csproj" />
       <ProjectReference Include="..\..\..\Infrastructure\SwaggerConfigurations\SwaggerConfigurations.csproj" />
       <ProjectReference Include="..\ProfileService.Application\ProfileService.Application.csproj" />
       <ProjectReference Include="..\ProfileService.HttpModels\ProfileService.HttpModels.csproj" />
       <ProjectReference Include="..\ProfileService.Infrastructure\ProfileService.Infrastructure.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Reference Include="MassTransit.Abstractions">
+        <HintPath>..\..\..\..\..\.nuget\packages\masstransit.abstractions\8.2.0-develop.1682\lib\net7.0\MassTransit.Abstractions.dll</HintPath>
+      </Reference>
     </ItemGroup>
 
 </Project>
