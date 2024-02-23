@@ -31,6 +31,7 @@
     </ItemGroup>
     
     <ItemGroup>
+      <ProjectReference Include="..\..\..\Infrastructure\MessageBroker\MassTransit.Contracts\MassTransit.Contracts.csproj" />
       <ProjectReference Include="..\AuthService.DataContext\AuthService.DataContext.csproj" />
       <ProjectReference Include="..\AuthService.Domain\AuthService.Domain.csproj" />
     </ItemGroup>

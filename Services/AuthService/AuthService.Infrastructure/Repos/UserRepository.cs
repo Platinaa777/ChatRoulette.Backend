@@ -1,5 +1,6 @@
 using AuthService.DataContext.Database;
 using AuthService.Domain.Models.UserAggregate.Entities;
+using AuthService.Domain.Models.UserAggregate.Enumerations;
 using AuthService.Domain.Models.UserAggregate.Repos;
 using AuthService.Domain.Models.UserAggregate.ValueObjects;
 using Microsoft.EntityFrameworkCore;
@@ -24,7 +25,8 @@ public class UserRepository : IUserRepository
 
     public async Task<User?> FindUserByEmailAsync(string email)
     {
-        User? existingUser = await _context.Users.Where(u => u.Email.Value == email).FirstOrDefaultAsync(u => true);
+        User? existingUser = await _context.Users
+            .FirstOrDefaultAsync(u => u.Email == new Email(email));
         
         return existingUser;
     }
@@ -45,7 +47,8 @@ public class UserRepository : IUserRepository
     {
         var result = await _context.Users.Where(u => u.Email == user.Email)
             .ExecuteUpdateAsync(u1 => u1
-                .SetProperty(u2 => u2.IsSubmittedEmail, u1 => true));
+                .SetProperty(u2 => u2.IsSubmittedEmail, u1 => true)
+                .SetProperty(u2 => u2.Role, u1 => RoleType.ActivatedUser));
 
         return result == 1;
     }

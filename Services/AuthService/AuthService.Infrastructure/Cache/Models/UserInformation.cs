@@ -1,4 +1,5 @@
 using AuthService.Domain.Models.UserAggregate.Entities;
+using MassTransit.Contracts.UserEvents;
 
 namespace AuthService.Infrastructure.Cache.Models;
 
@@ -20,4 +21,7 @@ public static class UserInformationCacheExtension
             Preferences = preferences,
             Age = user.Age.Value
         };
+
+    public static UserFullyRegistered ToBusMessage(this UserInformation req)
+        => new UserFullyRegistered(req.Email, req.NickName, req.Preferences, req.Age);
 }

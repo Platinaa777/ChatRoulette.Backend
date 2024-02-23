@@ -3,7 +3,7 @@ using MediatR;
 
 namespace AuthService.Application.Commands;
 
-public class ConfirmEmailCommand : IRequest<bool>
+public class ConfirmEmailCommand : IRequest<string>
 {
     public ConfirmEmailCommand(string email)
     {

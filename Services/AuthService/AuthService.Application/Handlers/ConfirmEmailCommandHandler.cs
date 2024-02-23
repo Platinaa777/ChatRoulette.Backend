@@ -4,7 +4,7 @@ using MediatR;
 
 namespace AuthService.Application.Handlers;
 
-public class ConfirmEmailCommandHandler : IRequestHandler<ConfirmEmailCommand, bool>
+public class ConfirmEmailCommandHandler : IRequestHandler<ConfirmEmailCommand, string>
 {
     private readonly IUserRepository _userRepository;
 
@@ -13,15 +13,18 @@ public class ConfirmEmailCommandHandler : IRequestHandler<ConfirmEmailCommand, b
         _userRepository = userRepository;
     }
     
-    public async Task<bool> Handle(ConfirmEmailCommand request, CancellationToken cancellationToken)
+    public async Task<string> Handle(ConfirmEmailCommand request, CancellationToken cancellationToken)
     {
         var user = await _userRepository.FindUserByEmailAsync(request.Email);
 
         if (user == null)
-            return false;
+            return null;
 
         var result = await _userRepository.UpdateUserAsync(user);
 
-        return result;
+        if (!result)
+            return null;
+        
+        return user.Id;
     }
 }
