@@ -6,15 +6,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{01
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastructure", "{61F9CE89-6FE9-41E6-A47E-9C9EB2FBB141}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WaitingRoom", "WaitingRoom", "{38ACED50-1C63-4340-A28A-0D90C04628BB}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Chat", "Chat", "{38ACED50-1C63-4340-A28A-0D90C04628BB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WaitingRoom.API", "Services\WaitingRoom\WaitingRoom.API\WaitingRoom.API.csproj", "{74351A53-5739-4940-A927-43C9DFC5B606}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chat.Application", "Services\WaitingRoom\Chat.Application\Chat.Application.csproj", "{3A18D6A3-DC57-4DE2-84F8-BFE1C12C0E62}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WaitingRoom.Application", "Services\WaitingRoom\WaitingRoom.Application\WaitingRoom.Application.csproj", "{3A18D6A3-DC57-4DE2-84F8-BFE1C12C0E62}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chat.Domain", "Services\WaitingRoom\Chat.Domain\Chat.Domain.csproj", "{BDFE25B6-F9B5-44B3-8D4D-F17F6D3BD769}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WaitingRoom.Core", "Services\WaitingRoom\WaitingRoom.Core\WaitingRoom.Core.csproj", "{BDFE25B6-F9B5-44B3-8D4D-F17F6D3BD769}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WaitingRoom.Infrastructure", "Services\WaitingRoom\WaitingRoom.Infrastructure\WaitingRoom.Infrastructure.csproj", "{5629692A-B184-4F3A-8B81-E6BA6E5CE88F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chat.Infrastructure", "Services\WaitingRoom\Chat.Infrastructure\Chat.Infrastructure.csproj", "{5629692A-B184-4F3A-8B81-E6BA6E5CE88F}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "AuthService", "AuthService", "{0BFDBBB9-6CDD-4B89-90FD-CBBB948D8B87}"
 	ProjectSection(SolutionItems) = preProject
@@ -39,7 +37,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuthService.Infrastructure"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuthService.DataContext", "Services\AuthService\AuthService.DataContext\AuthService.DataContext.csproj", "{3C0916B4-E236-4566-9994-A347B31C2AC8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WaitingRoom.HttpModels", "Services\WaitingRoom\WaitingRoom.HttpModels\WaitingRoom.HttpModels.csproj", "{8A8FB760-A82E-4914-A39B-CFE1056FADF4}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chat.HttpModels", "Services\WaitingRoom\Chat.HttpModels\Chat.HttpModels.csproj", "{8A8FB760-A82E-4914-A39B-CFE1056FADF4}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ProfileService", "ProfileService", "{9BC76B2B-69B8-42AC-A6BF-4649677731A0}"
 	ProjectSection(SolutionItems) = preProject
@@ -80,16 +78,14 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmailingService", "Services
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Emailing.HttpModels", "Services\EmailingService\Emailing.HttpModels\Emailing.HttpModels.csproj", "{65D26C52-E73D-4382-9754-03C99C594469}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chat.Api", "Services\Chat.Api\Chat.Api.csproj", "{F516F02D-2988-42BC-99D3-5AE321F1C463}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{74351A53-5739-4940-A927-43C9DFC5B606}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{74351A53-5739-4940-A927-43C9DFC5B606}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{74351A53-5739-4940-A927-43C9DFC5B606}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{74351A53-5739-4940-A927-43C9DFC5B606}.Release|Any CPU.Build.0 = Release|Any CPU
 		{3A18D6A3-DC57-4DE2-84F8-BFE1C12C0E62}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{3A18D6A3-DC57-4DE2-84F8-BFE1C12C0E62}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3A18D6A3-DC57-4DE2-84F8-BFE1C12C0E62}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -186,10 +182,13 @@ Global
 		{65D26C52-E73D-4382-9754-03C99C594469}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{65D26C52-E73D-4382-9754-03C99C594469}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{65D26C52-E73D-4382-9754-03C99C594469}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F516F02D-2988-42BC-99D3-5AE321F1C463}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F516F02D-2988-42BC-99D3-5AE321F1C463}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F516F02D-2988-42BC-99D3-5AE321F1C463}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F516F02D-2988-42BC-99D3-5AE321F1C463}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{38ACED50-1C63-4340-A28A-0D90C04628BB} = {015FC6CF-628C-4696-BDBA-8B838535BCE7}
-		{74351A53-5739-4940-A927-43C9DFC5B606} = {38ACED50-1C63-4340-A28A-0D90C04628BB}
 		{3A18D6A3-DC57-4DE2-84F8-BFE1C12C0E62} = {38ACED50-1C63-4340-A28A-0D90C04628BB}
 		{BDFE25B6-F9B5-44B3-8D4D-F17F6D3BD769} = {38ACED50-1C63-4340-A28A-0D90C04628BB}
 		{5629692A-B184-4F3A-8B81-E6BA6E5CE88F} = {38ACED50-1C63-4340-A28A-0D90C04628BB}
@@ -218,5 +217,6 @@ Global
 		{2E0895C7-3C78-4B38-A6FD-C2F6247099C9} = {07599640-AD54-4A11-B521-1C304EBABBCC}
 		{49A1C268-7D56-4592-93A8-678CFDE42FF7} = {07599640-AD54-4A11-B521-1C304EBABBCC}
 		{65D26C52-E73D-4382-9754-03C99C594469} = {07599640-AD54-4A11-B521-1C304EBABBCC}
+		{F516F02D-2988-42BC-99D3-5AE321F1C463} = {38ACED50-1C63-4340-A28A-0D90C04628BB}
 	EndGlobalSection
 EndGlobal
