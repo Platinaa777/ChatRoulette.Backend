@@ -23,7 +23,7 @@ builder.Services.AddSignalR(options =>
 });
 
 // builder.AddSwagger();
-builder.Services.AddSingleton<ChatHub>();
+builder.Services.AddTransient<ChatHub>();
 builder.Services.AddMediatR(cfg 
     => cfg.RegisterServicesFromAssemblyContaining<ConnectUserCommand>());
 builder.Services.AddSingleton<IRoomRepository, RoomRepository>();
