@@ -1,10 +1,9 @@
-using Chat.Application.Commands;
 using Chat.Domain.Entities;
 using Chat.Domain.Repositories;
 using Chat.HttpModels.HttpResponses;
 using MediatR;
 
-namespace Chat.Application.Handlers;
+namespace Chat.Application.Commands.ConnectUser;
 
 public class ConnectUserCommandHandler : IRequestHandler<ConnectUserCommand, UserJoinResponse?>
 {

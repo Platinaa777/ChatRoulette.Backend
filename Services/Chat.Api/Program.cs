@@ -1,5 +1,6 @@
 using Chat.Api.WebSockets;
 using Chat.Application.Commands;
+using Chat.Application.Commands.ConnectUser;
 using Chat.Domain.Repositories;
 using Chat.Infrastructure.Repositories;
 

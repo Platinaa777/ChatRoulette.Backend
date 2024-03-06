@@ -1,6 +1,6 @@
 using MediatR;
 
-namespace Chat.Application.Queries;
+namespace Chat.Application.Queries.GetRoom;
 
 public class GetRoomQuery : IRequest<List<string>>
 {

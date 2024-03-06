@@ -1,8 +1,7 @@
-using Chat.Application.Queries;
 using Chat.Domain.Repositories;
 using MediatR;
 
-namespace Chat.Application.Handlers;
+namespace Chat.Application.Queries.GetRoom;
 
 public class GetRoomQueryHandler : IRequestHandler<GetRoomQuery, List<string>>
 {

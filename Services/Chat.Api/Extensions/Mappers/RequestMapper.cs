@@ -1,4 +1,5 @@
 using Chat.Application.Commands;
+using Chat.Application.Commands.ConnectUser;
 using Chat.HttpModels.HttpRequests;
 using Chat.HttpModels.HttpResponses;
 

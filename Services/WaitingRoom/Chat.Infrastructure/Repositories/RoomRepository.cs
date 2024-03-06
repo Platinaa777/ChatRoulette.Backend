@@ -11,15 +11,6 @@ public class RoomRepository : IRoomRepository
     
     public async Task<TwoSeatsRoom?> TryToConnectRoom(ChatUser chatUser)
     {
-        // user can be store in some room already
-        foreach (var key in _rooms.Keys)
-        {
-            if (_rooms[key].peers.Contains(chatUser))
-            {
-                return null;
-            }
-        }
-
         foreach (var key in _rooms.Keys)
         {
             lock (locker)
@@ -44,18 +35,9 @@ public class RoomRepository : IRoomRepository
         return room;
     }
 
-    public async Task<TwoSeatsRoom?> LeaveRoom(string roomId, ChatUser chatUser)
+    public async Task<bool> LeaveRoom(string roomId, string userConnectionId)
     {
-        foreach (var key in _rooms.Keys)
-        {
-            if (key == roomId)
-            {
-                _rooms[key].peers.Remove(chatUser);
-                return _rooms[key];
-            }
-        }
-
-        return null;
+        return _rooms.TryRemove(roomId, out var _);
     }
     
     public async Task<TwoSeatsRoom?> FindRoomById(string id)
