@@ -7,9 +7,11 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\..\Infrastructure\SwaggerConfigurations\SwaggerConfigurations.csproj" />
-      <ProjectReference Include="..\WaitingRoom\Chat.Application\Chat.Application.csproj" />
-      <ProjectReference Include="..\WaitingRoom\Chat.Infrastructure\Chat.Infrastructure.csproj" />
+      <ProjectReference Include="..\..\..\Infrastructure\SwaggerConfigurations\SwaggerConfigurations.csproj" />
+      <ProjectReference Include="..\Chat.Application\Chat.Application.csproj" />
+      <ProjectReference Include="..\Chat.Infrastructure\Chat.Infrastructure.csproj" />
     </ItemGroup>
+
+
 
 </Project>
