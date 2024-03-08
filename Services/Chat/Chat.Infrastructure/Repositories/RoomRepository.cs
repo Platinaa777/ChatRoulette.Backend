@@ -7,17 +7,17 @@ namespace Chat.Infrastructure.Repositories;
 public class RoomRepository : IRoomRepository
 {
     private ConcurrentDictionary<string, TwoSeatsRoom> _rooms = new();
-    private object locker = new object();
+    private readonly object _locker = new object();
     
     public async Task<TwoSeatsRoom?> TryToConnectRoom(ChatUser chatUser)
     {
         foreach (var key in _rooms.Keys)
         {
-            lock (locker)
+            lock (_locker)
             {
-                if (_rooms[key].peers.Count == 1)
+                if (_rooms[key].Peers.Count == 1)
                 {
-                    _rooms[key].peers.Add(chatUser);
+                    _rooms[key].Peers.Add(chatUser);
                     return _rooms[key];
                 }
             }
@@ -30,12 +30,12 @@ public class RoomRepository : IRoomRepository
     {
         // generate room with guid id
         var room = new TwoSeatsRoom();
-        room.peers.Add(chatUser);
+        room.Peers.Add(chatUser);
         _rooms[room.Id] = room;
         return room;
     }
 
-    public async Task<bool> LeaveRoom(string roomId, string userConnectionId)
+    public async Task<bool> CloseRoom(string roomId)
     {
         return _rooms.TryRemove(roomId, out var _);
     }

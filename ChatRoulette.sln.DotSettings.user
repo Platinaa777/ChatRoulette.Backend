@@ -3,4 +3,5 @@
   &lt;Assembly Path="/usr/lib/dotnet/packs/Microsoft.AspNetCore.App.Ref/7.0.15/ref/net7.0/Microsoft.AspNetCore.SignalR.dll" /&gt;
 &lt;/AssemblyExplorer&gt;</s:String>
 	
+	
 	</wpf:ResourceDictionary>

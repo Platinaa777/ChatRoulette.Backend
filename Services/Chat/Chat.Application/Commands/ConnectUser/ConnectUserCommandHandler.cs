@@ -21,7 +21,7 @@ public class ConnectUserCommandHandler : IRequestHandler<ConnectUserCommand, Use
         var room = await _roomRepository.TryToConnectRoom(chatUser);
 
         // connect user to new created room because not any room exists
-        if (room == null)
+        if (room is null)
             room = await _roomRepository.CreateRoomWithConnect(chatUser);
         
         return new UserJoinResponse()
@@ -31,7 +31,7 @@ public class ConnectUserCommandHandler : IRequestHandler<ConnectUserCommand, Use
             ConnectionId = request.ConnectionId,
             Email = request.Email,
             RoomId = room.Id,
-            CreateOffer = room.peers.Count == 2
+            CreateOffer = room.Peers.Count == 2
         };
     }
 }
