@@ -39,7 +39,7 @@ public class ChatHub : Hub
         UserJoinResponse? response = await _mediator.Send(findRoomCommand);
         // add client to special group
         await Groups.AddToGroupAsync(Context.ConnectionId, response?.RoomId!);
-        Console.WriteLine($"Client {Context.ConnectionId} was joined in room {response?.RoomId}");
+        // Console.WriteLine($"Client {Context.ConnectionId} was joined in room {response?.RoomId}");
         if (response.CreateOffer)
         {
             await Clients.Client(Context.ConnectionId).SendAsync("PeerConnection",
@@ -115,8 +115,23 @@ public class ChatHub : Hub
             }
         }
     }
+
+    public async Task OnNextRoom()
+    {
+        await SwitchRoom("next-room");
+    }
     
     public async Task OnLeaveRoom()
+    {
+        await SwitchRoom("leave-room");
+    }
+    
+    public override async Task OnDisconnectedAsync(Exception? exception)
+    {
+        await SwitchRoom("leave-room");
+    }
+
+    private async Task SwitchRoom(string command)
     {
         var rooms = await _mediator.Send(new GetAllRoomsQuery());
         TwoSeatsRoom? storedRoom = null;
@@ -125,7 +140,7 @@ public class ChatHub : Hub
         {
             foreach (var userRoom in room.Peers)
             {
-                if (userRoom?.ConnectionId == Context.ConnectionId)
+                if (userRoom?.Id == Context.ConnectionId)
                 {
                     storedRoom = room;
                     break;
@@ -146,7 +161,7 @@ public class ChatHub : Hub
         await Clients.Groups(storedRoom.Id).SendAsync("PeerConnection",
             storedRoom.Id,
             "",
-            "leave-room");
+            command);
 
         ChatUser? peer1 = null;
         ChatUser? peer2 = null;
@@ -159,18 +174,13 @@ public class ChatHub : Hub
         if (peer1 is not null)
         {
             // Console.WriteLine("Disconnected: " + peer1?.ConnectionId);
-            await Groups.RemoveFromGroupAsync(peer1?.ConnectionId!, storedRoom.Id);    
+            await Groups.RemoveFromGroupAsync(peer1?.Id!, storedRoom.Id);    
         }
 
         if (peer2 is not null)
         {
             // Console.WriteLine("Disconnected: " + peer2?.ConnectionId);
-            await Groups.RemoveFromGroupAsync(peer2?.ConnectionId!, storedRoom.Id);    
+            await Groups.RemoveFromGroupAsync(peer2?.Id!, storedRoom.Id);    
         }
-    }
-    
-    public override async Task OnDisconnectedAsync(Exception? exception)
-    {
-        await OnLeaveRoom();
     }
 }

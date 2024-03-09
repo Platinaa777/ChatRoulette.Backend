@@ -8,16 +8,24 @@ namespace Chat.Application.Commands.ConnectUser;
 public class ConnectUserCommandHandler : IRequestHandler<ConnectUserCommand, UserJoinResponse?>
 {
     private readonly IRoomRepository _roomRepository;
-
-    public ConnectUserCommandHandler(IRoomRepository roomRepository)
+    private readonly IChatUserRepository _chatUserRepository;
+    public ConnectUserCommandHandler(IRoomRepository roomRepository, IChatUserRepository chatUserRepository)
     {
         _roomRepository = roomRepository;
+        _chatUserRepository = chatUserRepository;
     }
     
     public async Task<UserJoinResponse?> Handle(ConnectUserCommand request, CancellationToken cancellationToken)
     {
-        var chatUser = new ChatUser(request.Email, request.ConnectionId);
+        var chatUser = await _chatUserRepository.FindById(request.ConnectionId!);
 
+        if (chatUser is null)
+        {
+            chatUser = new ChatUser(request.Email!, request.ConnectionId!);
+            // store user in database
+            await _chatUserRepository.Add(chatUser);
+        }
+            
         var room = await _roomRepository.TryToConnectRoom(chatUser);
 
         // connect user to new created room because not any room exists
@@ -26,10 +34,8 @@ public class ConnectUserCommandHandler : IRequestHandler<ConnectUserCommand, Use
         
         return new UserJoinResponse()
         {
-            // delete this code later
-            // todo
-            ConnectionId = request.ConnectionId,
-            Email = request.Email,
+            ConnectionId = request.ConnectionId!,
+            Email = request.Email!,
             RoomId = room.Id,
             CreateOffer = room.Peers.Count == 2
         };

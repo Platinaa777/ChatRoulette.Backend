@@ -15,7 +15,7 @@ public class RoomRepository : IRoomRepository
         {
             lock (_locker)
             {
-                if (_rooms[key].Peers.Count == 1)
+                if (_rooms[key].Peers.Count == 1 && !_rooms[key].Peers[0]!.PreviousParticipantIds.Contains(chatUser.Id))
                 {
                     _rooms[key].Peers.Add(chatUser);
                     return _rooms[key];

@@ -18,6 +18,6 @@ public class GetRoomQueryHandler : IRequestHandler<GetRoomQuery, List<string>>
         if (room == null)
             return null;
 
-        return room.Peers.Select(x => x.ConnectionId).ToList();
+        return room.Peers.Select(x => x.Id).ToList();
     }
 }

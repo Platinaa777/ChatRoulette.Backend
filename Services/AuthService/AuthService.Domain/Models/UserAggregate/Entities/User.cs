@@ -1,5 +1,6 @@
 using AuthService.Domain.Models.UserAggregate.Enumerations;
 using AuthService.Domain.Models.UserAggregate.ValueObjects;
+using AuthService.Domain.Models.UserAggregate.ValueObjects.User;
 using AuthService.Domain.SeedWork;
 
 namespace AuthService.Domain.Models.UserAggregate.Entities;
@@ -7,9 +8,16 @@ namespace AuthService.Domain.Models.UserAggregate.Entities;
 public class User : Entity<string>
 {
     
-    public User(string id, Name userName, Email email, Name nickName, Age age, Password passwordHash, Salt salt, RoleType role)
+    public User(
+        string id,
+        Name userName,
+        Email email,
+        Name nickName,
+        Age age,
+        Password passwordHash,
+        Salt salt,
+        RoleType role) : base(id)
     {
-        Id = id;
         UserName = userName;
         Email = email;
         PasswordHash = passwordHash;
@@ -42,5 +50,6 @@ public class User : Entity<string>
         NickName = nickname;
         Age = age;
     }
-    private User() { }
+    
+    private User() : base() {}
 }

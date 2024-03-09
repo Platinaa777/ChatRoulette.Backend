@@ -45,7 +45,7 @@ public class AuthController : ControllerBase
     /// </summary>
     /// <param name="request"></param>
     /// <returns></returns>
-    [HttpPost("/token")]
+    [HttpPost("/login")]
     public async Task<ActionResult<AuthenticationResponse>> Login(TokenRequest request)
     {
         var result = await _mediator.Send(request.ToCommand());
@@ -53,9 +53,5 @@ public class AuthController : ControllerBase
         return Ok(result);
     }
     
-    [HttpGet]
-    public async Task<ActionResult<string>> GetSecuredData()
-    {
-        return Ok("This Secured Data is available only for Authenticated Users.");
-    }
+    public async Task<ActionResult<
 }

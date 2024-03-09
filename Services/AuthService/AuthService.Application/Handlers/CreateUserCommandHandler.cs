@@ -1,7 +1,9 @@
 using AuthService.Application.BusMapper;
 using AuthService.Application.Commands;
+using AuthService.Application.Security;
 using AuthService.Domain.Models.UserAggregate.Repos;
 using AuthService.Domain.Models.UserAggregate.ValueObjects;
+using AuthService.Domain.Models.UserAggregate.ValueObjects.User;
 using AuthService.Infrastructure.Cache;
 using AuthService.Infrastructure.Cache.Models;
 using AuthService.Infrastructure.Security;
@@ -17,20 +19,22 @@ public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, bool>
     private readonly IUserRepository _userRepository;
     private readonly IEventBusClient _eventBusClient;
     private readonly IDistributedCache _cache;
+    private readonly IHasherPassword _hasher;
 
     public CreateUserCommandHandler(
         IUserRepository userRepository,
         IEventBusClient eventBusClient,
-        IDistributedCache cache)
+        IDistributedCache cache, IHasherPassword hasher)
     {
         _userRepository = userRepository;
         _eventBusClient = eventBusClient;
         _cache = cache;
+        _hasher = hasher;
     }
     
     public async Task<bool> Handle(CreateUserCommand request, CancellationToken cancellationToken)
     {
-        var user = request.ToDomain();
+        var user = request.ToDomain(_hasher);
         var response = await _userRepository.AddUserAsync(user);
         
         user.AddUserExtraInformation(new Name(request.NickName), new Age(request.Age));

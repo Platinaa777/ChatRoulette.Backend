@@ -2,20 +2,14 @@ using Chat.Domain.SeedWork;
 
 namespace Chat.Domain.Entities;
 
-public class ChatUser : ValueObject
+public class ChatUser : Entity
 {
     public ChatUser(string email, string connectionId)
     {
         Email = email;
-        ConnectionId = connectionId;
+        Id = connectionId;
+        PreviousParticipantIds = new HashSet<string>();
     }
-    
     public string Email { get; set; }
-    public string ConnectionId { get; set; }
-
-    protected override IEnumerable<object> GetEqualityComponents()
-    {
-        yield return Email;
-        yield return ConnectionId;
-    }
+    public HashSet<string> PreviousParticipantIds { get; set; }
 }

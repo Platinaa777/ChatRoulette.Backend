@@ -16,10 +16,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Responses\" />
-    </ItemGroup>
-
-    <ItemGroup>
       <Reference Include="WaitingRoom.Core">
         <HintPath>..\Chat.Application\bin\Debug\net7.0\WaitingRoom.Core.dll</HintPath>
       </Reference>

@@ -3,6 +3,7 @@ using AuthService.Domain.Models.UserAggregate.Entities;
 using AuthService.Domain.Models.UserAggregate.Enumerations;
 using AuthService.Domain.Models.UserAggregate.Repos;
 using AuthService.Domain.Models.UserAggregate.ValueObjects;
+using AuthService.Domain.Models.UserAggregate.ValueObjects.User;
 using Microsoft.EntityFrameworkCore;
 
 namespace AuthService.Infrastructure.Repos;

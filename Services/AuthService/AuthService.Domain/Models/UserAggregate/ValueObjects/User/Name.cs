@@ -1,7 +1,6 @@
-using System.Reflection.Metadata.Ecma335;
 using AuthService.Domain.SeedWork;
 
-namespace AuthService.Domain.Models.UserAggregate.ValueObjects;
+namespace AuthService.Domain.Models.UserAggregate.ValueObjects.User;
  
 public class Name : ValueObject
 {

@@ -4,6 +4,7 @@ using AuthService.Domain.Models.UserAggregate.Entities;
 using AuthService.Domain.Models.UserAggregate.Enumerations;
 using AuthService.Domain.Models.UserAggregate.Repos;
 using AuthService.Domain.Models.UserAggregate.ValueObjects;
+using AuthService.Domain.Models.UserAggregate.ValueObjects.User;
 using AuthService.Infrastructure.Filters;
 using AuthService.Infrastructure.Security;
 using Microsoft.AspNetCore.Builder;
@@ -20,8 +21,10 @@ public static class SeedExtensions
         if (await DatabaseChecker.IsDbEmpty(context))
             return;
 
-        var salt1 = new Salt(PasswordHasher.GenerateSalt());
-        var hashedPassword1 = new Password(PasswordHasher.HashPasswordWithSalt("admin123", salt1.Value));
+        var passwordHasher = new Hasher();
+
+        var salt1 = new Salt(passwordHasher.GenerateSalt());
+        var hashedPassword1 = new Password(passwordHasher.HashPasswordWithSalt("admin123", salt1.Value));
         
         var admin = new User(
             id: Guid.NewGuid().ToString(),
