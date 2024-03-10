@@ -2,7 +2,9 @@ using AuthService.Api.Mappers;
 using AuthService.HttpModels.Requests;
 using AuthService.HttpModels.Responses;
 using MediatR;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Primitives;
 
 namespace AuthService.Api.Controllers;
 
@@ -17,7 +19,7 @@ public class AuthController : ControllerBase
         _mediator = mediator;
     }
 
-    [HttpGet("/user")]
+    [HttpGet("/info")]
     public async Task<ActionResult<UserInformationResponse>> GetUserInfo(
         [FromQuery] string email,
         [FromQuery] string password)
@@ -45,13 +47,37 @@ public class AuthController : ControllerBase
     /// </summary>
     /// <param name="request"></param>
     /// <returns></returns>
-    [HttpPost("/login")]
-    public async Task<ActionResult<AuthenticationResponse>> Login(TokenRequest request)
+    [HttpPost("/refresh-token")]
+    public async Task<ActionResult<AuthenticationResponse>> GetToken(TokenRequest request)
     {
-        var result = await _mediator.Send(request.ToCommand());
+        if (!HttpContext.Request.Headers.TryGetValue("Authorization", out StringValues accessToken))
+        {
+            return Unauthorized("No access token was passed");
+        }
+        
+        var result = await _mediator.Send(request.ToCommand(CutBearer(accessToken!).Trim()));
         
         return Ok(result);
     }
-    
-    public async Task<ActionResult<
+
+    private string CutBearer(string token)
+    {
+        return token.Replace("Bearer ", "");
+    }
+
+    [HttpPost("/login")]
+    public async Task<ActionResult<AuthenticationResponse>> Login(LoginRequest request)
+    {
+        var response = await _mediator.Send(request.ToCommand());
+
+        if (response.RefreshToken is null)
+            return BadRequest(new AuthenticationResponse(false));
+        
+        return Ok(new AuthenticationResponse()
+        {
+            AccessToken = response.AccessToken!,
+            RefreshToken = response.RefreshToken!,
+            IsAuthenticate = true
+        });
+    }
 }

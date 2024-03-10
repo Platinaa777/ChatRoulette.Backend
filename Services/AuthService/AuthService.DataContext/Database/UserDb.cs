@@ -13,12 +13,13 @@ public class UserDb : DbContext
     {
     }
 
+    public DbSet<RefreshToken> RefreshTokens { get; set; }
     public DbSet<User> Users { get; set; }
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
         builder.ApplyConfiguration(new UserConfiguration());
-        
+        builder.ApplyConfiguration(new RefreshTokenConfiguration());
         base.OnModelCreating(builder);
     }
 }

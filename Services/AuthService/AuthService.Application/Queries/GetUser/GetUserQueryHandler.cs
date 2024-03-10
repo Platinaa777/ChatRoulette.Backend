@@ -1,10 +1,8 @@
-using AuthService.Application.Queries;
 using AuthService.Domain.Models.UserAggregate.Repos;
-using AuthService.HttpModels.Requests;
 using AuthService.HttpModels.Responses;
 using MediatR;
 
-namespace AuthService.Application.Handlers;
+namespace AuthService.Application.Queries.GetUser;
 
 public class GetUserQueryHandler : IRequestHandler<GetUserQuery, UserInformationResponse>
 {

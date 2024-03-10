@@ -1,8 +1,7 @@
-using AuthService.Application.Commands;
 using AuthService.Domain.Models.UserAggregate.Repos;
 using MediatR;
 
-namespace AuthService.Application.Handlers;
+namespace AuthService.Application.Commands.ConfirmEmail;
 
 public class ConfirmEmailCommandHandler : IRequestHandler<ConfirmEmailCommand, string>
 {
@@ -19,7 +18,8 @@ public class ConfirmEmailCommandHandler : IRequestHandler<ConfirmEmailCommand, s
 
         if (user == null)
             return null;
-
+        
+        user.SubmitEmail();
         var result = await _userRepository.UpdateUserAsync(user);
 
         if (!result)

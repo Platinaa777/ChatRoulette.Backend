@@ -1,35 +1,42 @@
 using AuthService.Application.BusMapper;
-using AuthService.Application.Commands;
+using AuthService.Application.Cache;
+using AuthService.Application.Cache.Models;
+using AuthService.Application.Mappers;
+using AuthService.Application.Models;
 using AuthService.Application.Security;
+using AuthService.Application.Utils;
+using AuthService.Domain.Models.UserAggregate.Entities;
 using AuthService.Domain.Models.UserAggregate.Repos;
-using AuthService.Domain.Models.UserAggregate.ValueObjects;
 using AuthService.Domain.Models.UserAggregate.ValueObjects.User;
-using AuthService.Infrastructure.Cache;
-using AuthService.Infrastructure.Cache.Models;
-using AuthService.Infrastructure.Security;
 using MassTransit.Client.EventBus;
 using MediatR;
-using Microsoft.Extensions.Caching.Distributed;
 using Newtonsoft.Json;
 
-namespace AuthService.Application.Handlers;
+namespace AuthService.Application.Commands.CreateUser;
 
 public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, bool>
 {
     private readonly IUserRepository _userRepository;
+    private readonly ITokenRepository _tokenRepository;
     private readonly IEventBusClient _eventBusClient;
-    private readonly IDistributedCache _cache;
+    private readonly ICacheStorage _cache;
     private readonly IHasherPassword _hasher;
+    private readonly IJwtManager _jwtManager;
 
     public CreateUserCommandHandler(
         IUserRepository userRepository,
         IEventBusClient eventBusClient,
-        IDistributedCache cache, IHasherPassword hasher)
+        ICacheStorage cache,
+        IHasherPassword hasher,
+        IJwtManager jwtManager,
+        ITokenRepository tokenRepository)
     {
         _userRepository = userRepository;
         _eventBusClient = eventBusClient;
         _cache = cache;
         _hasher = hasher;
+        _jwtManager = jwtManager;
+        _tokenRepository = tokenRepository;
     }
     
     public async Task<bool> Handle(CreateUserCommand request, CancellationToken cancellationToken)
@@ -38,19 +45,17 @@ public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, bool>
         var response = await _userRepository.AddUserAsync(user);
         
         user.AddUserExtraInformation(new Name(request.NickName), new Age(request.Age));
-        
-        if (response)
-        {
-            await _eventBusClient.PublishAsync(user.ToBusMessage(), cancellationToken);
-            await _cache.SetStringAsync(user.Id, 
-                JsonConvert.SerializeObject(user.ToCache(request.Preferences)),
-                        new DistributedCacheEntryOptions()
-                        {
-                            AbsoluteExpirationRelativeToNow = TimeSpan.FromHours(1)
-                        },
-                        cancellationToken);
-        }
 
-        return response;
+        if (!response)
+            return false;
+        
+        // push to event bus
+        await _eventBusClient.PublishAsync(user.ToBusMessage(), cancellationToken);
+        // cache 
+        await _cache.SetAsync(user.Id, 
+            value: JsonConvert.SerializeObject(user.ToCache(request.Preferences)), 
+            cancellationToken);
+        
+        return true;
     }
 }

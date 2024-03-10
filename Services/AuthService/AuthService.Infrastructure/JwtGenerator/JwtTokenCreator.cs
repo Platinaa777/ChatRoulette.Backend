@@ -24,8 +24,8 @@ public class JwtTokenCreator : IJwtManager
         // Create claims for the user
         var claims = new[]
         {
-            new Claim("name", user.UserName.Value),
-            new Claim("email", user.Email.Value),
+            new Claim(ClaimTypes.Name, user.UserName.Value),
+            new Claim(ClaimTypes.Email, user.Email.Value),
             new Claim(ClaimTypes.Role, user.Role.Name)
         };
 
@@ -67,7 +67,7 @@ public class JwtTokenCreator : IJwtManager
             ValidateIssuerSigningKey = true,
             ValidateAudience = false,
             ValidateIssuer = false,
-            ValidateLifetime = true,
+            ValidateLifetime = false,
             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwt.Key))
         };
 

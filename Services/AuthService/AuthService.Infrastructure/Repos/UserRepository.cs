@@ -47,9 +47,9 @@ public class UserRepository : IUserRepository
     public async Task<bool> UpdateUserAsync(User user)
     {
         var result = await _context.Users.Where(u => u.Email == user.Email)
-            .ExecuteUpdateAsync(u1 => u1
-                .SetProperty(u2 => u2.IsSubmittedEmail, u1 => true)
-                .SetProperty(u2 => u2.Role, u1 => RoleType.ActivatedUser));
+            .ExecuteUpdateAsync(entity => entity
+                .SetProperty(email => email.IsSubmittedEmail, user.IsSubmittedEmail)
+                .SetProperty(r => r.Role, RoleType.ActivatedUser));
 
         return result == 1;
     }

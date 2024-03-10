@@ -1,7 +1,7 @@
 using AuthService.HttpModels.Responses;
 using MediatR;
 
-namespace AuthService.Application.Queries;
+namespace AuthService.Application.Queries.GetUser;
 
 public class GetUserQuery : IRequest<UserInformationResponse>
 {

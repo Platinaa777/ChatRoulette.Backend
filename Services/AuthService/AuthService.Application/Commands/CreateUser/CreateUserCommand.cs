@@ -1,10 +1,11 @@
+using AuthService.Application.Models;
 using AuthService.Application.Security;
 using AuthService.Domain.Models.UserAggregate.Entities;
 using AuthService.Domain.Models.UserAggregate.Enumerations;
 using AuthService.Domain.Models.UserAggregate.ValueObjects.User;
 using MediatR;
 
-namespace AuthService.Application.Commands;
+namespace AuthService.Application.Commands.CreateUser;
 
 public class CreateUserCommand : IRequest<bool>
 {

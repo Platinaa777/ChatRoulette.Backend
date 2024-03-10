@@ -1,5 +1,7 @@
+using AuthService.Application.Cache;
+using AuthService.Application.Cache.Models;
 using AuthService.Application.Commands;
-using AuthService.Infrastructure.Cache.Models;
+using AuthService.Application.Commands.ConfirmEmail;
 using MassTransit;
 using MassTransit.Contracts.UserEvents;
 using MediatR;
@@ -12,12 +14,12 @@ public class UserSubmitEmailConsumer : IConsumer<UserSubmittedEmail>
 {
     private readonly IServiceScopeFactory _scopeFactory;
     private readonly ILogger<UserSubmittedEmail> _logger;
-    private readonly IDistributedCache _cache;
+    private readonly ICacheStorage _cache;
 
     public UserSubmitEmailConsumer(
         IServiceScopeFactory scopeFactory,
         ILogger<UserSubmittedEmail> logger,
-        IDistributedCache cache)
+        ICacheStorage cache)
     {
         _scopeFactory = scopeFactory;
         _logger = logger;
@@ -34,7 +36,7 @@ public class UserSubmitEmailConsumer : IConsumer<UserSubmittedEmail>
                 context.CancellationToken);
             _logger.LogInformation($"Confirmation email: {context.Message.Email}");
 
-            var userDetails = await _cache.GetStringAsync(responseId, context.CancellationToken);
+            var userDetails = await _cache.GetAsync(responseId, context.CancellationToken);
 
             if (userDetails == null)
             {

@@ -1,11 +1,15 @@
+using AuthService.Application.Cache;
 using AuthService.Application.Commands;
-using AuthService.Application.Handlers;
+using AuthService.Application.Commands.CreateUser;
+using AuthService.Application.Security;
 using AuthService.DataContext.Database;
 using AuthService.Domain.JwtConfig;
 using AuthService.Domain.Models.UserAggregate.Repos;
+using AuthService.Infrastructure.Cache;
 using AuthService.Infrastructure.Extensions.Jwt;
 using AuthService.Infrastructure.JwtGenerator;
 using AuthService.Infrastructure.Repos;
+using AuthService.Infrastructure.Security;
 using Microsoft.EntityFrameworkCore;
 using StackExchange.Redis;
 
@@ -17,6 +21,7 @@ public static class ServicesRegistrator
     {
         builder.Services.AddControllers();
         builder.Services.AddScoped<IUserRepository, UserRepository>();
+        builder.Services.AddScoped<ITokenRepository, RefreshTokenRepository>();
 
         builder.Services.AddMediatR(cfg => 
             cfg.RegisterServicesFromAssemblyContaining<CreateUserCommandHandler>());
@@ -39,9 +44,9 @@ public static class ServicesRegistrator
     public static WebApplicationBuilder AddSecurity(this WebApplicationBuilder builder)
     {
         var configuration = builder.Configuration;
-
-        builder.Services.AddScoped<IPasswordRepository, PasswordRepository>();
-        builder.Services.AddScoped<JwtTokenCreator>();
+        
+        builder.Services.AddScoped<IJwtManager, JwtTokenCreator>();
+        builder.Services.AddScoped<IHasherPassword, Hasher>();
         builder.Services.Configure<Jwt>(configuration.GetSection("Jwt"));
         builder.AddJwtAuthentication(configuration.GetSection("Jwt:Key").Value!);
 
@@ -56,6 +61,8 @@ public static class ServicesRegistrator
         {
             setup.Configuration = configuration["Redis:Host"];
         });
+        
+        builder.Services.AddScoped<ICacheStorage, RedisCache>();
 
         return builder;
     }

@@ -1,7 +1,7 @@
 using MassTransit.Contracts.UserEvents;
 using MediatR;
 
-namespace AuthService.Application.Commands;
+namespace AuthService.Application.Commands.ConfirmEmail;
 
 public class ConfirmEmailCommand : IRequest<string>
 {

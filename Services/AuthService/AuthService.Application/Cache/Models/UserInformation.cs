@@ -1,7 +1,7 @@
 using AuthService.Domain.Models.UserAggregate.Entities;
 using MassTransit.Contracts.UserEvents;
 
-namespace AuthService.Infrastructure.Cache.Models;
+namespace AuthService.Application.Cache.Models;
 
 public class UserInformation
 {
