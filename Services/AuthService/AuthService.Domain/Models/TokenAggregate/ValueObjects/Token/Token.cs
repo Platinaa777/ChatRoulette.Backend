@@ -1,6 +1,6 @@
 using AuthService.Domain.SeedWork;
 
-namespace AuthService.Domain.Models.UserAggregate.ValueObjects.Token;
+namespace AuthService.Domain.Models.TokenAggregate.ValueObjects.Token;
 
 public class Token : ValueObject
 {

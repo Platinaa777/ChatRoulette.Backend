@@ -2,9 +2,10 @@ using System.Security.Claims;
 using AuthService.Application.Models;
 using AuthService.Application.Security;
 using AuthService.Application.Utils;
-using AuthService.Domain.Models.UserAggregate.Entities;
+using AuthService.Domain.Models.TokenAggregate;
+using AuthService.Domain.Models.TokenAggregate.Repos;
+using AuthService.Domain.Models.TokenAggregate.ValueObjects.Token;
 using AuthService.Domain.Models.UserAggregate.Repos;
-using AuthService.Domain.Models.UserAggregate.ValueObjects.Token;
 using MediatR;
 
 namespace AuthService.Application.Commands.GenerateToken;
@@ -38,7 +39,7 @@ public class GenerateTokenCommandHandler : IRequestHandler<GenerateTokenCommand,
         
         var user = await _userRepository.FindUserByEmailAsync(userEmail.Value);
 
-        if (user is null)
+        if (user is null || !user.IsSubmittedEmail)
             return null;
 
         var oldRefreshToken = await _tokenRepository.GetRefreshTokenByValue(new Token(request.RefreshToken));
@@ -48,8 +49,8 @@ public class GenerateTokenCommandHandler : IRequestHandler<GenerateTokenCommand,
             return null;
         
         // refresh token was recent, mark it as used => no one can use this token, because is invalid
-        oldRefreshToken.IsUsed = true;
-        var refreshTokenWasUpdated = await _tokenRepository.UpdateRefreshToken(oldRefreshToken);
+        oldRefreshToken.SetUsed();
+        await _tokenRepository.UpdateRefreshToken(oldRefreshToken);
         
         (string accessToken, RefreshToken refreshToken) = TokenUtils.CreateAuthPair(_jwtManager, user);
 

@@ -4,7 +4,7 @@ using System.Security.Cryptography;
 using System.Text;
 using AuthService.Application.Security;
 using AuthService.Domain.JwtConfig;
-using AuthService.Domain.Models.UserAggregate.Entities;
+using AuthService.Domain.Models.UserAggregate;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 

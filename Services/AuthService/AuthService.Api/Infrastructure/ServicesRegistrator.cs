@@ -4,6 +4,7 @@ using AuthService.Application.Commands.CreateUser;
 using AuthService.Application.Security;
 using AuthService.DataContext.Database;
 using AuthService.Domain.JwtConfig;
+using AuthService.Domain.Models.TokenAggregate.Repos;
 using AuthService.Domain.Models.UserAggregate.Repos;
 using AuthService.Infrastructure.Cache;
 using AuthService.Infrastructure.Extensions.Jwt;

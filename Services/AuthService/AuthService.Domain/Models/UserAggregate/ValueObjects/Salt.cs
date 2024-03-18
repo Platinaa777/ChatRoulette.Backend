@@ -1,6 +1,6 @@
 using AuthService.Domain.SeedWork;
 
-namespace AuthService.Domain.Models.UserAggregate.ValueObjects.User;
+namespace AuthService.Domain.Models.UserAggregate.ValueObjects;
 
 public class Salt : ValueObject
 {

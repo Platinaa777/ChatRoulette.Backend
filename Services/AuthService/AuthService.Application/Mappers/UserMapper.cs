@@ -1,5 +1,3 @@
-using AuthService.Domain.Models.UserAggregate.Entities;
-
 namespace AuthService.Application.Mappers;
 
 public static class UserMapper

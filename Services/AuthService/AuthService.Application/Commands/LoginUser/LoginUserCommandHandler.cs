@@ -1,7 +1,9 @@
 using AuthService.Application.Models;
 using AuthService.Application.Security;
 using AuthService.Application.Utils;
-using AuthService.Domain.Models.UserAggregate.Entities;
+using AuthService.Domain.Models.TokenAggregate;
+using AuthService.Domain.Models.TokenAggregate.Repos;
+using AuthService.Domain.Models.TokenAggregate.ValueObjects.Token;
 using AuthService.Domain.Models.UserAggregate.Repos;
 using MediatR;
 
@@ -42,9 +44,19 @@ public class LoginUserCommandHandler : IRequestHandler<LoginUserCommand, AuthTok
         
         (string accessToken, RefreshToken refreshToken) = TokenUtils.CreateAuthPair(_jwtManager, user);
 
+        var token = await _tokenRepository.FindValidRefreshTokenByUserId(UserId.CreateId(user.Id));
+
+        // should mark refresh as not valid anymore
+        if (token is not null)
+        {
+            token.SetUsed();
+            await _tokenRepository.UpdateRefreshToken(token);
+        }
+
+        // add new refresh token
         var isAdded = await _tokenRepository.AddRefreshToken(refreshToken);
         if (!isAdded)
-            return null;
+            return new AuthTokens(null, null);
 
         return new AuthTokens(accessToken: accessToken, refreshToken: refreshToken.Token.Value);
     }

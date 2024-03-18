@@ -1,6 +1,5 @@
 using AuthService.DataContext.Database;
 using AuthService.Domain.Models;
-using AuthService.Domain.Models.UserAggregate.Entities;
 using AuthService.Domain.Models.UserAggregate.Repos;
 using AuthService.Infrastructure.Extensions;
 using AuthService.Infrastructure.Extensions.UsersSeed;

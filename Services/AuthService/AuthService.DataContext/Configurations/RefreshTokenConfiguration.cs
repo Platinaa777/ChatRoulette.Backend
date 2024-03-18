@@ -1,5 +1,5 @@
-using AuthService.Domain.Models.UserAggregate.Entities;
-using AuthService.Domain.Models.UserAggregate.ValueObjects.Token;
+using AuthService.Domain.Models.TokenAggregate;
+using AuthService.Domain.Models.TokenAggregate.ValueObjects.Token;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -29,6 +29,11 @@ public class RefreshTokenConfiguration : IEntityTypeConfiguration<RefreshToken>
 
         builder.Property(t => t.IsUsed)
             .HasColumnName("is_used");
-
+        
+        builder.Property(t => t.UserId)
+            .HasColumnName("user_id")
+            .HasConversion(
+                to => to.Value,
+                from => UserId.CreateId(from));
     }
 }

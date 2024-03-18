@@ -1,9 +1,8 @@
 using AuthService.Domain.Models.UserAggregate.Enumerations;
 using AuthService.Domain.Models.UserAggregate.ValueObjects;
-using AuthService.Domain.Models.UserAggregate.ValueObjects.User;
 using AuthService.Domain.SeedWork;
 
-namespace AuthService.Domain.Models.UserAggregate.Entities;
+namespace AuthService.Domain.Models.UserAggregate;
 
 public class User : Entity<string>
 {

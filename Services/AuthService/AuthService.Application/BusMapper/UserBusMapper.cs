@@ -1,4 +1,4 @@
-using AuthService.Domain.Models.UserAggregate.Entities;
+using AuthService.Domain.Models.UserAggregate;
 using MassTransit.Contracts.UserEvents;
 
 namespace AuthService.Application.BusMapper;

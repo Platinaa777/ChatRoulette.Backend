@@ -1,7 +1,7 @@
 using System.Text.RegularExpressions;
 using AuthService.Domain.SeedWork;
 
-namespace AuthService.Domain.Models.UserAggregate.ValueObjects.User;
+namespace AuthService.Domain.Models.UserAggregate.ValueObjects;
 
 public class Email : ValueObject
 {

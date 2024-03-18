@@ -1,5 +1,5 @@
 using AuthService.Application.Models;
-using AuthService.Domain.Models.UserAggregate.Entities;
+using AuthService.Domain.Models.TokenAggregate;
 
 namespace AuthService.Application.Mappers;
 

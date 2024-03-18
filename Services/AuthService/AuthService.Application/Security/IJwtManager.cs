@@ -1,6 +1,6 @@
 using System.Security.Claims;
 using AuthService.Domain.JwtConfig;
-using AuthService.Domain.Models.UserAggregate.Entities;
+using AuthService.Domain.Models.UserAggregate;
 
 namespace AuthService.Application.Security;
 

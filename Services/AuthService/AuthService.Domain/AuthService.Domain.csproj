@@ -9,5 +9,9 @@
     <ItemGroup>
       <PackageReference Include="MediatR" Version="12.2.0" />
     </ItemGroup>
+    
+    <ItemGroup>
+      <Folder Include="Models\TokenAggregate\ValueObjects\" />
+    </ItemGroup>
 
 </Project>

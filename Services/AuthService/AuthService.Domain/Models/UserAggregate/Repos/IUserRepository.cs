@@ -1,5 +1,3 @@
-using AuthService.Domain.Models.UserAggregate.Entities;
-
 namespace AuthService.Domain.Models.UserAggregate.Repos;
 
 public interface IUserRepository
