@@ -1,9 +1,10 @@
 using AuthService.Application.Models;
+using AuthService.Domain.Shared;
 using MediatR;
 
 namespace AuthService.Application.Commands.GenerateToken;
 
-public class GenerateTokenCommand : IRequest<AuthTokens?>
+public class GenerateTokenCommand : IRequest<Result<AuthTokens>>
 {
     public string AccessToken { get; set; }
     public string RefreshToken { get; set; }

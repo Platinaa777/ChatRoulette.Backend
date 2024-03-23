@@ -23,14 +23,14 @@ public static class SeedExtensions
         var passwordHasher = new Hasher();
 
         var salt1 = new Salt(passwordHasher.GenerateSalt());
-        var hashedPassword1 = new Password(passwordHasher.HashPasswordWithSalt("admin123", salt1.Value));
+        var hashedPassword1 = Password.Create(passwordHasher.HashPasswordWithSalt("admin123", salt1.Value)).Value;
         
         var admin = new User(
             id: Guid.NewGuid().ToString(),
-            new Name("denis"),
-            new Email("m@edu.hse.ru"),
-            new Name("platina777"),
-            new Age(19),
+            Name.Create("denis").Value,
+            Email.Create("m@edu.hse.ru").Value,
+            Name.Create("platina777").Value,
+            Age.Create(19).Value,
             hashedPassword1,
             salt1,
             RoleType.Admin);

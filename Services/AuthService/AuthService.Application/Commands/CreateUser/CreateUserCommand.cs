@@ -3,11 +3,12 @@ using AuthService.Application.Security;
 using AuthService.Domain.Models.UserAggregate;
 using AuthService.Domain.Models.UserAggregate.Enumerations;
 using AuthService.Domain.Models.UserAggregate.ValueObjects;
+using AuthService.Domain.Shared;
 using MediatR;
 
 namespace AuthService.Application.Commands.CreateUser;
 
-public class CreateUserCommand : IRequest<bool>
+public class CreateUserCommand : IRequest<Result>
 {
     public string UserName { get; set; }
     public string Email { get; set; }
@@ -26,14 +27,16 @@ public static class CreateUserCommandToDomain
         var salt = hasher.GenerateSalt();
         
         var hashedPassword = hasher.HashPasswordWithSalt(command.Password, salt);
+
+        var userName = Name.Create(command.UserName);
         
         return new User(
             id: Guid.NewGuid().ToString(),
-            new Name(command.UserName),
-            new Email(command.Email),
-            new Name(command.NickName),
-            new Age(command.Age),
-            new Password(hashedPassword),
+            Name.Create(command.UserName).Value,
+            Email.Create(command.Email).Value,
+            Name.Create(command.NickName).Value,
+            Age.Create(command.Age).Value,
+            Password.Create(command.Password).Value,
             new Salt(salt),
             roleType ?? RoleType.UnactivatedUser);
     }

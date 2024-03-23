@@ -1,9 +1,11 @@
+using System.Reflection;
+using AuthService.Application.Behaviors;
 using AuthService.Application.Cache;
 using AuthService.Application.Commands;
 using AuthService.Application.Commands.CreateUser;
+using AuthService.Application.JwtConfig;
 using AuthService.Application.Security;
 using AuthService.DataContext.Database;
-using AuthService.Domain.JwtConfig;
 using AuthService.Domain.Models.TokenAggregate.Repos;
 using AuthService.Domain.Models.UserAggregate.Repos;
 using AuthService.Infrastructure.Cache;
@@ -11,6 +13,8 @@ using AuthService.Infrastructure.Extensions.Jwt;
 using AuthService.Infrastructure.JwtGenerator;
 using AuthService.Infrastructure.Repos;
 using AuthService.Infrastructure.Security;
+using FluentValidation;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
 using StackExchange.Redis;
 
@@ -26,6 +30,27 @@ public static class ServicesRegistrator
 
         builder.Services.AddMediatR(cfg => 
             cfg.RegisterServicesFromAssemblyContaining<CreateUserCommandHandler>());
+
+        builder.Services.AddScoped(
+            typeof(IPipelineBehavior<,>),
+        typeof(ValidationPipelineBehavior<,>));
+        
+        builder.Services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
+        
+        return builder;
+    }
+
+    public static WebApplicationBuilder AddCors(this WebApplicationBuilder builder)
+    {
+        builder.Services.AddCors(corsOptions =>
+        {
+            corsOptions.AddDefaultPolicy(policy =>
+            {
+                policy.AllowAnyOrigin()
+                    .AllowAnyMethod()
+                    .AllowAnyHeader();
+            });
+        });
 
         return builder;
     }

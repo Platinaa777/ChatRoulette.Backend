@@ -1,17 +1,31 @@
+using AuthService.Domain.Errors.TokenErrors;
 using AuthService.Domain.Models.TokenAggregate.ValueObjects.Token;
-using AuthService.Domain.SeedWork;
+using AuthService.Domain.Shared;
 
 namespace AuthService.Domain.Models.TokenAggregate;
 
 public class RefreshToken : Entity<string>
 {
-    public static RefreshToken Create(Guid id, string token, DateTime expiredAt, bool isUsed, string userId) => 
-        new RefreshToken(
+    public static Result<RefreshToken> Create(Guid id, string token, DateTime expiredAt, bool isUsed, string userId)
+    {
+        var refreshToken = Token.Create(token);
+        if (refreshToken.IsFailure)
+            return new Result<RefreshToken>(null, false, refreshToken.Error);
+        
+        var userIdResult = UserId.CreateId(userId);
+        if (userIdResult.IsFailure)
+            return new Result<RefreshToken>(null, false, userIdResult.Error);
+
+        if (expiredAt < DateTime.Now)
+            return new Result<RefreshToken>(null, false, TokenError.InvalidExpiredTime);
+
+        return new RefreshToken(
             id: id.ToString(),
-            new Token(token),
+            token: refreshToken.Value,
             expiredAt,
             isUsed,
-            UserId.CreateId(userId));
+            userId: userIdResult.Value);
+    }
     
     private RefreshToken(
         string id,
@@ -34,6 +48,8 @@ public class RefreshToken : Entity<string>
     {
         IsUsed = true;
     }
+
+    public bool IsExpired() => ExpiredAt > DateTime.Now;
 
     private RefreshToken() {}
 }

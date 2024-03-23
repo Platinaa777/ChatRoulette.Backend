@@ -31,17 +31,19 @@ public class RegisterUserConsumer : IConsumer<UserRegistered>
         
         var email = new MimeMessage();
         email.From.Add(MailboxAddress.Parse(_emailConfiguration.Email));
-        email.To.Add(MailboxAddress.Parse(_emailConfiguration.Email));
+        email.To.Add(MailboxAddress.Parse(context.Message.Email));
         email.Subject = "Confirmation Email";
+        
         email.Body = new TextPart(MimeKit.Text.TextFormat.Html);
-        int code = ConfirmCodeGenerator.GenerateCode();
-        _logger.LogInformation($"Code = {code}");
+
+        string code = Guid.NewGuid().ToString();
+        
         email.Body = new TextPart(MimeKit.Text.TextFormat.Html)
         {
-            Text = $"Confirm email: Enter your code in our app: {code}"
+            Text = $"Confirm email: Please link to this {EmailApi.Url + code}"
         };
-        await _cache.SetStringAsync(context.Message.Email,
-            code.ToString(),
+        await _cache.SetStringAsync(code,
+            context.Message.Email,
             new DistributedCacheEntryOptions()
             {
                 AbsoluteExpirationRelativeToNow = TimeSpan.FromHours(1)
@@ -49,7 +51,7 @@ public class RegisterUserConsumer : IConsumer<UserRegistered>
             context.CancellationToken);
 
         using var smtpClient = new SmtpClient();
-        smtpClient.Connect("smtp.ethereal.email", 587, SecureSocketOptions.StartTls);
+        smtpClient.Connect(_emailConfiguration.SmtpServer, _emailConfiguration.Port, SecureSocketOptions.StartTls);
         smtpClient.Authenticate(_emailConfiguration.Email, _emailConfiguration.Password);
         smtpClient.Send(email);
         smtpClient.Disconnect(true);

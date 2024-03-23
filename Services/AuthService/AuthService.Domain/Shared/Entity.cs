@@ -1,6 +1,4 @@
-using MediatR;
-
-namespace AuthService.Domain.SeedWork;
+namespace AuthService.Domain.Shared;
 
 public abstract class Entity<TKey> : IEquatable<Entity<string>> 
     where TKey : IEquatable<TKey>

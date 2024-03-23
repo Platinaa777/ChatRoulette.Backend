@@ -5,6 +5,7 @@ using SwaggerConfigurations.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.AddCors();
 builder.AddSecurity();
 builder.AddDataLayer();
 builder.AddApplicationServices();
@@ -15,6 +16,12 @@ builder.AddMassTransit();
 builder.AddCacheUserConfirmation();
 
 var app = builder.Build();
+
+app.UseCors(x => x
+    .AllowAnyMethod()
+    .AllowAnyHeader()
+    .SetIsOriginAllowed(origin => true) // allow any origin
+    .AllowCredentials()); // allow credentials
 
 app.UseAuthentication();
 app.UseAuthorization();

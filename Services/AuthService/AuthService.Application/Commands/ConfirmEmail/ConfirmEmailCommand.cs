@@ -1,9 +1,10 @@
+using AuthService.Domain.Shared;
 using MassTransit.Contracts.UserEvents;
 using MediatR;
 
 namespace AuthService.Application.Commands.ConfirmEmail;
 
-public class ConfirmEmailCommand : IRequest<string>
+public class ConfirmEmailCommand : IRequest<Result<string>>
 {
     public ConfirmEmailCommand(string email)
     {

@@ -1,4 +1,4 @@
-namespace AuthService.Domain.JwtConfig;
+namespace AuthService.Application.JwtConfig;
 
 public class Jwt
 {

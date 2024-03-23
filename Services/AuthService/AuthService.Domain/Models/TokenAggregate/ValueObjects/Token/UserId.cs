@@ -1,4 +1,5 @@
-using AuthService.Domain.SeedWork;
+using AuthService.Domain.Errors.TokenErrors;
+using AuthService.Domain.Shared;
 
 namespace AuthService.Domain.Models.TokenAggregate.ValueObjects.Token;
 
@@ -11,16 +12,16 @@ public class UserId : ValueObject
         Value = id;
     }
 
-    public static UserId CreateId(string id)
+    public static Result<UserId> CreateId(string id)
     {
         if (string.IsNullOrWhiteSpace(id))
-            throw new ArgumentException("id can not be empty");
+            return Result.Failure<UserId>(TokenError.EmptyUserId);
         return new UserId(id);
     }
         
     
     protected override IEnumerable<object> GetEqualityComponents()
     {
-        throw new NotImplementedException();
+        yield return Value;
     }
 }

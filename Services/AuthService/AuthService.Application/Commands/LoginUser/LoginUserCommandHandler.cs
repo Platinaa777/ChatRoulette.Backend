@@ -1,15 +1,18 @@
 using AuthService.Application.Models;
 using AuthService.Application.Security;
 using AuthService.Application.Utils;
+using AuthService.Domain.Errors.TokenErrors;
+using AuthService.Domain.Errors.UserErrors;
 using AuthService.Domain.Models.TokenAggregate;
 using AuthService.Domain.Models.TokenAggregate.Repos;
 using AuthService.Domain.Models.TokenAggregate.ValueObjects.Token;
 using AuthService.Domain.Models.UserAggregate.Repos;
+using AuthService.Domain.Shared;
 using MediatR;
 
 namespace AuthService.Application.Commands.LoginUser;
 
-public class LoginUserCommandHandler : IRequestHandler<LoginUserCommand, AuthTokens>
+public class LoginUserCommandHandler : IRequestHandler<LoginUserCommand, Result<AuthTokens>>
 {
     private readonly IUserRepository _userRepository;
     private readonly ITokenRepository _tokenRepository;
@@ -28,23 +31,33 @@ public class LoginUserCommandHandler : IRequestHandler<LoginUserCommand, AuthTok
         _jwtManager = jwtManager;
     }
     
-    public async Task<AuthTokens> Handle(LoginUserCommand request, CancellationToken cancellationToken)
+    public async Task<Result<AuthTokens>> Handle(LoginUserCommand request, CancellationToken cancellationToken)
     {
         var user = await _userRepository.FindUserByEmailAsync(request.Email);
 
         if (user is null || !user.IsSubmittedEmail)
-            return new AuthTokens(null, null);
+            return Result.Failure<AuthTokens>(UserError.UnactivatedUser);
 
         var userSalt = user.Salt.Value;
         var password = _hasherPassword.HashPasswordWithSalt(request.Password, userSalt);
 
-        var isValidPassword = _hasherPassword.Verify(user.PasswordHash.Value, password);
-        if (!isValidPassword)
-            return new AuthTokens(null, null);
+        var isValidPassword = _hasherPassword.Verify(
+            passwordDb: user.PasswordHash.Value, 
+            requestPassword: password);
         
-        (string accessToken, RefreshToken refreshToken) = TokenUtils.CreateAuthPair(_jwtManager, user);
+        if (!isValidPassword)
+            return Result.Failure<AuthTokens>(UserError.WrongPassword);
+        
+        var authPairResult = TokenUtils.CreateAuthPair(_jwtManager, user);
 
-        var token = await _tokenRepository.FindValidRefreshTokenByUserId(UserId.CreateId(user.Id));
+        if (authPairResult.IsFailure)
+            return Result.Failure<AuthTokens>(authPairResult.Error);
+
+        var userIdResult = UserId.CreateId(user.Id);
+        if (userIdResult.IsFailure)
+            return Result.Failure<AuthTokens>(userIdResult.Error);
+
+        var token = await _tokenRepository.FindValidRefreshTokenByUserId(userIdResult.Value);
 
         // should mark refresh as not valid anymore
         if (token is not null)
@@ -54,10 +67,13 @@ public class LoginUserCommandHandler : IRequestHandler<LoginUserCommand, AuthTok
         }
 
         // add new refresh token
-        var isAdded = await _tokenRepository.AddRefreshToken(refreshToken);
+        var isAdded = await _tokenRepository.AddRefreshToken(authPairResult.Value.refreshToken);
         if (!isAdded)
-            return new AuthTokens(null, null);
+            return Result.Failure<AuthTokens>(TokenError.AddError);
 
-        return new AuthTokens(accessToken: accessToken, refreshToken: refreshToken.Token.Value);
+        return new AuthTokens(
+            accessToken: authPairResult.Value.accessToken, 
+            refreshToken: authPairResult.Value.refreshToken.Token.Value, 
+            user.Email.Value);
     }
 }

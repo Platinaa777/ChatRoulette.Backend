@@ -16,13 +16,15 @@ public class RefreshTokenConfiguration : IEntityTypeConfiguration<RefreshToken>
             .HasColumnName("id")
             .ValueGeneratedNever();
         
-        builder.HasIndex(t => t.Token);
+        builder.HasIndex(t => t.Token)
+            .IsUnique();
 
         builder.Property(t => t.Token)
             .HasColumnName("token")
             .HasConversion(
                 to => to.Value,
-                from => new Token(from));
+                from => Token.Create(from).Value);
+            
 
         builder.Property(t => t.ExpiredAt)
             .HasColumnName("expired_at");
@@ -34,6 +36,6 @@ public class RefreshTokenConfiguration : IEntityTypeConfiguration<RefreshToken>
             .HasColumnName("user_id")
             .HasConversion(
                 to => to.Value,
-                from => UserId.CreateId(from));
+                from => UserId.CreateId(from).Value);
     }
 }

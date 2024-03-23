@@ -11,33 +11,27 @@ namespace EmailingService.Api.Controllers;
 [Route("[controller]")]
 public class EmailController : ControllerBase
 {
-    private readonly SmtpClientConfig _emailConfiguration;
     private readonly IDistributedCache _cache;
     private readonly IEventBusClient _bus;
 
     public EmailController(
-        SmtpClientConfig emailConfiguration,
         IDistributedCache cache,
         IEventBusClient bus)
     {
-        _emailConfiguration = emailConfiguration;
         _cache = cache;
         _bus = bus;
     }
 
-    [HttpPost("/confirm")]
-    public async Task<ActionResult<bool>> ActivateAccount([FromBody] ConfirmEmailRequest req, CancellationToken token = default)
+    [HttpGet("/confirm/{code}")]
+    public async Task<ActionResult<bool>> ActivateAccount([FromRoute] string code, CancellationToken token = default)
     {
-        var storedCode = await _cache.GetStringAsync(req.Email);
+        var storedEmail = await _cache.GetStringAsync(code);
 
-        if (storedCode == null)
+        if (storedEmail == null)
             return NotFound();
 
-        if (req.Code != storedCode)
-            return BadRequest();
+        await _bus.PublishAsync(new UserSubmittedEmail(storedEmail), token);
         
-        await _bus.PublishAsync(new UserSubmittedEmail(req.Email), token);
-        
-        return Ok(true);
+        return Redirect("http://localhost:3000");
     }
 }

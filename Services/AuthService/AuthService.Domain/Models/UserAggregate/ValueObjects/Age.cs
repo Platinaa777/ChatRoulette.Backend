@@ -1,4 +1,5 @@
-using AuthService.Domain.SeedWork;
+using AuthService.Domain.Errors.UserErrors;
+using AuthService.Domain.Shared;
 
 namespace AuthService.Domain.Models.UserAggregate.ValueObjects;
 
@@ -6,18 +7,21 @@ public class Age : ValueObject
 {
     public int Value { get; private set; }
 
-    public Age(int age)
+    public static Result<Age> Create(int age)
     {
         if (age <= 0 || age >= 100)
-            throw new ArgumentException($"Invalid age {age}");
-
+            return Result.Failure<Age>(UserError.InvalidAge);
+        return new Age(age);
+    }
+    private Age(int age)
+    {
         Value = age;
     }
 
-    public Age Increase(int value)
+    public Result<Age> Increase(int value)
     {
         if (value <= 0)
-            throw new ArgumentException("Value can not be less than zero in age increasing");
+            return Result.Failure<Age>(UserError.InvalidAgeIncrease);
 
         return new Age(Value + value);
     }

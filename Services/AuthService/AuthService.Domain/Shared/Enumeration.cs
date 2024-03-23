@@ -1,6 +1,6 @@
 using System.Reflection;
 
-namespace AuthService.Domain.SeedWork;
+namespace AuthService.Domain.Shared;
 
 public abstract class Enumeration : IComparable
 {

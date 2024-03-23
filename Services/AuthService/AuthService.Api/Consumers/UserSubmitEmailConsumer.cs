@@ -32,11 +32,18 @@ public class UserSubmitEmailConsumer : IConsumer<UserSubmittedEmail>
         {
             var mediator = scope.ServiceProvider.GetRequiredService<IMediator>();
             
-            var responseId = await mediator.Send(new ConfirmEmailCommand(context.Message.Email),
+            var responseIdResult = await mediator.Send(new ConfirmEmailCommand(context.Message.Email),
                 context.CancellationToken);
+
+            if (responseIdResult.IsFailure)
+            {
+                _logger.LogInformation($"Cant confirm user: {context.Message.Email}");
+                return;
+            }
+            
             _logger.LogInformation($"Confirmation email: {context.Message.Email}");
 
-            var userDetails = await _cache.GetAsync(responseId, context.CancellationToken);
+            var userDetails = await _cache.GetAsync(responseIdResult.Value, context.CancellationToken);
 
             if (userDetails == null)
             {

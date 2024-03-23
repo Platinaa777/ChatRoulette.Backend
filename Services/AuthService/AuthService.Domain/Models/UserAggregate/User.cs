@@ -1,6 +1,6 @@
 using AuthService.Domain.Models.UserAggregate.Enumerations;
 using AuthService.Domain.Models.UserAggregate.ValueObjects;
-using AuthService.Domain.SeedWork;
+using AuthService.Domain.Shared;
 
 namespace AuthService.Domain.Models.UserAggregate;
 

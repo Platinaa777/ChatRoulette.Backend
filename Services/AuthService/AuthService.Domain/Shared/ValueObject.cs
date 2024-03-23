@@ -1,4 +1,4 @@
-namespace AuthService.Domain.SeedWork;
+namespace AuthService.Domain.Shared;
 
 public abstract class ValueObject
 {

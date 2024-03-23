@@ -70,14 +70,18 @@ public class AuthController : ControllerBase
     {
         var response = await _mediator.Send(request.ToCommand());
 
-        if (response.RefreshToken is null)
-            return BadRequest(new AuthenticationResponse(false));
-        
-        return Ok(new AuthenticationResponse()
-        {
-            AccessToken = response.AccessToken!,
-            RefreshToken = response.RefreshToken!,
-            IsAuthenticate = true
-        });
+        if (response.IsFailure)
+            return BadRequest(new AuthenticationResponse(
+                isAuthenticate: false,
+                response.Value.Email,
+                new ErrorInfo(
+                    response.Error.Code, 
+                    response.Error.Message)));
+
+        return Ok(new AuthenticationResponse(
+            isAuthenticate: true,
+            response.Value.Email,
+            response.Value.AccessToken!, 
+            response.Value.RefreshToken!));
     }
 }

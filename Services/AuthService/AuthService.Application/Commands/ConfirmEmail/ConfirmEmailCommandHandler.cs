@@ -1,9 +1,11 @@
+using AuthService.Domain.Errors.UserErrors;
 using AuthService.Domain.Models.UserAggregate.Repos;
+using AuthService.Domain.Shared;
 using MediatR;
 
 namespace AuthService.Application.Commands.ConfirmEmail;
 
-public class ConfirmEmailCommandHandler : IRequestHandler<ConfirmEmailCommand, string>
+public class ConfirmEmailCommandHandler : IRequestHandler<ConfirmEmailCommand, Result<string>>
 {
     private readonly IUserRepository _userRepository;
 
@@ -12,18 +14,18 @@ public class ConfirmEmailCommandHandler : IRequestHandler<ConfirmEmailCommand, s
         _userRepository = userRepository;
     }
     
-    public async Task<string> Handle(ConfirmEmailCommand request, CancellationToken cancellationToken)
+    public async Task<Result<string>> Handle(ConfirmEmailCommand request, CancellationToken cancellationToken)
     {
         var user = await _userRepository.FindUserByEmailAsync(request.Email);
 
         if (user == null)
-            return null;
+            return Result.Failure<string>(UserError.UserNotFound);
         
         user.SubmitEmail();
         var result = await _userRepository.UpdateUserAsync(user);
 
         if (!result)
-            return null;
+            return Result.Failure<string>(UserError.CantUpdateUser);
         
         return user.Id;
     }

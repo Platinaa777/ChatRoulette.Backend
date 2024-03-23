@@ -29,14 +29,14 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
             .HasColumnName("username")
             .HasConversion(
                 name => name.Value, // to database
-                value => new Name(value) // from database
+                value => Name.Create(value).Value // from database
             );
 
         builder.Property(u => u.Email)
             .HasColumnName("email")
             .HasConversion(
                 email => email.Value, // to database
-                value => new Email(value) // from database
+                value => Email.Create(value).Value // from database
             );;
 
         builder.Property(u => u.IsSubmittedEmail)
@@ -51,7 +51,7 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
             .HasColumnName("password")
             .HasConversion(
                 name => name.Value, // to database
-                value => new Password(value) // from database
+                value => Password.Create(value).Value // from database
             );
         
         builder.Property(n => n.Salt)

@@ -1,16 +1,22 @@
-using AuthService.Domain.SeedWork;
+using AuthService.Domain.Errors.TokenErrors;
+using AuthService.Domain.Shared;
 
 namespace AuthService.Domain.Models.TokenAggregate.ValueObjects.Token;
 
 public class Token : ValueObject
 {
     public string Value { get; set; }
-    public Token(string token)
+    private Token(string token)
+    {
+        Value = token;
+    }
+
+    public static Result<Token> Create(string token)
     {
         if (string.IsNullOrWhiteSpace(token))
-            throw new ArgumentException("token cant be empty or null");
+            return Result.Failure<Token>(TokenError.EmptyToken);
 
-        Value = token;
+        return new Token(token);
     }
     
     protected override IEnumerable<object> GetEqualityComponents()
