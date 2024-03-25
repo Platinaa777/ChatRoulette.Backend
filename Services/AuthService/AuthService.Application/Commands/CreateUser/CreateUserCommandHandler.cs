@@ -7,6 +7,7 @@ using AuthService.Application.Security;
 using AuthService.Application.Utils;
 using AuthService.Domain.Errors.UserErrors;
 using AuthService.Domain.Models.TokenAggregate.Repos;
+using AuthService.Domain.Models.UserAggregate;
 using AuthService.Domain.Models.UserAggregate.Repos;
 using AuthService.Domain.Models.UserAggregate.ValueObjects;
 using AuthService.Domain.Shared;
@@ -43,12 +44,16 @@ public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, Resul
     
     public async Task<Result> Handle(CreateUserCommand request, CancellationToken cancellationToken)
     {
-        var user = request.ToDomain(_hasher);
-        var response = await _userRepository.AddUserAsync(user);
+        var userResult = request.ToDomain(_hasher);
         
-        user.AddUserExtraInformation(
-            Name.Create(request.NickName).Value,
-            Age.Create(request.Age).Value);
+        if (userResult.IsFailure)
+            return Result.Failure(userResult.Error);
+
+        var user = userResult.Value;
+        
+        var response = await _userRepository.AddUserAsync(userResult.Value);
+        
+        user.AddUserExtraInformation(user.NickName, user.Age);
 
         if (!response)
             return Result.Failure(UserError.UserAlreadyExist);

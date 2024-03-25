@@ -34,8 +34,8 @@ public class JwtTokenCreator : IJwtManager
         var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
         // Set token expiration time
-        var expiration = DateTime.UtcNow.AddMinutes(_jwt.ValidationMins);
-
+        var expiration = DateTime.Now.AddMinutes(_jwt.ValidationMins);
+        Console.WriteLine(expiration.ToLocalTime());
         // Create the JWT token
         var token = new JwtSecurityToken(
             claims: claims,

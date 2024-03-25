@@ -50,6 +50,7 @@ public class RefreshToken : Entity<string>
     }
 
     public bool IsExpired() => ExpiredAt > DateTime.Now;
+    public bool WasUsed() => IsUsed;
 
     private RefreshToken() {}
 }

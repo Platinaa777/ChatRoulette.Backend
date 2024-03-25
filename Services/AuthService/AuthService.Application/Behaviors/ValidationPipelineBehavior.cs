@@ -10,11 +10,11 @@ public class ValidationPipelineBehavior<TRequest, TResponse>
     where TRequest : IRequest<TResponse>
     where TResponse : Result
 {
-    private readonly IValidator<TRequest>? _validator;
+    private readonly IEnumerable<IValidator<TRequest>> _validators;
 
-    public ValidationPipelineBehavior(IValidator<TRequest>? validator)
+    public ValidationPipelineBehavior(IEnumerable<IValidator<TRequest>> validators)
     {
-        _validator = validator;
+        _validators = validators;
     }
 
     public async Task<TResponse> Handle(
@@ -22,23 +22,23 @@ public class ValidationPipelineBehavior<TRequest, TResponse>
         RequestHandlerDelegate<TResponse> next,
         CancellationToken cancellationToken)
     {
-        if (_validator is null)
-            return await next();
+        var failures = _validators
+            .Select(v => v.Validate(request))
+            .SelectMany(result => result.Errors)
+            .Where(error => error != null)
+            .ToList();
 
-        var validationResult = await _validator.ValidateAsync(request, cancellationToken);
-
-        if (validationResult.IsValid)
-            return await next();
-
-        var errors = validationResult.Errors
-            .Select(failure => new Error(
-                failure.PropertyName,
-                failure.ErrorMessage))
-            .ToArray();
-
-        if (!errors.Any())
-            return await next();
-
-        return (TResponse)Result.Failure(errors[0]);
+        if (failures.Any())
+        {
+            var errors = failures
+                .Select(failure => new Error(
+                    failure.PropertyName,
+                    failure.ErrorMessage))
+                .ToArray();
+            
+            return (TResponse)Result.Failure(errors[0]);    
+        }
+        
+        return await next();
     }
 }

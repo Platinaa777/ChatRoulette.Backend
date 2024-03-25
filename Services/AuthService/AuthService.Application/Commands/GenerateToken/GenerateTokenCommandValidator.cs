@@ -7,6 +7,5 @@ public class GenerateTokenCommandValidator : AbstractValidator<GenerateTokenComm
     public GenerateTokenCommandValidator()
     {
         RuleFor(x => x.RefreshToken).NotEmpty();
-        RuleFor(x => x.AccessToken).NotEmpty();
     }
 }

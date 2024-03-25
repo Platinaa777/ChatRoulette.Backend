@@ -21,11 +21,10 @@ public static class DefaultMapper
         };
     }
     
-    public static GenerateTokenCommand ToCommand(this TokenRequest request, string accessToken) =>
+    public static GenerateTokenCommand ToCommand(this TokenRequest request) =>
         new GenerateTokenCommand()
         {
             RefreshToken = request.RefreshToken,
-            AccessToken = accessToken
         };
     
     public static GetUserQuery ToQuery(this GetUserDataRequest request)

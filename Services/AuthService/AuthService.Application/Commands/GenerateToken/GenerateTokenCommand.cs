@@ -6,6 +6,5 @@ namespace AuthService.Application.Commands.GenerateToken;
 
 public class GenerateTokenCommand : IRequest<Result<AuthTokens>>
 {
-    public string AccessToken { get; set; }
     public string RefreshToken { get; set; }
 }

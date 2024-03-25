@@ -13,7 +13,7 @@ public class RoleType : Enumeration
     {
     }
 
-    public static RoleType? FromName(string name)
+    public static RoleType? FromName(string? name)
     {
         var collection = GetAll<RoleType>();
         foreach (var role in collection)

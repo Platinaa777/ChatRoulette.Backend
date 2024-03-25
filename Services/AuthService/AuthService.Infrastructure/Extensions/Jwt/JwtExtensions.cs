@@ -22,8 +22,10 @@ public static class JwtExtensions
                 opt.TokenValidationParameters = new TokenValidationParameters()
                 {
                     ValidateIssuerSigningKey = true,
+                    ValidateLifetime = true,
                     ValidateAudience = false,
                     ValidateIssuer = false,
+                    ClockSkew = TimeSpan.Zero,
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key))
                 };
             });

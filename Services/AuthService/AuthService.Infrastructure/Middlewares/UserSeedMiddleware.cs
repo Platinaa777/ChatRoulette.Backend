@@ -16,6 +16,7 @@ public class UserSeedMiddleware
     private readonly RequestDelegate _next;
     private readonly IServiceProvider _provider;
     private readonly ILogger<UserSeedMiddleware> _logger;
+    public static bool IsInitial = true;
 
     public UserSeedMiddleware(
         RequestDelegate next, 
@@ -29,18 +30,22 @@ public class UserSeedMiddleware
 
     public async Task InvokeAsync(HttpContext context)
     {
-        using var scope = _provider.CreateScope();
-        var services = scope.ServiceProvider;
-        try
+        if (IsInitial)
         {
-            //Seed Default Users
-            var repo = services.GetRequiredService<IUserRepository>();
-            var db = services.GetRequiredService<UserDb>();
-            await SeedExtensions.SeedEssentialsAsync(repo, db);
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, "An error occurred seeding the DB.");
+            using var scope = _provider.CreateScope();
+            var services = scope.ServiceProvider;
+            try
+            {
+                //Seed Default Users
+                var repo = services.GetRequiredService<IUserRepository>();
+                var db = services.GetRequiredService<UserDb>();
+                await SeedExtensions.SeedEssentialsAsync(repo, db);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred seeding the DB.");
+                IsInitial = false;
+            }
         }
 
         await _next(context);

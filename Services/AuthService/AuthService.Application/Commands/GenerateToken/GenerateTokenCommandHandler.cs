@@ -34,17 +34,6 @@ public class GenerateTokenCommandHandler : IRequestHandler<GenerateTokenCommand,
     
     public async Task<Result<AuthTokens>> Handle(GenerateTokenCommand request, CancellationToken cancellationToken)
     {
-        var principal = _jwtManager.GetClaimsPrincipal(request.AccessToken);
-        var userEmail = principal.FindFirst(ClaimTypes.Email);
-
-        if (userEmail is null)
-            return Result.Failure<AuthTokens>(TokenError.EmailClaimsNotFound);
-        
-        var user = await _userRepository.FindUserByEmailAsync(userEmail.Value);
-
-        if (user is null || !user.IsSubmittedEmail)
-            return Result.Failure<AuthTokens>(UserError.UnactivatedUser);
-
         Result<Token> requestRefreshToken = Token.Create(request.RefreshToken);
         if (requestRefreshToken.IsFailure)
             return Result.Failure<AuthTokens>(requestRefreshToken.Error);
@@ -54,6 +43,11 @@ public class GenerateTokenCommandHandler : IRequestHandler<GenerateTokenCommand,
         // cant find token or token was used in the past
         if (oldRefreshToken is null || oldRefreshToken.IsUsed || oldRefreshToken.IsExpired())
             return Result.Failure<AuthTokens>(TokenError.InvalidRefreshToken);
+        
+        var user = await _userRepository.FindUserByIdAsync(oldRefreshToken.UserId.Value);
+
+        if (user is null || !user.IsSubmittedEmail)
+            return Result.Failure<AuthTokens>(UserError.UnactivatedUser);
         
         // refresh token was recent, mark it as used => no one can use this token, because is invalid
         oldRefreshToken.SetUsed();

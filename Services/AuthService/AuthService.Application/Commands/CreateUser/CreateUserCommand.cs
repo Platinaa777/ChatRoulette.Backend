@@ -21,23 +21,20 @@ public class CreateUserCommand : IRequest<Result>
 
 public static class CreateUserCommandToDomain
 {
-    public static User ToDomain(this CreateUserCommand command, IHasherPassword hasher)
+    public static Result<User> ToDomain(this CreateUserCommand command, IHasherPassword hasher)
     {
         var roleType = RoleType.FromName(command.Role);
         var salt = hasher.GenerateSalt();
         
         var hashedPassword = hasher.HashPasswordWithSalt(command.Password, salt);
 
-        var userName = Name.Create(command.UserName);
-        
-        return new User(
-            id: Guid.NewGuid().ToString(),
-            Name.Create(command.UserName).Value,
-            Email.Create(command.Email).Value,
-            Name.Create(command.NickName).Value,
-            Age.Create(command.Age).Value,
-            Password.Create(command.Password).Value,
-            new Salt(salt),
-            roleType ?? RoleType.UnactivatedUser);
+        return User.Create(Guid.NewGuid(),
+            command.UserName,
+            command.Email,
+            command.NickName,
+            command.Age,
+            hashedPassword,
+            salt,
+            command.Role);
     }
 }

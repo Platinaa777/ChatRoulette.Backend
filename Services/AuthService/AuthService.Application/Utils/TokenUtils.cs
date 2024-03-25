@@ -17,7 +17,7 @@ public static class TokenUtils
         Result<RefreshToken> refreshTokenResult = RefreshToken.Create(
             id: Guid.NewGuid(),
             token: refreshTokenValue,
-            expiredAt: DateTime.Now.AddHours(2),
+            expiredAt: DateTime.Now.AddMinutes(1.5),
             isUsed: false,
             userId: user.Id);
 

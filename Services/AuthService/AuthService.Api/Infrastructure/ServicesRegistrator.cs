@@ -1,7 +1,6 @@
 using System.Reflection;
 using AuthService.Application.Behaviors;
 using AuthService.Application.Cache;
-using AuthService.Application.Commands;
 using AuthService.Application.Commands.CreateUser;
 using AuthService.Application.JwtConfig;
 using AuthService.Application.Security;
@@ -16,7 +15,7 @@ using AuthService.Infrastructure.Security;
 using FluentValidation;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using StackExchange.Redis;
+using Serilog;
 
 namespace AuthService.Api.Infrastructure;
 
@@ -31,7 +30,12 @@ public static class ServicesRegistrator
         builder.Services.AddMediatR(cfg => 
             cfg.RegisterServicesFromAssemblyContaining<CreateUserCommandHandler>());
 
-        builder.Services.AddScoped(
+        
+        builder.Services.AddTransient(
+            typeof(IPipelineBehavior<,>),
+            typeof(LoggingPipelineBehavior<,>));
+        
+        builder.Services.AddTransient(
             typeof(IPipelineBehavior<,>),
         typeof(ValidationPipelineBehavior<,>));
         
@@ -89,6 +93,16 @@ public static class ServicesRegistrator
         });
         
         builder.Services.AddScoped<ICacheStorage, RedisCache>();
+
+        return builder;
+    }
+
+    public static WebApplicationBuilder AddLoggingWithSerilog(this WebApplicationBuilder builder)
+    {
+        builder.Host.UseSerilog((ctx, config) =>
+        {
+            config.ReadFrom.Configuration(ctx.Configuration);
+        });
 
         return builder;
     }
