@@ -5,6 +5,7 @@ namespace AuthService.Application.Cache.Models;
 
 public class UserInformation
 {
+    public string Id { get; set; }
     public string Email { get; set; }
     public string NickName { get; set; }
     public string[] Preferences { get; set; }
@@ -16,6 +17,7 @@ public static class UserInformationCacheExtension
     public static UserInformation ToCache(this User user, string[] preferences)
         => new UserInformation()
         {
+            Id = user.Id,
             Email = user.Email.Value,
             NickName = user.NickName.Value,
             Preferences = preferences,
@@ -23,5 +25,5 @@ public static class UserInformationCacheExtension
         };
 
     public static UserFullyRegistered ToBusMessage(this UserInformation req)
-        => new UserFullyRegistered(req.Email, req.NickName, req.Preferences, req.Age);
+        => new UserFullyRegistered(req.Id, req.Email, req.NickName, req.Preferences, req.Age);
 }

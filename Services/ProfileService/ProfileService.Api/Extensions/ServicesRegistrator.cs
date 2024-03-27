@@ -1,7 +1,7 @@
 using Npgsql;
 using ProfileService.Application.Handlers;
 using ProfileService.Domain.Models.UserProfileAggregate.Repos;
-using ProfileService.Domain.SeedWork;
+using ProfileService.Domain.Shared;
 using ProfileService.Infrastructure.Configuration;
 using ProfileService.Infrastructure.Repos.ConnectionFactories;
 using ProfileService.Infrastructure.Repos.Implementations;

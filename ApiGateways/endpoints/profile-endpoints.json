@@ -1,0 +1,24 @@
+{
+  "email": {
+    "url": "http:localhost:8002/userprofile/",
+    "endpoints": [
+      {
+        "method": "GET",
+        "endpoint": "/get-user/{email}",
+        "info": "for production",
+        "token": "required",
+        "response": {
+          "success": {
+            "nickname": "your_nickname",
+            "email": "your_email",
+            "age": 5,
+            "preferences": [ "pref-1", "pref-2", "pref-3" ]
+          },
+          "failure": {
+            
+          }
+        }
+      }
+    ]
+  }
+}

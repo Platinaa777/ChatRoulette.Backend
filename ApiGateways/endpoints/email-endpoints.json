@@ -1,0 +1,21 @@
+{
+  "email": {
+    "url": "http:localhost:8004/email/",
+    "endpoints": [
+      {
+        "method": "GET",
+        "endpoint": "/confirm/{code}",
+        "info": "for production",
+        "token": "not required",
+        "response": {
+          "success": {
+            "redirect-to": "http:localhost:3000"
+          },
+          "failure": {
+            "send": "NotFound:404"
+          }
+        }
+      }
+    ]
+  }
+}

@@ -1,7 +1,5 @@
-using Chat.Application.Commands;
 using Chat.Application.Commands.CloseRoomCommand;
 using Chat.Application.Commands.ConnectUser;
-using Chat.Application.Queries;
 using Chat.Application.Queries.GetAllRooms;
 using Chat.Application.Queries.GetRoom;
 using Chat.Domain.Entities;

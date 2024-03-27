@@ -25,24 +25,4 @@ public class ChatController : ControllerBase
 
         return Ok(response);
     }
-    
-    // [HttpPost("leave-room")]
-    // public async Task<ActionResult<string>> LeaveRoom([FromBody] UserLeaveRequest user)
-    // {
-    // }
-    //
-    // [HttpGet("get-all-rooms")]
-    // public async Task<ActionResult<List<RoomInfoResponse>>> GetAllMeetings()
-    // {
-    // }
-    //
-    // [HttpGet("get-room/{id}")]
-    // public async Task<ActionResult<RoomInfoResponse>> GetRoomById(string id)
-    // {
-    // }
-    //
-    // [HttpGet("connect")]
-    // public async Task<ActionResult<bool>> CanConnectToRoom()
-    // {
-    // }
 }

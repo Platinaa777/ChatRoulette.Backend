@@ -1,4 +1,4 @@
-namespace ProfileService.Domain.SeedWork;
+namespace ProfileService.Domain.Shared;
 
 public interface IUnitOfWork : IDisposable
 {

@@ -15,10 +15,4 @@
       <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Reference Include="WaitingRoom.Core">
-        <HintPath>..\Chat.Application\bin\Debug\net7.0\WaitingRoom.Core.dll</HintPath>
-      </Reference>
-    </ItemGroup>
-
 </Project>

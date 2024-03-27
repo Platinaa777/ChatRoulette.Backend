@@ -16,6 +16,8 @@
 
     <ItemGroup>
       <PackageReference Include="MailKit" Version="4.3.0" />
+      <PackageReference Include="Serilog.AspNetCore" Version="8.0.2-dev-00336" />
+      <PackageReference Include="Serilog.Sinks.Elasticsearch" Version="10.0.0" />
     </ItemGroup>
 
 </Project>

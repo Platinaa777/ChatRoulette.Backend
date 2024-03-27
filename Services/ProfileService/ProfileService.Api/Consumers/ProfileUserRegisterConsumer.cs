@@ -28,9 +28,9 @@ public class ProfileUserRegisterConsumer : IConsumer<UserFullyRegistered>
                 context.CancellationToken);
 
             if (result)
-                _logger.LogInformation($"User was added: {context.Message.Email}");
+                _logger.LogInformation("User was added: {@Email}", context.Message.Email);
             else
-                _logger.LogError($"User was NOT added: {context.Message.Email}");
+                _logger.LogError("User was NOT added: {@Email}", context.Message.Email);
         }
     }
 }

@@ -1,5 +1,15 @@
 version: '3.9'
 
+volumes:
+  certs:
+    driver: local
+  esdata01:
+    driver: local
+  kibanadata:
+    driver: local
+  rabbitdata:
+    driver: local
+
 services:
   rabbit_mq:
     image: rabbitmq:3.12-management
@@ -8,3 +18,38 @@ services:
       - "5672:5672"
       - "15672:15672"
       - "15673:15672"
+    volumes:
+      - rabbitdata:/var/lib/rabbitmq
+    networks:
+      - chat-app
+
+  es01:
+    container_name: es01
+    image: docker.elastic.co/elasticsearch/elasticsearch:${STACK_VERSION}
+    ports:
+      - ${ES_PORT}:9200
+    volumes:
+      - esdata01:/usr/share/elastisearch/data
+    environment:
+      - node.name=es01
+      - cluster.name=${CLUSTER_NAME}
+      - discovery.type=single-node
+      - ELASTIC_PASSWORD=changeme # Этот пароль не используется, но может потребоваться
+      - xpack.security.enabled=false
+    networks:
+      - chat-app
+  
+  kibana:
+    depends_on:
+      - es01
+    container_name: kibana
+    image: docker.elastic.co/kibana/kibana:${STACK_VERSION}
+    ports:
+      - ${KIBANA_PORT}:5601
+    environment:
+      - ELASTICSEARCH_HOSTS=http://es01:9200
+    networks:
+      - chat-app
+
+networks:
+  chat-app:

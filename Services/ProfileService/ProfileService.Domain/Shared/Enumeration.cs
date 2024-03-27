@@ -1,9 +1,10 @@
 using System.Reflection;
 
-namespace ProfileService.Domain.SeedWork;
+namespace ProfileService.Domain.Shared;
 
 public abstract class Enumeration : IComparable
 {
+    private Enumeration() { }
     
     public string Name { get; private set; }
 

@@ -1,5 +1,5 @@
 using System.Collections.Concurrent;
-using ProfileService.Domain.SeedWork;
+using ProfileService.Domain.Shared;
 
 namespace ProfileService.Infrastructure.Repos.Interfaces;
 

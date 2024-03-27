@@ -1,8 +1,8 @@
 using Chat.Api.WebSockets;
-using Chat.Application.Commands;
 using Chat.Application.Commands.ConnectUser;
 using Chat.Domain.Repositories;
 using Chat.Infrastructure.Repositories;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,6 +16,11 @@ builder.Services.AddCors(corsOptions =>
             .AllowAnyMethod()
             .AllowAnyHeader();
     });
+});
+
+builder.Host.UseSerilog((ctx, config) =>
+{
+    config.ReadFrom.Configuration(ctx.Configuration);
 });
 
 builder.Services.AddSignalR(options =>
@@ -33,6 +38,11 @@ builder.Services.AddControllers();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
+
+// app.UseAuthentication();
+// app.UseAuthorization();
+
+app.UseSerilogRequestLogging();
 
 if (app.Environment.IsDevelopment())
 {
@@ -54,7 +64,7 @@ app.UseCors(x => x
 
 app.UseEndpoints(endpoints =>
 {
-    endpoints.MapHub<ChatHub>("/chat");
+    endpoints.MapHub<ChatHub>("/my-chat");
 });
 app.MapControllers();
 

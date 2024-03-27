@@ -1,7 +1,7 @@
 using System.Transactions;
 using MediatR;
 using Npgsql;
-using ProfileService.Domain.SeedWork;
+using ProfileService.Domain.Shared;
 using ProfileService.Infrastructure.Repos.ConnectionFactories;
 using ProfileService.Infrastructure.Repos.Interfaces;
 

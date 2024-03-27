@@ -1,5 +1,5 @@
 using System.Text.RegularExpressions;
-using ProfileService.Domain.SeedWork;
+using ProfileService.Domain.Shared;
 
 namespace ProfileService.Domain.Models.UserProfileAggregate.ValueObjects;
 

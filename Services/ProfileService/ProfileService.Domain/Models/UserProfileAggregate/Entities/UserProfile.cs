@@ -1,6 +1,6 @@
 using ProfileService.Domain.Models.UserProfileAggregate.Enumerations;
 using ProfileService.Domain.Models.UserProfileAggregate.ValueObjects;
-using ProfileService.Domain.SeedWork;
+using ProfileService.Domain.Shared;
 using Preference = ProfileService.Domain.Models.UserProfileAggregate.Enumerations.Preference;
 
 namespace ProfileService.Domain.Models.UserProfileAggregate.Entities;

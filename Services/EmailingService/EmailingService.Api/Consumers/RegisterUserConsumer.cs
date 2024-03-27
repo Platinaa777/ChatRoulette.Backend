@@ -1,4 +1,5 @@
 using EmailingService.Api.Configuration;
+using EmailingService.Api.EmailUtils;
 using EmailingService.Utils;
 using MailKit.Net.Smtp;
 using MailKit.Security;
@@ -27,7 +28,7 @@ public class RegisterUserConsumer : IConsumer<UserRegistered>
     
     public async Task Consume(ConsumeContext<UserRegistered> context)
     {
-        _logger.LogInformation($"Consumed message : email={context.Message.Email}; username={context.Message.UserName}");
+        _logger.LogInformation("Consumed message : email={@Email}; username={@UserName}", context.Message.Email, context.Message.UserName);
         
         var email = new MimeMessage();
         email.From.Add(MailboxAddress.Parse(_emailConfiguration.Email));
@@ -40,7 +41,7 @@ public class RegisterUserConsumer : IConsumer<UserRegistered>
         
         email.Body = new TextPart(MimeKit.Text.TextFormat.Html)
         {
-            Text = $"Confirm email: Please link to this {EmailApi.Url + code}"
+            Text = EmailTemplate.START + EmailApi.Url + code + EmailTemplate.END
         };
         await _cache.SetStringAsync(code,
             context.Message.Email,

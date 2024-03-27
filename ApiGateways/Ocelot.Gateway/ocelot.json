@@ -1,9 +1,9 @@
 {
   "Routes": [
     {
-      "UpstreamPathTemplate": "/auth",
+      "UpstreamPathTemplate": "/auth/test/",
       "UpstreamHttpMethod": [ "GET" ],
-      "DownstreamPathTemplate": "/auth",
+      "DownstreamPathTemplate": "/auth/test/",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
@@ -16,9 +16,9 @@
       }
     },
     {
-      "UpstreamPathTemplate": "/auth/user",
+      "UpstreamPathTemplate": "/auth/info/{email}/{password}",
       "UpstreamHttpMethod": [ "GET" ],
-      "DownstreamPathTemplate": "/auth/user",
+      "DownstreamPathTemplate": "/auth/info/{email}/{password}",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
@@ -43,13 +43,64 @@
       ]
     },
     {
-      "UpstreamPathTemplate": "/auth/token",
+      "UpstreamPathTemplate": "/auth/refresh-token",
       "UpstreamHttpMethod": [ "POST" ],
-      "DownstreamPathTemplate": "/auth/token",
+      "DownstreamPathTemplate": "/auth/refresh-token",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
           "Port": 8001,
+          "Host": "localhost"
+        }
+      ]
+    },
+    {
+      "UpstreamPathTemplate": "/auth/login",
+      "UpstreamHttpMethod": [ "POST" ],
+      "DownstreamPathTemplate": "/auth/login",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Port": 8001,
+          "Host": "localhost"
+        }
+      ]
+    },
+    {
+      "UpstreamPathTemplate": "/auth/logout",
+      "UpstreamHttpMethod": [ "POST" ],
+      "DownstreamPathTemplate": "/auth/logout",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Port": 8001,
+          "Host": "localhost"
+        }
+      ]
+    },
+    {
+      "UpstreamPathTemplate": "/userprofile/get-user/{email}",
+      "UpstreamHttpMethod": [ "GET" ],
+      "DownstreamPathTemplate": "/userprofile/get-user/{email}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Port": 8002,
+          "Host": "localhost"
+        }
+      ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+      }
+    },
+    {
+      "UpstreamPathTemplate": "/email/confirm/{code}",
+      "UpstreamHttpMethod": [ "GET" ],
+      "DownstreamPathTemplate": "/email/confirm/{code}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Port": 8004,
           "Host": "localhost"
         }
       ]

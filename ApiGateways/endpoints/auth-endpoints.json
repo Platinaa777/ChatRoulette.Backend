@@ -1,0 +1,132 @@
+{
+  "auth": {
+    "url": "http:localhost:8001/auth/",
+    "endpoints": [
+      {
+        "method": "GET",
+        "endpoint": "/test",
+        "info": "for development",
+        "token": "required"
+      },
+      {
+        "method": "GET",
+        "endpoint": "/info/{email}/{password}",
+        "info": "for development",
+        "token": "not required"
+      },
+      {
+        "method": "POST",
+        "endpoint": "/register",
+        "info": "for production",
+        "token": "not required",
+        "request": {
+          "body": {
+            "username": "your_name",
+            "nickname": "your_nickname",
+            "age": 5,
+            "email": "your_email",
+            "password": "####",
+            "preferences": ["pref_1", "pref_2", "..."]
+          }
+        } 
+      },
+      {
+        "method": "POST",
+        "endpoint": "/refresh-token",
+        "info": "for production",
+        "token": "required",
+        "request": {
+          "cookie": {
+            "http-only": {
+              "refresh-token": "token"
+            }
+          }
+        },
+        "response": {
+          "success": {
+            "body": {
+              "email": "your_email",
+              "isAuthenticate": true,
+              "accessToken": "jwt-token",
+              "error" : "null"
+            },
+            "cookie" : {
+              "refresh-token" : "new-generated-token (for 2 hours)"
+            }
+          },
+          "failure": {
+            "body": {
+              "email": "your_email",
+              "isAuthenticate": true,
+              "error" : {
+                "error-code": "code",
+                "error-message": "message"
+              }
+            }
+          }
+        }
+      },
+      {
+        "method": "POST",
+        "endpoint": "/login",
+        "info": "for production",
+        "token": "not required",
+        "request": {
+          "body": {
+            "email": "your_email",
+            "password": "your_password"
+          }
+        },
+        "response": {
+          "success": {
+            "body": {
+              "email": "your_email",
+              "isAuthenticate": true,
+              "accessToken": "jwt-token",
+              "error" : "null"
+            },
+            "cookie" : {
+              "refresh-token" : "new-generated-token (for 2 hours)"
+            }
+          },
+          "failure": {
+            "body": {
+              "email": "your_email",
+              "isAuthenticate": true,
+              "error" : {
+                "error-code": "code",
+                "error-message": "message"
+              }
+            }
+          }
+        }
+      },
+      {
+        "method": "POST",
+        "endpoint": "/logout",
+        "info": "for production",
+        "token": "not required",
+        "request": {
+          "cookie": {
+            "refresh-token": "your_refresh_token"
+          }
+        },
+        "response": {
+          "success": {
+            "delete" : {
+              "refresh-token" : "delete token from http only"
+            }
+          },
+          "failure": {
+            "delete" : {
+              "refresh-token" : "delete token from http only"
+            },
+            "body": {
+              "error-message": "message"
+            }
+          }
+        }
+      }
+    ]
+  }
+}

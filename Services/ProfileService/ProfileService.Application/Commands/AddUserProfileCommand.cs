@@ -8,6 +8,7 @@ namespace ProfileService.Application.Commands;
 
 public class AddUserProfileCommand : IRequest<bool>
 {
+    public string Id { get; set; }
     public string NickName { get; set; }
     public string Email { get; set; }
     public int Age { get; set; }
@@ -29,7 +30,7 @@ public static class AddUserProfileCommandToDomain
         }
         
         return new UserProfile(
-            id: Guid.NewGuid().ToString(),
+            id: command.Id,
             nickName: new Name(command.NickName),
             new Email(command.Email),
             new Age(command.Age),
@@ -39,6 +40,7 @@ public static class AddUserProfileCommandToDomain
     public static AddUserProfileCommand ToCommandFromMessage(this UserFullyRegistered req)
         => new AddUserProfileCommand()
         {
+            Id = req.Id,
             Email = req.Email,
             NickName = req.NickName,
             Age = req.Age,

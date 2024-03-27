@@ -1,7 +1,7 @@
 version: '3.9'
 
 networks:
-  chat-net:
+  chat-app:
     driver: bridge
 
 services:
@@ -14,7 +14,7 @@ services:
       POSTGRES_USER: denis
       POSTGRES_PASSWORD: denis123
       POSTGRES_DB: users_profile_db
-    networks: [ chat-net ]
+    networks: [ chat-app ]
     volumes:
       - ./pgdata:/var/lib/postgresql/data
 
