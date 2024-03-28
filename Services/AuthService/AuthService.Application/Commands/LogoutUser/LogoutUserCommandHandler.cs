@@ -2,7 +2,7 @@ using AuthService.Application.Models;
 using AuthService.Domain.Errors.TokenErrors;
 using AuthService.Domain.Errors.UserErrors;
 using AuthService.Domain.Models.TokenAggregate.Repos;
-using AuthService.Domain.Models.TokenAggregate.ValueObjects.Token;
+using AuthService.Domain.Models.TokenAggregate.ValueObjects;
 using AuthService.Domain.Models.UserAggregate.Repos;
 using AuthService.Domain.Shared;
 using MediatR;
@@ -13,13 +13,16 @@ public class LogoutUserCommandHandler : IRequestHandler<LogoutUserCommand, Resul
 {
     private readonly ITokenRepository _tokenRepository;
     private readonly IUserRepository _userRepository;
+    private readonly IUnitOfWork _unitOfWork;
 
     public LogoutUserCommandHandler(
         ITokenRepository tokenRepository,
-        IUserRepository userRepository)
+        IUserRepository userRepository,
+        IUnitOfWork unitOfWork)
     {
         _tokenRepository = tokenRepository;
         _userRepository = userRepository;
+        _unitOfWork = unitOfWork;
     }
     
     public async Task<Result> Handle(LogoutUserCommand request, CancellationToken cancellationToken)
@@ -41,6 +44,11 @@ public class LogoutUserCommandHandler : IRequestHandler<LogoutUserCommand, Resul
         // refresh token was recent, mark it as used => no one can use this token, because is invalid
         storedToken.SetUsed();
         
-        return Result.Create(await _tokenRepository.UpdateRefreshToken(storedToken));
+        if (!(await _tokenRepository.UpdateRefreshToken(storedToken)))
+            return Result.Failure<AuthTokens>(TokenError.UpdateError);
+
+        await _unitOfWork.SaveChangesAsync(cancellationToken);
+        
+        return Result.Create(true);
     }
 }

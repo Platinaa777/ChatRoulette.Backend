@@ -12,15 +12,15 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace AuthService.Migrations.Migrations
 {
     [DbContext(typeof(UserDb))]
-    [Migration("20240318212641_0005")]
-    partial class _0005
+    [Migration("20240328213935_0001")]
+    partial class _0001
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.15")
+                .HasAnnotation("ProductVersion", "7.0.17")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
@@ -51,7 +51,8 @@ namespace AuthService.Migrations.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Token");
+                    b.HasIndex("Token")
+                        .IsUnique();
 
                     b.ToTable("tokens", (string)null);
                 });

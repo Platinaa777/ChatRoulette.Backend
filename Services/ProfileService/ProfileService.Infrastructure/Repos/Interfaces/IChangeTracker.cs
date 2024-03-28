@@ -5,7 +5,7 @@ namespace ProfileService.Infrastructure.Repos.Interfaces;
 
 public interface IChangeTracker
 {
-    ConcurrentBag<Entity<string>> Entities { get; }
+    ConcurrentBag<AggregateRoot<Guid>> Entities { get; }
 
-    public void Track(Entity<string> entity);
+    public void Track(AggregateRoot<Guid> entity);
 }

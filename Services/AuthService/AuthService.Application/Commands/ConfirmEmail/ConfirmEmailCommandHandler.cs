@@ -8,10 +8,14 @@ namespace AuthService.Application.Commands.ConfirmEmail;
 public class ConfirmEmailCommandHandler : IRequestHandler<ConfirmEmailCommand, Result<string>>
 {
     private readonly IUserRepository _userRepository;
+    private readonly IUnitOfWork _unitOfWork;
 
-    public ConfirmEmailCommandHandler(IUserRepository userRepository)
+    public ConfirmEmailCommandHandler(
+        IUserRepository userRepository,
+        IUnitOfWork unitOfWork)
     {
         _userRepository = userRepository;
+        _unitOfWork = unitOfWork;
     }
     
     public async Task<Result<string>> Handle(ConfirmEmailCommand request, CancellationToken cancellationToken)
@@ -26,6 +30,8 @@ public class ConfirmEmailCommandHandler : IRequestHandler<ConfirmEmailCommand, R
 
         if (!result)
             return Result.Failure<string>(UserError.CantUpdateUser);
+
+        await _unitOfWork.SaveChangesAsync(cancellationToken);
         
         return user.Id;
     }

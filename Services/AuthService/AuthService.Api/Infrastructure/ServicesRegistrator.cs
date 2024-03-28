@@ -7,6 +7,7 @@ using AuthService.Application.Security;
 using AuthService.DataContext.Database;
 using AuthService.Domain.Models.TokenAggregate.Repos;
 using AuthService.Domain.Models.UserAggregate.Repos;
+using AuthService.Domain.Shared;
 using AuthService.Infrastructure.Cache;
 using AuthService.Infrastructure.Extensions.Jwt;
 using AuthService.Infrastructure.JwtGenerator;
@@ -65,8 +66,11 @@ public static class ServicesRegistrator
         {
             options.UseNpgsql(
                 builder.Configuration.GetConnectionString("PostgresSQL"),
-                b => b.MigrationsAssembly("AuthService.Migrations"));
+                b => 
+                    b.MigrationsAssembly("AuthService.Migrations"));
         });
+
+        builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
         return builder;
     }

@@ -1,5 +1,5 @@
 using Npgsql;
-using ProfileService.Application.Handlers;
+using ProfileService.Application.Queries.GetUserProfileQuery;
 using ProfileService.Domain.Models.UserProfileAggregate.Repos;
 using ProfileService.Domain.Shared;
 using ProfileService.Infrastructure.Configuration;

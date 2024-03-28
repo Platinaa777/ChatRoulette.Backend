@@ -1,8 +1,9 @@
 using Dapper;
 using Newtonsoft.Json;
 using Npgsql;
-using ProfileService.Domain.Models.UserProfileAggregate.Entities;
+using ProfileService.Domain.Models.UserProfileAggregate;
 using ProfileService.Domain.Models.UserProfileAggregate.Repos;
+using ProfileService.Domain.Models.UserProfileAggregate.Snapshot;
 using ProfileService.Domain.Models.UserProfileAggregate.ValueObjects;
 using ProfileService.Infrastructure.Repos.Interfaces;
 using ProfileService.Infrastructure.Repos.Models;
@@ -28,20 +29,16 @@ public class UserProfileRepository : IUserProfileRepository
 
         var connection = await _factory.CreateConnection(default);
         
-        IEnumerable<UserDb> result = await connection
-            .QueryAsync<UserDb>(NpgsqlQuery.sqlFindById, 
+        IEnumerable<UserProfileSnapshot> result = await connection
+            .QueryAsync<UserProfileSnapshot>(NpgsqlQuery.SqlFindById, 
                 param: parameters);
 
         var userDb = result.FirstOrDefault();
         
-        if (userDb == null) return null;
-        
-        var user = new UserProfile(
-            userDb.Id,
-            new Name(userDb.NickName),
-            new Email(userDb.Email),
-            new Age(userDb.Age),
-            userDb.GetDomainPreferenceList());
+        if (userDb == null) 
+            return null;
+
+        var user = UserProfile.RestoreFromSnapshot(userDb);
         
         _tracker.Track(user);
 
@@ -54,20 +51,15 @@ public class UserProfileRepository : IUserProfileRepository
 
         var connection = await _factory.CreateConnection(default);
 
-        IEnumerable<UserDb> result = await connection
-                                .QueryAsync<UserDb>(NpgsqlQuery.sqlFindByEmail, 
+        IEnumerable<UserProfileSnapshot> result = await connection
+                                .QueryAsync<UserProfileSnapshot>(NpgsqlQuery.SqlFindByEmail, 
                                                     param: parameters);
 
         var userDb = result.FirstOrDefault();
 
         if (userDb == null) return null;
 
-        var user = new UserProfile(
-            userDb.Id,
-            new Name(userDb.NickName),
-            new Email(userDb.Email),
-            new Age(userDb.Age),
-            userDb.GetDomainPreferenceList());
+        var user = UserProfile.RestoreFromSnapshot(userDb);
         
         _tracker.Track(user);
         
@@ -76,21 +68,17 @@ public class UserProfileRepository : IUserProfileRepository
 
     public async Task<bool> AddUserAsync(UserProfile user)
     {
-        var userDb = await FindUserByEmailAsync(user.Email.Value);
-
-        if (userDb != null) return false;
-
         var parameters = new
         {
             Id = user.Id,
             NickName = user.NickName.Value,
             Email = user.Email.Value,
             Age = user.Age.Value,
-            Preferences = JsonConvert.SerializeObject(user.Preferences
-                .Select(x => x.Name).ToList())
+            Rating = user.Rating.Value,
+            Friends = JsonConvert.SerializeObject(user.Friends.Select(x => x.Value.ToString()))
         };
 
-        var command = new CommandDefinition(NpgsqlQuery.sqlAddUser, parameters);
+        var command = new CommandDefinition(NpgsqlQuery.SqlAddUser, parameters);
 
         var connection = await _factory.CreateConnection(default);
         var result = await connection.ExecuteAsync(command);
@@ -100,25 +88,39 @@ public class UserProfileRepository : IUserProfileRepository
 
     public async Task<bool> UpdateUserAsync(UserProfile user)
     {
-        var userDb = await FindUserByEmailAsync(user.Email.Value);
-
-        if (userDb != null) return false;
-
         var parameters = new
         {
             Id = user.Id,
             NickName = user.NickName.Value,
             Email = user.Email.Value,
             Age = user.Age.Value,
-            Preferences = JsonConvert.SerializeObject(user.Preferences
-                .Select(x => x.Name).ToArray())
+            Rating = user.Rating.Value,
+            Friends = JsonConvert.SerializeObject(user.Friends.Select(x => x.Value.ToString()))
         };
 
-        var command = new CommandDefinition(NpgsqlQuery.sqlUpdateUser, parameters);
+        var command = new CommandDefinition(NpgsqlQuery.SqlUpdateUser, parameters);
 
         var connection = await _factory.CreateConnection(default);
         var result = await connection.ExecuteAsync(command);
 
         return result == 1;
+    }
+
+    public async Task<List<UserProfile>> GetAllUsers()
+    {
+        var connection = await _factory.CreateConnection(default);
+        
+        IEnumerable<UserProfileSnapshot> result = await connection
+            .QueryAsync<UserProfileSnapshot>(NpgsqlQuery.SqlGetAllUsers);
+
+        List<UserProfile> profiles = new();
+        foreach (var profile in result)
+        {
+            var domainProfile = UserProfile.RestoreFromSnapshot(profile);
+            _tracker.Track(domainProfile);
+            profiles.Add(domainProfile);
+        }
+        
+        return profiles;
     }
 }

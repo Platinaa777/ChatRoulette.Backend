@@ -1,7 +1,7 @@
 using AuthService.Domain.Errors.TokenErrors;
 using AuthService.Domain.Shared;
 
-namespace AuthService.Domain.Models.TokenAggregate.ValueObjects.Token;
+namespace AuthService.Domain.Models.TokenAggregate.ValueObjects;
 
 public class UserId : ValueObject
 {

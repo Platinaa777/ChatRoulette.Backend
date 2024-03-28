@@ -4,7 +4,7 @@ using AuthService.Domain.Shared;
 
 namespace AuthService.Domain.Models.UserAggregate;
 
-public class User : Entity<string>
+public class User : AggregateRoot
 {
     public User(
         string id,
@@ -59,21 +59,35 @@ public class User : Entity<string>
         Salt saltResult = new Salt(salt);
         RoleType roleType = RoleType.FromName(role) is null ? RoleType.UnactivatedUser : RoleType.FromName(role)!;
 
-        return Start.From<User>().Then<User, Name>()
-            .Check(Name.Create, userName, out var userNameValue).Then<Name, Email>()
-            .Check(Email.Create, email, out var emailValue).Then<Email, Name>()
-            .Check(Name.Create, nickName, out var nickNameValue).Then<Name, Age>()
-            .Check(Age.Create, age, out var ageValue).Then<Age, Password>()
-            .Check(Password.Create, password, out var passwordValue)
-            .GetResult(new User(
-                id.ToString(),
-                userNameValue,
-                emailValue,
-                nickNameValue,
-                ageValue,
-                passwordValue,
-                saltResult,
-                roleType));
+        var userNameResult = Name.Create(userName);
+        if (userNameResult.IsFailure)
+            return Result.Failure<User>(userNameResult.Error);
+
+        var emailResult = Email.Create(email);
+        if (emailResult.IsFailure)
+            return Result.Failure<User>(emailResult.Error);
+
+        var nickNameResult = Name.Create(nickName);
+        if (nickNameResult.IsFailure)
+            return Result.Failure<User>(nickNameResult.Error);
+        
+        var ageResult = Age.Create(age);
+        if (ageResult.IsFailure)
+            return Result.Failure<User>(ageResult.Error);
+        
+        var passwordResult = Password.Create(password);
+        if (passwordResult.IsFailure)
+            return Result.Failure<User>(passwordResult.Error);
+
+        return new User(
+            id.ToString(),
+            userNameResult.Value,
+            emailResult.Value,
+            nickNameResult.Value,
+            ageResult.Value,
+            passwordResult.Value,
+            saltResult,
+            roleType);
     }
     
     private User() : base() {}

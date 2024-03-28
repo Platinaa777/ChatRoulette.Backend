@@ -17,7 +17,6 @@ public static class DefaultMapper
             Age = request.Age ?? -1,
             Email = request.Email,
             Password = request.Password,
-            Preferences = request.Preferences
         };
     }
     

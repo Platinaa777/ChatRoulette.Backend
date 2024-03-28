@@ -2,6 +2,7 @@ using MassTransit;
 using MassTransit.Contracts.UserEvents;
 using MediatR;
 using ProfileService.Application.Commands;
+using ProfileService.Application.Commands.AddUserProfileCommand;
 
 namespace ProfileService.Api.Consumers;
 
@@ -20,17 +21,15 @@ public class ProfileUserRegisterConsumer : IConsumer<UserFullyRegistered>
     
     public async Task Consume(ConsumeContext<UserFullyRegistered> context)
     {
-        using (var scope = _scopeFactory.CreateScope())
-        {
-            var mediator = scope.ServiceProvider.GetRequiredService<IMediator>();
+        using var scope = _scopeFactory.CreateScope();
+        var mediator = scope.ServiceProvider.GetRequiredService<IMediator>();
 
-            var result = await mediator.Send(context.Message.ToCommandFromMessage(),
-                context.CancellationToken);
+        var result = await mediator.Send(context.Message.ToCommandFromMessage(),
+            context.CancellationToken);
 
-            if (result)
-                _logger.LogInformation("User was added: {@Email}", context.Message.Email);
-            else
-                _logger.LogError("User was NOT added: {@Email}", context.Message.Email);
-        }
+        if (result.IsSuccess)
+            _logger.LogInformation("User was added: {@Email}", context.Message.Email);
+        else
+            _logger.LogError("User was NOT added: {@Email}", context.Message.Email);
     }
 }

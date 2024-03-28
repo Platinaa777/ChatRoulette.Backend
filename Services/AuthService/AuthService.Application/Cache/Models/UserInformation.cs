@@ -14,16 +14,15 @@ public class UserInformation
 
 public static class UserInformationCacheExtension
 {
-    public static UserInformation ToCache(this User user, string[] preferences)
+    public static UserInformation ToCache(this User user)
         => new UserInformation()
         {
             Id = user.Id,
             Email = user.Email.Value,
             NickName = user.NickName.Value,
-            Preferences = preferences,
             Age = user.Age.Value
         };
 
     public static UserFullyRegistered ToBusMessage(this UserInformation req)
-        => new UserFullyRegistered(req.Id, req.Email, req.NickName, req.Preferences, req.Age);
+        => new UserFullyRegistered(req.Id, req.Email, req.NickName, req.Age);
 }

@@ -6,14 +6,14 @@ namespace ProfileService.Infrastructure.Repos.Implementations;
 
 public class ChangeTracker : IChangeTracker
 {
-    public ConcurrentBag<Entity<string>> Entities { get; }
+    public ConcurrentBag<AggregateRoot<Guid>> Entities { get; }
 
     public ChangeTracker()
     {
-        Entities = new ConcurrentBag<Entity<string>>();
+        Entities = new ConcurrentBag<AggregateRoot<Guid>>();
     }
     
-    public void Track(Entity<string> entity)
+    public void Track(AggregateRoot<Guid> entity)
     {
         Entities.Add(entity);
     }

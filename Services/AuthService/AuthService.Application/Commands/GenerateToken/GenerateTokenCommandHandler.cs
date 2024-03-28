@@ -6,7 +6,7 @@ using AuthService.Domain.Errors.TokenErrors;
 using AuthService.Domain.Errors.UserErrors;
 using AuthService.Domain.Models.TokenAggregate;
 using AuthService.Domain.Models.TokenAggregate.Repos;
-using AuthService.Domain.Models.TokenAggregate.ValueObjects.Token;
+using AuthService.Domain.Models.TokenAggregate.ValueObjects;
 using AuthService.Domain.Models.UserAggregate.Repos;
 using AuthService.Domain.Shared;
 using MediatR;
@@ -18,18 +18,18 @@ public class GenerateTokenCommandHandler : IRequestHandler<GenerateTokenCommand,
     private readonly IUserRepository _userRepository;
     private readonly IJwtManager _jwtManager;
     private readonly ITokenRepository _tokenRepository;
-    private readonly IHasherPassword _hasher;
+    private readonly IUnitOfWork _unitOfWork;
 
     public GenerateTokenCommandHandler(
         IUserRepository userRepository,
         IJwtManager jwtManager,
         ITokenRepository tokenRepository,
-        IHasherPassword hasher)
+        IUnitOfWork unitOfWork)
     {
         _userRepository = userRepository;
         _jwtManager = jwtManager;
         _tokenRepository = tokenRepository;
-        _hasher = hasher;
+        _unitOfWork = unitOfWork;
     }
     
     public async Task<Result<AuthTokens>> Handle(GenerateTokenCommand request, CancellationToken cancellationToken)
@@ -61,6 +61,8 @@ public class GenerateTokenCommandHandler : IRequestHandler<GenerateTokenCommand,
         var isAdded = await _tokenRepository.AddRefreshToken(authPairResult.Value.refreshToken);
         if (!isAdded)
             return Result.Failure<AuthTokens>(TokenError.AddError);
+
+        await _unitOfWork.SaveChangesAsync(cancellationToken);
 
         return new AuthTokens(
             authPairResult.Value.accessToken,

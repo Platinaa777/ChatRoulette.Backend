@@ -1,5 +1,5 @@
 using AuthService.Domain.Models.TokenAggregate;
-using AuthService.Domain.Models.TokenAggregate.ValueObjects.Token;
+using AuthService.Domain.Models.TokenAggregate.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

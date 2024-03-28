@@ -17,7 +17,7 @@ namespace AuthService.Migrations.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.15")
+                .HasAnnotation("ProductVersion", "7.0.17")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
@@ -48,7 +48,8 @@ namespace AuthService.Migrations.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Token");
+                    b.HasIndex("Token")
+                        .IsUnique();
 
                     b.ToTable("tokens", (string)null);
                 });

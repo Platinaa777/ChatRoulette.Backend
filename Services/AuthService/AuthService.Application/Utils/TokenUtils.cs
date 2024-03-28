@@ -1,6 +1,5 @@
 using AuthService.Application.Security;
 using AuthService.Domain.Models.TokenAggregate;
-using AuthService.Domain.Models.TokenAggregate.ValueObjects.Token;
 using AuthService.Domain.Models.UserAggregate;
 using AuthService.Domain.Shared;
 

@@ -1,10 +1,10 @@
 using AuthService.Domain.Errors.TokenErrors;
-using AuthService.Domain.Models.TokenAggregate.ValueObjects.Token;
+using AuthService.Domain.Models.TokenAggregate.ValueObjects;
 using AuthService.Domain.Shared;
 
 namespace AuthService.Domain.Models.TokenAggregate;
 
-public class RefreshToken : Entity<string>
+public class RefreshToken : AggregateRoot
 {
     public static Result<RefreshToken> Create(Guid id, string token, DateTime expiredAt, bool isUsed, string userId)
     {

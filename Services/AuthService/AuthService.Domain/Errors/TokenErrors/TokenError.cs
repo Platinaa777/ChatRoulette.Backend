@@ -10,6 +10,7 @@ public class TokenError : Error
     public static readonly Error EmailClaimsNotFound = new("Token.Error.Jwt", "Email not found in claims");
     public static readonly Error InvalidRefreshToken = new("Token.Error", "Invalid refresh token");
     public static readonly Error AddError = new("Token.Error.Repo", "Error with adding token");
+    public static readonly Error UpdateError = new("Token.Error.Repo", "Error with updating token");
 
     public TokenError(string code, string message) : base(code, message) { }
 }

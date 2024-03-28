@@ -37,6 +37,7 @@ public static class SeedExtensions
         admin.SubmitEmail();
 
         await repository.AddUserAsync(admin);
+        await context.SaveChangesAsync();
     }
 
     public static WebApplicationBuilder AddUsersSeed(this WebApplicationBuilder builder)

@@ -14,8 +14,10 @@ public class CreateUserProfile : Migration
                 nick_name TEXT NOT NULL,
                 email TEXT NOT NULL,
                 age int,
-                preferences text,
-                CONSTRAINT EMAIL_UNIQUE_CHECK UNIQUE (email));
+                rating bigint,
+                friends text,
+                CONSTRAINT EMAIL_UNIQUE_CHECK UNIQUE (email),
+                CONSTRAINT RATING_POSITIVE CHECK (rating >= 0));
         ");
     }
 

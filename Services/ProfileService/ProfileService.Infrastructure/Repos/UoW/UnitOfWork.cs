@@ -34,13 +34,14 @@ public class UnitOfWork : IUnitOfWork
 
     public async Task SaveChangesAsync(CancellationToken token)
     {
-        if (_transaction == null) throw new TransactionException("transaction is not started");
+        if (_transaction == null)
+            throw new TransactionException("transaction is not started");
         
-        var domainEvents = new Queue<INotification>(_tracker.Entities
-                .SelectMany(events =>
+        var domainEvents = new Queue<INotification>(
+            _tracker.Entities.SelectMany(events =>
                     {
-                        var collectionEvents = events.DomainEvents;
-                        events.DomainEvents.Clear();
+                        var collectionEvents = events.GetDomainEvents();
+                        events.ClearDomainEvents();
                         return collectionEvents;
                     }));
 

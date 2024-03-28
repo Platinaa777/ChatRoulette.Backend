@@ -1,4 +1,4 @@
-using AuthService.Domain.Models.TokenAggregate.ValueObjects.Token;
+using AuthService.Domain.Models.TokenAggregate.ValueObjects;
 
 namespace AuthService.Domain.Models.TokenAggregate.Repos;
 

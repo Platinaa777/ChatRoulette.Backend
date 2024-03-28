@@ -20,26 +20,23 @@ namespace AuthService.Application.Commands.CreateUser;
 public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, Result>
 {
     private readonly IUserRepository _userRepository;
-    private readonly ITokenRepository _tokenRepository;
     private readonly IEventBusClient _eventBusClient;
     private readonly ICacheStorage _cache;
     private readonly IHasherPassword _hasher;
-    private readonly IJwtManager _jwtManager;
+    private readonly IUnitOfWork _unitOfWork;
 
     public CreateUserCommandHandler(
         IUserRepository userRepository,
         IEventBusClient eventBusClient,
         ICacheStorage cache,
         IHasherPassword hasher,
-        IJwtManager jwtManager,
-        ITokenRepository tokenRepository)
+        IUnitOfWork unitOfWork)
     {
         _userRepository = userRepository;
         _eventBusClient = eventBusClient;
         _cache = cache;
         _hasher = hasher;
-        _jwtManager = jwtManager;
-        _tokenRepository = tokenRepository;
+        _unitOfWork = unitOfWork;
     }
     
     public async Task<Result> Handle(CreateUserCommand request, CancellationToken cancellationToken)
@@ -62,9 +59,11 @@ public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, Resul
         await _eventBusClient.PublishAsync(user.ToBusMessage(), cancellationToken);
         // cache 
         await _cache.SetAsync(user.Id, 
-            value: JsonConvert.SerializeObject(user.ToCache(request.Preferences)), 
+            value: JsonConvert.SerializeObject(user.ToCache()), 
             cancellationToken);
 
+        await _unitOfWork.SaveChangesAsync(cancellationToken);
+        
         return Result.Success();
     }
 }

@@ -38,7 +38,11 @@ services:
       - xpack.security.enabled=false
     networks:
       - chat-app
-  
+    deploy:
+      resources:
+        limits:
+          memory: 1G
+
   kibana:
     depends_on:
       - es01

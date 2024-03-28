@@ -1,6 +1,6 @@
 namespace ProfileService.Domain.Shared;
 
-public abstract class Entity<TKey> : IEquatable<Entity<string>> 
+public abstract class Entity<TKey> : IEquatable<Entity<TKey>> 
     where TKey : IEquatable<TKey>
 {
     public TKey Id { get; init; }
@@ -15,13 +15,22 @@ public abstract class Entity<TKey> : IEquatable<Entity<string>>
         return other is Entity<TKey> obj && Equals(obj);
     }
 
-    public override int GetHashCode() =>
-        Id.GetHashCode() * 137;
-    
+    public override int GetHashCode()
+    {
+        return EqualityComparer<TKey>.Default.GetHashCode(Id);
+    }
+
 
     public bool Equals(Entity<string>? other) =>
         other is not null && Id.Equals(other.Id);
 
     
     protected Entity() {}
+
+    public bool Equals(Entity<TKey>? other)
+    {
+        if (ReferenceEquals(null, other)) return false;
+        if (ReferenceEquals(this, other)) return true;
+        return EqualityComparer<TKey>.Default.Equals(Id, other.Id);
+    }
 }

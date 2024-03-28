@@ -16,7 +16,6 @@ public class CreateUserCommand : IRequest<Result>
     public int Age { get; set; }
     public string Role { get; set; }
     public string Password { get; set; }
-    public string[] Preferences { get; set; }
 }
 
 public static class CreateUserCommandToDomain
