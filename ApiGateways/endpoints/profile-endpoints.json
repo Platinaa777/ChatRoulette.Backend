@@ -18,6 +18,73 @@
             
           }
         }
+      },
+      {
+        "method": "GET",
+        "endpoint": "/get-top-users",
+        "info": "for production",
+        "token": "required",
+        "response": {
+          "success": {
+            "profiles" : [
+              {
+                "nickname" : "user_nickname",
+                "rating" : "user_rating"
+              }
+            ]
+          },
+          "failure": {
+            "body": {
+              "error-code" : "code of error",
+              "error-message" : "error message"
+            }
+          }
+        }
+      },
+      {
+        "method": "POST",
+        "endpoint": "/add-user",
+        "info": "for development",
+        "token": "not required",
+        "request" : {
+          "body": {
+            "nickname" : "user_nickname",
+            "email": "user_email",
+            "age" : "user_age"
+          }
+        },
+        "response": {
+          "success": {
+          },
+          "failure": {
+            "body": {
+              "error-code" : "code of error",
+              "error-message" : "error message"
+            }
+          }
+        }
+      },
+      {
+        "method": "PUT",
+        "endpoint": "/change-user-nickname",
+        "info": "for production",
+        "token": "required",
+        "request" : {
+          "body": {
+            "nickname" : "user_nickname",
+            "email": "user_email"
+          }
+        },
+        "response": {
+          "success": {
+          },
+          "failure": {
+            "body": {
+              "error-code" : "code of error",
+              "error-message" : "error message"
+            }
+          }
+        }
       }
     ]
   }

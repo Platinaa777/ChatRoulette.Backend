@@ -13,6 +13,9 @@
       ],
       "AuthenticationOptions": {
         "AuthenticationProviderKey": "Bearer"
+      },
+      "RouteClaimsRequirement": {
+        "Role" : [ "Admin", "ActivatedUser" ]
       }
     },
     {
@@ -28,6 +31,9 @@
       ],
       "AuthenticationOptions": {
         "AuthenticationProviderKey": "Bearer"
+      },
+      "RouteClaimsRequirement": {
+        "Role" : [ "Admin", "ActivatedUser" ]
       }
     },
     {
@@ -52,7 +58,13 @@
           "Port": 8001,
           "Host": "localhost"
         }
-      ]
+      ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+      },
+      "RouteClaimsRequirement": {
+        "Role" : [ "Admin", "ActivatedUser" ]
+      }
     },
     {
       "UpstreamPathTemplate": "/auth/login",
@@ -91,6 +103,57 @@
       ],
       "AuthenticationOptions": {
         "AuthenticationProviderKey": "Bearer"
+      },
+      "RouteClaimsRequirement": {
+        "Role" : [ "Admin", "ActivatedUser" ]
+      }
+    },
+    {
+      "UpstreamPathTemplate": "/userprofile/get-top-users/{email}",
+      "UpstreamHttpMethod": [ "GET" ],
+      "DownstreamPathTemplate": "/userprofile/get-user/{email}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Port": 8002,
+          "Host": "localhost"
+        }
+      ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+      },
+      "RouteClaimsRequirement": {
+        "Role" : [ "Admin", "ActivatedUser" ]
+      }
+    },
+    {
+      "UpstreamPathTemplate": "/userprofile/add-user",
+      "UpstreamHttpMethod": [ "POST" ],
+      "DownstreamPathTemplate": "/userprofile/add-user",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Port": 8002,
+          "Host": "localhost"
+        }
+      ]
+    },
+    {
+      "UpstreamPathTemplate": "/userprofile/change-user-nickname",
+      "UpstreamHttpMethod": [ "PUT" ],
+      "DownstreamPathTemplate": "/userprofile/change-user-nickname",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Port": 8002,
+          "Host": "localhost"
+        }
+      ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+      },
+      "RouteClaimsRequirement": {
+        "Role" : [ "Admin", "ActivatedUser" ]
       }
     },
     {
@@ -103,6 +166,24 @@
           "Port": 8004,
           "Host": "localhost"
         }
+      ]
+    },
+    {
+      "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE", "OPTIONS" ],
+      "UpstreamPathTemplate": "/api/chat/negotiate",
+      "DownstreamPathTemplate": "/my-chat",
+      "DownstreamScheme": "ws",
+      "DownstreamHostAndPorts": [
+        { "Host": "localhost", "Port": 8003 }
+      ]
+    },
+    {
+      "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE", "OPTIONS" ],
+      "UpstreamPathTemplate": "/api/chat",
+      "DownstreamPathTemplate": "/my-chat",
+      "DownstreamScheme": "ws",
+      "DownstreamHostAndPorts": [
+        { "Host": "localhost", "Port": 8003 }
       ]
     }
   ],

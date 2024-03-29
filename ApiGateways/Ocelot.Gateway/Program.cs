@@ -29,11 +29,13 @@ builder.Host.UseSerilog((ctx, config) =>
 
 builder.AddJwtAuthentication(builder.Configuration.GetSection("Jwt:Key").Value!);
 builder.Services.AddOcelot(builder.Configuration);
+builder.Services.AddSignalR();
 builder.Services.AddSingleton<LoggingRequestMiddleware>();
 
 var app = builder.Build();
 
 app.UseSerilogRequestLogging();
+app.UseMiddleware<LoggingRequestMiddleware>();
 
 app.UseCors(x => x
     .AllowAnyMethod()
@@ -41,10 +43,16 @@ app.UseCors(x => x
     .SetIsOriginAllowed(origin => true) // allow any origin
     .AllowCredentials()); // allow credentials
 
-await app.UseOcelot();
-app.UseMiddleware<LoggingRequestMiddleware>();
+var configuration = new OcelotPipelineConfiguration
+{
+    AuthorizationMiddleware = async (context, next) =>
+    {
+        await next.Invoke();
+    }
+};
+app.UseWebSockets();
+await app.UseOcelot(configuration);
 
 app.UseAuthentication();
-app.UseAuthorization();
 
 app.Run();

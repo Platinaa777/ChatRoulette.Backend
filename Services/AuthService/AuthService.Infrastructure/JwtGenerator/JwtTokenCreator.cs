@@ -26,7 +26,7 @@ public class JwtTokenCreator : IJwtManager
         {
             new Claim(ClaimTypes.Name, user.UserName.Value),
             new Claim(ClaimTypes.Email, user.Email.Value),
-            new Claim(ClaimTypes.Role, user.Role.Name)
+            new Claim("Role", user.Role.Name)
         };
 
         // Generate signing credentials using a secret key

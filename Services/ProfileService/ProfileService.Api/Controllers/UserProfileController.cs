@@ -40,7 +40,7 @@ public class UserProfileController : ControllerBase
         var result = await _mediator.Send(new GetTopUsersQuery());
 
         if (result.IsFailure)
-            return BadRequest(result.Error);
+            return BadRequest(result);
 
         return Ok(result);
     }

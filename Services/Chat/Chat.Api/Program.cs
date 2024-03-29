@@ -63,13 +63,14 @@ app.UseRouting();
 app.UseCors(x => x
     .AllowAnyMethod()
     .AllowAnyHeader()
-    .SetIsOriginAllowed(origin => true) // allow any origin
-    .AllowCredentials()); // allow credentials
+    .SetIsOriginAllowed(origin => true)
+    .AllowCredentials());
 
-app.UseEndpoints(endpoints =>
+app.UseEndpoints(routes =>
 {
-    endpoints.MapHub<ChatHub>("/my-chat");
+    routes.MapHub<ChatHub>("/my-chat");
 });
+
 app.MapControllers();
 
 app.Run();
