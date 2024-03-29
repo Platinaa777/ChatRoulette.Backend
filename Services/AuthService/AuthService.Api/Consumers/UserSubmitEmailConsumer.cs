@@ -37,17 +37,20 @@ public class UserSubmitEmailConsumer : IConsumer<UserSubmittedEmail>
 
             if (responseIdResult.IsFailure)
             {
-                _logger.LogInformation($"Cant confirm user: {context.Message.Email}");
+                _logger.LogInformation("Cant confirm user: {@Email}", context.Message.Email);
                 return;
             }
             
-            _logger.LogInformation($"Confirmation email: {context.Message.Email}");
+            _logger.LogInformation("Confirmation email: {@Email}", context.Message.Email);
 
-            var userDetails = await _cache.GetAsync(responseIdResult.Value, context.CancellationToken);
+            var userDetails = await _cache.GetAsync(
+                responseIdResult.Value,
+                context.CancellationToken);
 
             if (userDetails == null)
             {
-                _logger.LogError($"NULL USER DETAILS {context.Message.Email}");
+                _logger.LogError("User has not account details {@Email}",
+                    context.Message.Email);
                 return;
             }
 

@@ -1,4 +1,5 @@
 using Newtonsoft.Json;
+using ProfileService.Domain.Models.UserProfileAggregate.Errors;
 using ProfileService.Domain.Models.UserProfileAggregate.Snapshot;
 using ProfileService.Domain.Models.UserProfileAggregate.ValueObjects;
 using ProfileService.Domain.Shared;
@@ -21,6 +22,18 @@ public class UserProfile : AggregateRoot<Guid>
         Age = age;
         Rating = rating;
         _friends = friends;
+    }
+
+    public Result IncreaseRating(int points)
+    {
+        if (points < 0)
+            return Result.Failure(UserProfileErrors.CantIncreaseNegativePointsToRating);
+        Result<Rating> ratingResult = Rating.Create(Rating.Value + points);
+        if (ratingResult.IsFailure)
+            return Result.Failure(ratingResult.Error);
+
+        Rating = ratingResult.Value;
+        return Result.Success();
     }
 
     public Result SetNickName(string name)

@@ -1,7 +1,9 @@
+using Chat.Api.Infrastructure;
 using Chat.Api.WebSockets;
 using Chat.Application.Commands.ConnectUser;
 using Chat.Domain.Repositories;
 using Chat.Infrastructure.Repositories;
+using MassTransit.Client.Extensions;
 using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -36,6 +38,8 @@ builder.Services.AddSingleton<IRoomRepository, RoomRepository>();
 builder.Services.AddSingleton<IChatUserRepository, ChatUserRepository>();
 builder.Services.AddControllers();
 builder.Services.AddSwaggerGen();
+builder.AddEventBusClient();
+builder.AddMassTransit();
 
 var app = builder.Build();
 

@@ -15,6 +15,8 @@ public class UserProfileErrors : Error
     public static readonly Error CantAddUserProfile = new("UserProfile.Error", "User cant be added to the system");
     public static readonly Error EmailNotFound = new("UserProfile.Error", "User with this email not found");
     public static readonly Error RatingShouldBePositive = new("UserProfile.Error", "Rating of the user cant be negative");
+    public static readonly Error CantIncreaseNegativePointsToRating = new("UserProfile.Error.Rating", "Cant subtract some points from rating");
+
 
     public UserProfileErrors(string code, string message) : base(code, message)
     {
