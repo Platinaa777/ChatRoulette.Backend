@@ -1,10 +1,12 @@
+using AuthService.Domain.Errors.UserErrors;
 using AuthService.Domain.Models.UserAggregate.Repos;
+using AuthService.Domain.Shared;
 using AuthService.HttpModels.Responses;
 using MediatR;
 
 namespace AuthService.Application.Queries.GetUser;
 
-public class GetUserQueryHandler : IRequestHandler<GetUserQuery, UserInformationResponse>
+public class GetUserQueryHandler : IRequestHandler<GetUserQuery, Result<UserInformationResponse>>
 {
     private readonly IUserRepository _userRepository;
 
@@ -13,13 +15,13 @@ public class GetUserQueryHandler : IRequestHandler<GetUserQuery, UserInformation
         _userRepository = userRepository;
     }
     
-    public async Task<UserInformationResponse> Handle(GetUserQuery request, CancellationToken cancellationToken)
+    public async Task<Result<UserInformationResponse>> Handle(GetUserQuery request, CancellationToken cancellationToken)
     {
         var user = await _userRepository.FindUserByEmailAsync(request.Email);
 
         if (user == null)
-            return new UserInformationResponse();
-
+            return Result.Failure<UserInformationResponse>(UserError.UserNotFound);
+        
         return new UserInformationResponse()
         {
             UserName = user.UserName.Value,

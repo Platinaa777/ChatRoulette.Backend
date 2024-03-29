@@ -1,3 +1,4 @@
+using Newtonsoft.Json;
 using ProfileService.Domain.Models.UserProfileAggregate.Snapshot;
 using ProfileService.Domain.Models.UserProfileAggregate.ValueObjects;
 using ProfileService.Domain.Shared;
@@ -49,7 +50,7 @@ public class UserProfile : AggregateRoot<Guid>
             NickName = NickName.Value,
             Email = Email.Value,
             Age = Age.Value,
-            FriendIds = _friends.Select(x => x.Value.ToString()).ToList(),
+            FriendIds = JsonConvert.SerializeObject(_friends.Select(x => x.Value.ToString()), Formatting.Indented),
             Rating = Rating.Value
         };
     }
@@ -62,7 +63,7 @@ public class UserProfile : AggregateRoot<Guid>
             snapshot.Email,
             snapshot.Age,
             snapshot.Rating,
-            snapshot.FriendIds);
+            JsonConvert.DeserializeObject<List<string>>(snapshot.FriendIds) ?? new List<string>());
 
         if (result.IsSuccess)
             return result.Value;
@@ -76,7 +77,7 @@ public class UserProfile : AggregateRoot<Guid>
     public IReadOnlyList<ProfileId> Friends => _friends;
     public Rating Rating { get; private set; }
 
-    public static Result<UserProfile> Create(string id, string nickName, string email, int age, ulong rating,
+    public static Result<UserProfile> Create(string id, string nickName, string email, int age, int rating,
         List<string> friends)
     {
         var idResult = ProfileId.Create(id);

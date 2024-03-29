@@ -26,7 +26,7 @@ public static class NpgsqlQuery
             nick_name = @NickName,
             email = @Email,
             age = @Age,
-            rating = @Rating
+            rating = @Rating,
             friends = @FriendIds
         WHERE email = @Email
         ";

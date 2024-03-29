@@ -1,0 +1,21 @@
+version: '3.9'
+
+volumes:
+  rabbitdata:
+    driver: local
+
+services:
+  rabbit_mq:
+    image: rabbitmq:3.12-management
+    container_name: rabbitmq_message_broker
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+      - "15673:15672"
+    volumes:
+      - rabbitdata:/var/lib/rabbitmq
+    networks:
+      - chat-app
+
+networks:
+  chat-app:

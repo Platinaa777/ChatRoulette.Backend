@@ -1,4 +1,9 @@
+using System.Reflection;
+using FluentValidation;
+using MediatR;
 using Npgsql;
+using ProfileService.Application.Assembly;
+using ProfileService.Application.Behaviors;
 using ProfileService.Application.Queries.GetUserProfileQuery;
 using ProfileService.Domain.Models.UserProfileAggregate.Repos;
 using ProfileService.Domain.Shared;
@@ -17,6 +22,16 @@ public static class ServicesRegistrator
         builder.Services.AddControllers();
         builder.Services.AddMediatR(cfg =>
             cfg.RegisterServicesFromAssemblyContaining<GetUserProfileQueryHandler>());
+        
+        builder.Services.AddTransient(
+            typeof(IPipelineBehavior<,>),
+            typeof(LoggingPipelineBehavior<,>));
+        
+        builder.Services.AddTransient(
+            typeof(IPipelineBehavior<,>),
+            typeof(ValidationPipelineBehavior<,>));
+        
+        builder.Services.AddValidatorsFromAssembly(ProfileApplication.AppAssembly);
 
         return builder;
     }

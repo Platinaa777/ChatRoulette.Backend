@@ -19,7 +19,7 @@ public static class AddUserProfileCommandToDomain
     public static Result<UserProfile> ToDomain(this AddUserProfileCommand command)
     {
         return UserProfile.Create(
-            id: Guid.NewGuid().ToString(),
+            id: command.Id,
             command.NickName,
             command.Email,
             command.Age,

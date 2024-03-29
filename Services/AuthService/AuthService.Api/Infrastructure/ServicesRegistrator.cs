@@ -1,8 +1,10 @@
 using System.Reflection;
+using AuthService.Application.Assembly;
 using AuthService.Application.Behaviors;
 using AuthService.Application.Cache;
 using AuthService.Application.Commands.CreateUser;
 using AuthService.Application.JwtConfig;
+using AuthService.Application.Queries.GetUser;
 using AuthService.Application.Security;
 using AuthService.DataContext.Database;
 using AuthService.Domain.Models.TokenAggregate.Repos;
@@ -28,19 +30,15 @@ public static class ServicesRegistrator
         builder.Services.AddScoped<IUserRepository, UserRepository>();
         builder.Services.AddScoped<ITokenRepository, RefreshTokenRepository>();
 
-        builder.Services.AddMediatR(cfg => 
-            cfg.RegisterServicesFromAssemblyContaining<CreateUserCommandHandler>());
-
+        builder.Services.AddMediatR(cfg =>
+        {
+            cfg.RegisterServicesFromAssemblyContaining<CreateUserCommandHandler>();
+            
+            cfg.AddOpenBehavior(typeof(LoggingPipelineBehavior<,>));
+            cfg.AddOpenBehavior(typeof(ValidationPipelineBehavior<,>));
+        });
         
-        builder.Services.AddTransient(
-            typeof(IPipelineBehavior<,>),
-            typeof(LoggingPipelineBehavior<,>));
-        
-        builder.Services.AddTransient(
-            typeof(IPipelineBehavior<,>),
-        typeof(ValidationPipelineBehavior<,>));
-        
-        builder.Services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
+        builder.Services.AddValidatorsFromAssembly(ApplicationAssembly.Assembly, includeInternalTypes: true);
         
         return builder;
     }

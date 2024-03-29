@@ -1,6 +1,7 @@
 using AuthService.Api.Mappers;
 using AuthService.Application.Commands.GenerateToken;
 using AuthService.Application.Commands.LogoutUser;
+using AuthService.Domain.Shared;
 using AuthService.HttpModels.Requests;
 using AuthService.HttpModels.Responses;
 using MediatR;
@@ -31,7 +32,7 @@ public class AuthController : ControllerBase
     }
 
     [HttpGet("info")]
-    public async Task<ActionResult<UserInformationResponse>> GetUserInfo(
+    public async Task<ActionResult<Result<UserInformationResponse>>> GetUserInfo(
         [FromQuery] string email,
         [FromQuery] string password)
     {

@@ -27,7 +27,7 @@ public class ChangeNickNameProfileCommandHandler : IRequestHandler<ChangeNickNam
         if (existingProfile is null)
             return Result.Failure(UserProfileErrors.EmailNotFound);
 
-        var emailResult = existingProfile.SetNickName(request.Email);
+        var emailResult = existingProfile.SetNickName(request.NickName);
         if (emailResult.IsFailure)
             return Result.Failure(emailResult.Error);
 

@@ -29,7 +29,7 @@ public class UserProfileController : ControllerBase
         var result = await _mediator.Send(new GetUserProfileQuery() { Email = email });
 
         if (result.IsFailure)
-            return BadRequest(result.Error);
+            return BadRequest(result);
 
         return Ok(result);
     }

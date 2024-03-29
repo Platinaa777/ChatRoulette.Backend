@@ -68,17 +68,9 @@ public class UserProfileRepository : IUserProfileRepository
 
     public async Task<bool> AddUserAsync(UserProfile user)
     {
-        var parameters = new
-        {
-            Id = user.Id,
-            NickName = user.NickName.Value,
-            Email = user.Email.Value,
-            Age = user.Age.Value,
-            Rating = user.Rating.Value,
-            Friends = JsonConvert.SerializeObject(user.Friends.Select(x => x.Value.ToString()))
-        };
+        UserProfileSnapshot snapshot = user.Save();
 
-        var command = new CommandDefinition(NpgsqlQuery.SqlAddUser, parameters);
+        var command = new CommandDefinition(NpgsqlQuery.SqlAddUser, snapshot);
 
         var connection = await _factory.CreateConnection(default);
         var result = await connection.ExecuteAsync(command);
@@ -88,17 +80,9 @@ public class UserProfileRepository : IUserProfileRepository
 
     public async Task<bool> UpdateUserAsync(UserProfile user)
     {
-        var parameters = new
-        {
-            Id = user.Id,
-            NickName = user.NickName.Value,
-            Email = user.Email.Value,
-            Age = user.Age.Value,
-            Rating = user.Rating.Value,
-            Friends = JsonConvert.SerializeObject(user.Friends.Select(x => x.Value.ToString()))
-        };
+        UserProfileSnapshot snapshot = user.Save();
 
-        var command = new CommandDefinition(NpgsqlQuery.SqlUpdateUser, parameters);
+        var command = new CommandDefinition(NpgsqlQuery.SqlUpdateUser, snapshot);
 
         var connection = await _factory.CreateConnection(default);
         var result = await connection.ExecuteAsync(command);

@@ -14,7 +14,8 @@ public class UserProfileErrors : Error
     public static readonly Error EmailAlreadyExist = new("UserProfile.Error", "User with this email is already exist");
     public static readonly Error CantAddUserProfile = new("UserProfile.Error", "User cant be added to the system");
     public static readonly Error EmailNotFound = new("UserProfile.Error", "User with this email not found");
-    
+    public static readonly Error RatingShouldBePositive = new("UserProfile.Error", "Rating of the user cant be negative");
+
     public UserProfileErrors(string code, string message) : base(code, message)
     {
     }

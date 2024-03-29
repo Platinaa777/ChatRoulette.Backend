@@ -6,6 +6,6 @@ public class UserProfileSnapshot
     public string NickName { get; init; } = string.Empty;
     public string Email { get; init; } = string.Empty;
     public int Age { get; init; }
-    public ulong Rating { get; init; }
-    public List<string> FriendIds { get; init; } = new();
+    public int Rating { get; init; }
+    public string FriendIds { get; init; } = string.Empty;
 }
