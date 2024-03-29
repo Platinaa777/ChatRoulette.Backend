@@ -33,5 +33,4 @@ public class Preference : Enumeration
 
         return null;
     }
-
 }

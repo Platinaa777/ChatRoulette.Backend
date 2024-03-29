@@ -1,4 +1,5 @@
 using Newtonsoft.Json;
+using ProfileService.Domain.Models.Identity;
 using ProfileService.Domain.Models.UserProfileAggregate.Errors;
 using ProfileService.Domain.Models.UserProfileAggregate.Snapshot;
 using ProfileService.Domain.Models.UserProfileAggregate.ValueObjects;
@@ -6,10 +7,10 @@ using ProfileService.Domain.Shared;
 
 namespace ProfileService.Domain.Models.UserProfileAggregate;
 
-public class UserProfile : AggregateRoot<Guid>
+public class UserProfile : AggregateRoot<Id>
 {
     private UserProfile(
-        Guid id,
+        Id id,
         Name nickName,
         Email email,
         Age age,
@@ -93,7 +94,7 @@ public class UserProfile : AggregateRoot<Guid>
     public static Result<UserProfile> Create(string id, string nickName, string email, int age, int rating,
         List<string> friends)
     {
-        var idResult = ProfileId.Create(id);
+        var idResult = Id.Create(id);
         if (idResult.IsFailure)
             return Result.Failure<UserProfile>(idResult.Error);
 
@@ -122,7 +123,7 @@ public class UserProfile : AggregateRoot<Guid>
         }
 
         return new UserProfile(
-            idResult.Value.Value,
+            idResult.Value,
             nickNameResult.Value,
             emailResult.Value,
             ageResult.Value,
