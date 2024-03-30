@@ -1,5 +1,7 @@
 using ProfileService.Domain.Models.FriendInvitationAggregate.Enumerations;
 using ProfileService.Domain.Models.FriendInvitationAggregate.Errors;
+using ProfileService.Domain.Models.FriendInvitationAggregate.Events;
+using ProfileService.Domain.Models.FriendInvitationAggregate.Snapshot;
 using ProfileService.Domain.Models.Identity;
 using ProfileService.Domain.Models.UserProfileAggregate.ValueObjects;
 using ProfileService.Domain.Shared;
@@ -10,37 +12,90 @@ public class FriendInvitation : AggregateRoot<Id>
 {
     private FriendInvitation(
         Id id,
-        Email senderEmail,
-        Email receiverEmail,
+        Id senderId,
+        Id receiverId,
         InvitationStatus status,
         DateTime sentAt)
     {
         Id = id;
-        SenderEmail = senderEmail;
-        ReceiverEmail = receiverEmail;
+        SenderId = senderId;
+        ReceiverId = receiverId;
         Status = status;
         SentAt = sentAt;
     }
     
-    public Email SenderEmail { get; init; }
-    public Email ReceiverEmail { get; init; }
-    public InvitationStatus Status { get; set; }
+    public Id SenderId { get; init; }
+    public Id ReceiverId { get; init; }
+    public InvitationStatus Status { get; private set; }
     public DateTime SentAt { get; init; }
+
+    public void SetRejected()
+    {
+        Status = InvitationStatus.Rejected;
+    }
+
+    public void SetAccepted()
+    {
+        RaiseDomainEvent(new AcceptedInvitationDomainEvent(
+            SenderId.Value.ToString(),
+            ReceiverId.Value.ToString()));
+        
+        Status = InvitationStatus.Accepted;
+    } 
+
+    public bool IsHandled()
+        => Status.Name == InvitationStatus.Accepted.Name ||
+           Status.Name == InvitationStatus.Rejected.Name;
+
+    public FriendInvitationSnapshot Save()
+    {
+        return new FriendInvitationSnapshot()
+        {
+            Id = Id.Value.ToString(),
+            ReceiverId = ReceiverId.Value.ToString(),
+            SenderId = SenderId.Value.ToString(),
+            InvitationStatus = Status.Name,
+            SentAtUtc = SentAt.ToUniversalTime(),
+        };
+    }
+    
+    public static FriendInvitation RestoreFromSnapshot(FriendInvitationSnapshot snapshot)
+    {
+        var result = FriendInvitation.Create(
+            snapshot.Id,
+            snapshot.SenderId,
+            snapshot.ReceiverId,
+            snapshot.InvitationStatus,
+            snapshot.SentAtUtc);
+
+        if (result.IsFailure)
+            return null!;
+        return result.Value;
+    }
+
+    public static Id GetRandomId()
+    {
+        var id = Id.Create(Guid.NewGuid().ToString());
+        return id.Value;
+    }
     
     public static Result<FriendInvitation> Create(
-        string id, string senderEmail, string receiverEmail, string status, DateTime sentAt)
+        string id, string senderId, string receiverId, string status, DateTime sentAt)
     {
+        if (senderId == receiverId)
+            return Result.Failure<FriendInvitation>(InvitationErrors.CantSendInvitationToMyself);
+        
         var idResult = Id.Create(id);
         if (idResult.IsFailure)
             return Result.Failure<FriendInvitation>(idResult.Error);
 
-        var senderEmailResult = Email.Create(senderEmail);
-        if (senderEmailResult.IsFailure)
-            return Result.Failure<FriendInvitation>(senderEmailResult.Error);
+        var senderIdResult = Id.Create(senderId);
+        if (senderIdResult.IsFailure)
+            return Result.Failure<FriendInvitation>(senderIdResult.Error);
         
-        var receiverEmailResult = Email.Create(receiverEmail);
-        if (receiverEmailResult.IsFailure)
-            return Result.Failure<FriendInvitation>(receiverEmailResult.Error);
+        var receiverIdResult = Id.Create(receiverId);
+        if (receiverIdResult.IsFailure)
+            return Result.Failure<FriendInvitation>(receiverIdResult.Error);
 
         var statusResult = InvitationStatus.FromName(status);
         if (statusResult is null)
@@ -51,8 +106,8 @@ public class FriendInvitation : AggregateRoot<Id>
 
         return new FriendInvitation(
             idResult.Value,
-            senderEmailResult.Value,
-            receiverEmailResult.Value,
+            senderIdResult.Value,
+            receiverIdResult.Value,
             statusResult,
             sentAt);
     }

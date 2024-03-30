@@ -1,6 +1,6 @@
-namespace ProfileService.Infrastructure.Repos.Implementations;
+namespace ProfileService.Infrastructure.Repos.Implementations.Profile;
 
-public static class NpgsqlQuery
+public static class ProfileQuery
 {
     public const string SqlFindByEmail = $@"
             SELECT id, nick_name as NickName, email Email, age Age, rating Rating, friends FriendIds

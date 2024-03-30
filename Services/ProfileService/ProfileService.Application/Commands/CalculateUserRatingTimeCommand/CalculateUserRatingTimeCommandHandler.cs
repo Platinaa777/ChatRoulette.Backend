@@ -9,15 +9,20 @@ public class CalculateUserRatingTimeCommandHandler
     : IRequestHandler<CalculateUserRatingTimeCommand, Result> 
 {
     private readonly IUserProfileRepository _userProfileRepository;
+    private readonly IUnitOfWork _unitOfWork;
 
     public CalculateUserRatingTimeCommandHandler(
-        IUserProfileRepository userProfileRepository)
+        IUserProfileRepository userProfileRepository,
+        IUnitOfWork unitOfWork)
     {
         _userProfileRepository = userProfileRepository;
+        _unitOfWork = unitOfWork;
     }
     
     public async Task<Result> Handle(CalculateUserRatingTimeCommand request, CancellationToken cancellationToken)
     {
+        await _unitOfWork.StartTransaction(cancellationToken);
+        
         var existingUser = await _userProfileRepository.FindUserByEmailAsync(request.Email);
         if (existingUser is null)
             return Result.Failure(UserProfileErrors.EmailNotFound);
@@ -29,7 +34,8 @@ public class CalculateUserRatingTimeCommandHandler
         var result = await _userProfileRepository.UpdateUserAsync(existingUser);
         if (!result)
             return Result.Failure(UserProfileErrors.CantUpdateUser);
-        
+
+        await _unitOfWork.SaveChangesAsync(cancellationToken);        
         return Result.Success();
     }
 }

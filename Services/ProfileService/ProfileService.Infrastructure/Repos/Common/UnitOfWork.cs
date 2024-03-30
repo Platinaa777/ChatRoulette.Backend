@@ -1,11 +1,14 @@
 using System.Transactions;
+using Dapper;
 using MediatR;
+using Newtonsoft.Json;
 using Npgsql;
 using ProfileService.Domain.Shared;
-using ProfileService.Infrastructure.Repos.ConnectionFactories;
+using ProfileService.Infrastructure.OutboxPattern;
 using ProfileService.Infrastructure.Repos.Interfaces;
+using Z.Dapper.Plus;
 
-namespace ProfileService.Infrastructure.Repos.UoW;
+namespace ProfileService.Infrastructure.Repos.Common;
 
 public class UnitOfWork : IUnitOfWork
 {
@@ -37,18 +40,23 @@ public class UnitOfWork : IUnitOfWork
         if (_transaction == null)
             throw new TransactionException("transaction is not started");
         
-        var domainEvents = new Queue<INotification>(
+        var domainEvents = new List<OutboxMessage>(
             _tracker.Entities.SelectMany(events =>
+                {
+                    var collectionEvents = events.GetDomainEvents();
+                    events.ClearDomainEvents();
+                    return collectionEvents;
+                }).Select(domainEvent => new OutboxMessage()
                     {
-                        var collectionEvents = events.GetDomainEvents();
-                        events.ClearDomainEvents();
-                        return collectionEvents;
-                    }));
-
-        while (domainEvents.TryDequeue(out var notification))
-        {
-            await _publisher.Publish(notification, token);
-        }
+                        Id = Guid.NewGuid(),
+                        Type = domainEvent.GetType().Name,
+                        StartedAtUtc = DateTime.UtcNow,
+                        Content = JsonConvert.SerializeObject(domainEvent, 
+                            new JsonSerializerSettings() {TypeNameHandling = TypeNameHandling.All})
+                    })).ToList();
+        
+        var connection = await _factory.CreateConnection(token);
+        await connection.BulkInsertAsync(domainEvents, )
         
         await _transaction.CommitAsync(token);
     }

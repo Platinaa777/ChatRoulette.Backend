@@ -16,9 +16,4 @@
       </Reference>
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="Models\FriendInvitationAggregate\Repos\" />
-      <Folder Include="Models\FriendInvitationAggregate\Snapshot\" />
-    </ItemGroup>
-
 </Project>

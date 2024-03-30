@@ -15,7 +15,7 @@ public class UserProfile : AggregateRoot<Id>
         Email email,
         Age age,
         Rating rating,
-        List<ProfileId> friends)
+        List<Id> friends)
     {
         Id = id;
         NickName = nickName;
@@ -23,6 +23,16 @@ public class UserProfile : AggregateRoot<Id>
         Age = age;
         Rating = rating;
         _friends = friends;
+    }
+
+    public bool CheckIsFriend(Id profileId)
+    {
+        foreach (var id in _friends)
+        {
+            if (id == profileId)
+                return true;
+        }
+        return false;
     }
 
     public Result IncreaseRating(int points)
@@ -60,7 +70,7 @@ public class UserProfile : AggregateRoot<Id>
     {
         return new UserProfileSnapshot()
         {
-            Id = Id.ToString(),
+            Id = Id.Value.ToString(),
             NickName = NickName.Value,
             Email = Email.Value,
             Age = Age.Value,
@@ -84,11 +94,11 @@ public class UserProfile : AggregateRoot<Id>
         return null!;
     }
 
-    private readonly List<ProfileId> _friends = new();
+    private readonly List<Id> _friends = new();
     public Name NickName { get; private set; }
     public Email Email { get; private set; }
     public Age Age { get; private set; }
-    public IReadOnlyList<ProfileId> Friends => _friends;
+    public IReadOnlyList<Id> Friends => _friends;
     public Rating Rating { get; private set; }
 
     public static Result<UserProfile> Create(string id, string nickName, string email, int age, int rating,
@@ -114,10 +124,10 @@ public class UserProfile : AggregateRoot<Id>
         if (ratingResult.IsFailure)
             return Result.Failure<UserProfile>(ratingResult.Error);
 
-        HashSet<ProfileId> friendsIds = new();
+        HashSet<Id> friendsIds = new();
         foreach (var friendId in friends)
         {
-            var result = ProfileId.Create(friendId);
+            var result = Id.Create(friendId);
             if (result.IsSuccess)
                 friendsIds.Add(result.Value);
         }

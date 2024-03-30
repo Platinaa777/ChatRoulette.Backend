@@ -4,7 +4,7 @@ namespace ProfileService.Domain.Models.Identity;
 
 public class Id : ValueObject, IEquatable<Id>
 {
-    private Guid Value { get; }
+    public Guid Value { get; }
 
     public static Result<Id> Create(string id)
     {
@@ -41,6 +41,11 @@ public class Id : ValueObject, IEquatable<Id>
         if (obj.GetType() != this.GetType()) return false;
         return Equals((Id)obj);
     }
+
+    public static bool operator==(Id? left, Id? right)
+        => left is not null && right is not null && left.Equals(right);
+
+    public static bool operator!=(Id? left, Id? right) => !(left == right);
 
     public override int GetHashCode()
     {

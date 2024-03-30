@@ -1,9 +1,12 @@
+using ProfileService.Domain.Models.Identity;
 using ProfileService.Domain.Models.UserProfileAggregate.Errors;
 using ProfileService.Domain.Shared;
 
 namespace ProfileService.Domain.Models.UserProfileAggregate.ValueObjects;
 
-public class ProfileId : ValueObject, IEquatable<ProfileId>
+public class ProfileId
+    : ValueObject, IEquatable<ProfileId>
+        
 {
     public Guid Value { get; set; }
     
@@ -32,6 +35,11 @@ public class ProfileId : ValueObject, IEquatable<ProfileId>
         if (ReferenceEquals(null, other)) return false;
         if (ReferenceEquals(this, other)) return true;
         return base.Equals(other) && Value == other.Value;
+    }
+
+    public bool Equals(Id? other)
+    {
+        throw new NotImplementedException();
     }
 
     public override bool Equals(object? obj)

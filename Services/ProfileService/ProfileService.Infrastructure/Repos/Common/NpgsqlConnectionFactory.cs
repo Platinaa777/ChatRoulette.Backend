@@ -3,7 +3,7 @@ using Npgsql;
 using ProfileService.Infrastructure.Configuration;
 using ProfileService.Infrastructure.Repos.Interfaces;
 
-namespace ProfileService.Infrastructure.Repos.ConnectionFactories;
+namespace ProfileService.Infrastructure.Repos.Common;
 
 public class NpgsqlConnectionFactory : IDbConnectionFactory<NpgsqlConnection>
 {

@@ -1,14 +1,11 @@
 using Dapper;
-using Newtonsoft.Json;
 using Npgsql;
 using ProfileService.Domain.Models.UserProfileAggregate;
 using ProfileService.Domain.Models.UserProfileAggregate.Repos;
 using ProfileService.Domain.Models.UserProfileAggregate.Snapshot;
-using ProfileService.Domain.Models.UserProfileAggregate.ValueObjects;
 using ProfileService.Infrastructure.Repos.Interfaces;
-using ProfileService.Infrastructure.Repos.Models;
 
-namespace ProfileService.Infrastructure.Repos.Implementations;
+namespace ProfileService.Infrastructure.Repos.Implementations.Profile;
 
 public class UserProfileRepository : IUserProfileRepository
 {
@@ -30,7 +27,7 @@ public class UserProfileRepository : IUserProfileRepository
         var connection = await _factory.CreateConnection(default);
         
         IEnumerable<UserProfileSnapshot> result = await connection
-            .QueryAsync<UserProfileSnapshot>(NpgsqlQuery.SqlFindById, 
+            .QueryAsync<UserProfileSnapshot>(ProfileQuery.SqlFindById, 
                 param: parameters);
 
         var userDb = result.FirstOrDefault();
@@ -52,7 +49,7 @@ public class UserProfileRepository : IUserProfileRepository
         var connection = await _factory.CreateConnection(default);
 
         IEnumerable<UserProfileSnapshot> result = await connection
-                                .QueryAsync<UserProfileSnapshot>(NpgsqlQuery.SqlFindByEmail, 
+                                .QueryAsync<UserProfileSnapshot>(ProfileQuery.SqlFindByEmail, 
                                                     param: parameters);
 
         var userDb = result.FirstOrDefault();
@@ -70,7 +67,7 @@ public class UserProfileRepository : IUserProfileRepository
     {
         UserProfileSnapshot snapshot = user.Save();
 
-        var command = new CommandDefinition(NpgsqlQuery.SqlAddUser, snapshot);
+        var command = new CommandDefinition(ProfileQuery.SqlAddUser, snapshot);
 
         var connection = await _factory.CreateConnection(default);
         var result = await connection.ExecuteAsync(command);
@@ -82,7 +79,7 @@ public class UserProfileRepository : IUserProfileRepository
     {
         UserProfileSnapshot snapshot = user.Save();
 
-        var command = new CommandDefinition(NpgsqlQuery.SqlUpdateUser, snapshot);
+        var command = new CommandDefinition(ProfileQuery.SqlUpdateUser, snapshot);
 
         var connection = await _factory.CreateConnection(default);
         var result = await connection.ExecuteAsync(command);
@@ -95,7 +92,7 @@ public class UserProfileRepository : IUserProfileRepository
         var connection = await _factory.CreateConnection(default);
         
         IEnumerable<UserProfileSnapshot> result = await connection
-            .QueryAsync<UserProfileSnapshot>(NpgsqlQuery.SqlGetAllUsers);
+            .QueryAsync<UserProfileSnapshot>(ProfileQuery.SqlGetAllUsers);
 
         List<UserProfile> profiles = new();
         foreach (var profile in result)

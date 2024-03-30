@@ -3,7 +3,7 @@ using ProfileService.Domain.Models.Identity;
 using ProfileService.Domain.Shared;
 using ProfileService.Infrastructure.Repos.Interfaces;
 
-namespace ProfileService.Infrastructure.Repos.Implementations;
+namespace ProfileService.Infrastructure.Repos.Common;
 
 public class ChangeTracker : IChangeTracker
 {
