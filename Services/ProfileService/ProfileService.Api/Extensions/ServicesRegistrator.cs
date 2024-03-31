@@ -1,7 +1,7 @@
-using System.Reflection;
 using FluentValidation;
 using MediatR;
 using Npgsql;
+using ProfileService.Api.BackgroundJobs;
 using ProfileService.Application.Assembly;
 using ProfileService.Application.Behaviors;
 using ProfileService.Application.Queries.GetUserProfileQuery;
@@ -10,10 +10,10 @@ using ProfileService.Domain.Models.UserProfileAggregate.Repos;
 using ProfileService.Domain.Shared;
 using ProfileService.Infrastructure.Configuration;
 using ProfileService.Infrastructure.Repos.Common;
-using ProfileService.Infrastructure.Repos.Implementations;
 using ProfileService.Infrastructure.Repos.Implementations.Friend;
 using ProfileService.Infrastructure.Repos.Implementations.Profile;
 using ProfileService.Infrastructure.Repos.Interfaces;
+using Quartz;
 
 namespace ProfileService.Api.Extensions;
 
@@ -47,6 +47,26 @@ public static class ServicesRegistrator
         builder.Services.AddScoped<IDbConnectionFactory<NpgsqlConnection>, NpgsqlConnectionFactory>();
         builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
         builder.Services.AddScoped<IChangeTracker, ChangeTracker>();
+
+        return builder;
+    }
+
+    public static WebApplicationBuilder AddBackgroundJobs(this WebApplicationBuilder builder)
+    {
+        builder.Services.AddQuartz(cfg =>
+        {
+            var key = new JobKey(nameof(OutboxBackgroundJob));
+
+            cfg.AddJob<OutboxBackgroundJob>(key)
+                .AddTrigger(tg => 
+                    tg.ForJob(key)
+                        .WithSimpleSchedule(schedule => 
+                            schedule.WithIntervalInSeconds(10)
+                                .RepeatForever()));
+            
+        });
+
+        builder.Services.AddQuartzHostedService();
 
         return builder;
     }

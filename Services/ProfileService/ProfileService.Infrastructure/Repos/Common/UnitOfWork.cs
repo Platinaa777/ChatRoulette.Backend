@@ -6,7 +6,6 @@ using Npgsql;
 using ProfileService.Domain.Shared;
 using ProfileService.Infrastructure.OutboxPattern;
 using ProfileService.Infrastructure.Repos.Interfaces;
-using Z.Dapper.Plus;
 
 namespace ProfileService.Infrastructure.Repos.Common;
 
@@ -56,7 +55,14 @@ public class UnitOfWork : IUnitOfWork
                     })).ToList();
         
         var connection = await _factory.CreateConnection(token);
-        await connection.BulkInsertAsync(domainEvents, )
+        
+        foreach (var outboxMessage in domainEvents)
+        {
+            await connection.ExecuteAsync(@"
+                    INSERT INTO outbox_messages (id, type, content, started_at, handled_at, error)
+                    VALUES 
+                    (@Id, @Type, @Content, @StartedAtUtc, @HandledAtUtc, @Error);", outboxMessage);
+        }
         
         await _transaction.CommitAsync(token);
     }

@@ -25,6 +25,11 @@ public class UserProfile : AggregateRoot<Id>
         _friends = friends;
     }
 
+    public void AddFriend(UserProfile friend)
+    {
+        _friends.Add(friend.Id);
+    }
+
     public bool CheckIsFriend(Id profileId)
     {
         foreach (var id in _friends)

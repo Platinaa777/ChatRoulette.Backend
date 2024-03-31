@@ -14,6 +14,7 @@ builder.AddDataLayer();
 builder.AddSwagger();
 builder.AddMassTransit();
 builder.AddEventBusClient();
+builder.AddBackgroundJobs();
 
 var app = builder.Build();
 

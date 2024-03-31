@@ -4,8 +4,6 @@ using ProfileService.Domain.Models.FriendInvitationAggregate;
 using ProfileService.Domain.Models.FriendInvitationAggregate.Repos;
 using ProfileService.Domain.Models.FriendInvitationAggregate.Snapshot;
 using ProfileService.Domain.Models.Identity;
-using ProfileService.Domain.Models.UserProfileAggregate.ValueObjects;
-using ProfileService.Infrastructure.Repos.Implementations.Profile;
 using ProfileService.Infrastructure.Repos.Interfaces;
 
 namespace ProfileService.Infrastructure.Repos.Implementations.Friend;
