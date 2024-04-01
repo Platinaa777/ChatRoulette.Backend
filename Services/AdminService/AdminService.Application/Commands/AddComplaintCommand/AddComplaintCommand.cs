@@ -8,14 +8,21 @@ public class AddComplaintCommand
 {
     public string Id { get; set; }
     public string Content { get; set; }
-    public string From { get; set; }
-    public string PossibleIntruderEmail { get; set; }
+    public string SenderEmail { get; set; }
+    public string PossibleViolatorEmail { get; set; }
+    public string ComplaintType { get; set; }
 
-    public AddComplaintCommand(string id, string content, string from, string possibleIntruderEmail)
+    public AddComplaintCommand(
+        string id,
+        string content,
+        string senderEmail,
+        string possibleViolatorEmail,
+        string complaintType)
     {
         Id = id;
         Content = content;
-        From = from;
-        PossibleIntruderEmail = possibleIntruderEmail;
+        SenderEmail = senderEmail;
+        PossibleViolatorEmail = possibleViolatorEmail;
+        ComplaintType = complaintType;
     }
 }

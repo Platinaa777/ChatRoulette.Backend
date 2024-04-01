@@ -1,4 +1,5 @@
 using AdminService.DataContext.Configurations;
+using AdminService.DataContext.Outbox;
 using AdminService.Domain.Models.ComplaintAggregate;
 using Microsoft.EntityFrameworkCore;
 
@@ -10,6 +11,7 @@ public class DataContext : DbContext
     {
     }
 
+    public DbSet<OutboxMessage> OutboxMessages { get; set; }
     public DbSet<Complaint> Complaints { get; set; }
 
     protected override void OnModelCreating(ModelBuilder builder)

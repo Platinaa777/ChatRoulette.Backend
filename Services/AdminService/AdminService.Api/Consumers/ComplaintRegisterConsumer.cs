@@ -26,15 +26,15 @@ public class ComplaintRegisterConsumer
         var mediator = scope.ServiceProvider.GetRequiredService<IMediator>();
 
         var result = await mediator.Send(new AddComplaintCommand(
-            id: context.Message.Id,
-            content: context.Message.Content,
-            from: context.Message.From,
-            possibleIntruderEmail: context.Message.PossibleIntruderEmail));
+            context.Message.Id,
+            context.Message.Content,
+            context.Message.SenderEmail,
+            context.Message.PossibleViolatorEmail,
+            context.Message.ComplaintType));
 
         if (result.IsFailure)
         {
-            // mark to mass transit that message unhandled
-            //todo
+            throw new ArgumentException("Message was unhandled");
         }
     }
 }
