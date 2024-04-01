@@ -1,8 +1,7 @@
+using DomainDriverDesignAbstractions;
 using MassTransit.Contracts.UserEvents;
 using MediatR;
 using ProfileService.Domain.Models.UserProfileAggregate;
-using ProfileService.Domain.Models.UserProfileAggregate.ValueObjects;
-using ProfileService.Domain.Shared;
 
 namespace ProfileService.Application.Commands.AddUserProfileCommand;
 

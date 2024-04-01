@@ -1,6 +1,6 @@
 using System.Collections.Concurrent;
+using DomainDriverDesignAbstractions;
 using ProfileService.Domain.Models.Identity;
-using ProfileService.Domain.Shared;
 
 namespace ProfileService.Infrastructure.Repos.Interfaces;
 

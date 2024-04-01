@@ -1,3 +1,4 @@
+using DomainDriverDesignAbstractions;
 using FluentValidation;
 using MediatR;
 using Npgsql;
@@ -7,7 +8,6 @@ using ProfileService.Application.Behaviors;
 using ProfileService.Application.Queries.GetUserProfileQuery;
 using ProfileService.Domain.Models.FriendInvitationAggregate.Repos;
 using ProfileService.Domain.Models.UserProfileAggregate.Repos;
-using ProfileService.Domain.Shared;
 using ProfileService.Infrastructure.Configuration;
 using ProfileService.Infrastructure.Repos.Common;
 using ProfileService.Infrastructure.Repos.Implementations.Friend;

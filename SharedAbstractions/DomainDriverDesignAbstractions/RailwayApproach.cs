@@ -1,6 +1,4 @@
-using AuthService.Domain.Models.UserAggregate.ValueObjects;
-
-namespace AuthService.Domain.Shared;
+namespace DomainDriverDesignAbstractions;
 
 public static class Start
 {

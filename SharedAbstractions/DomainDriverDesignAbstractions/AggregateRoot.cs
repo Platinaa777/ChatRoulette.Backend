@@ -1,4 +1,4 @@
-namespace ProfileService.Domain.Shared;
+namespace DomainDriverDesignAbstractions;
 
 public class AggregateRoot<T> : Entity<T> where T : IEquatable<T>
 {

@@ -1,12 +1,12 @@
+using DomainDriverDesignAbstractions;
 using MediatR;
-using ProfileService.Application.Commands.AddUserProfileCommand;
 using ProfileService.Domain.Models.UserProfileAggregate.Errors;
 using ProfileService.Domain.Models.UserProfileAggregate.Repos;
-using ProfileService.Domain.Shared;
 
 namespace ProfileService.Application.Commands.ChangeNickNameProfileCommand;
 
-public class ChangeNickNameProfileCommandHandler : IRequestHandler<ChangeNickNameProfileCommand, Result>
+public class ChangeNickNameProfileCommandHandler
+    : IRequestHandler<ChangeNickNameProfileCommand, Result>
 {
     private readonly IUserProfileRepository _userProfileRepository;
     private readonly IUnitOfWork _unitOfWork;

@@ -1,5 +1,5 @@
 using AuthService.Domain.Errors.TokenErrors;
-using AuthService.Domain.Shared;
+using DomainDriverDesignAbstractions;
 
 namespace AuthService.Domain.Models.TokenAggregate.ValueObjects;
 

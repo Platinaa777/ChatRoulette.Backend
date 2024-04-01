@@ -1,5 +1,5 @@
 using AuthService.Application.Validations;
-using AuthService.Domain.Shared;
+using DomainDriverDesignAbstractions;
 using FluentValidation;
 using MediatR;
 using ValidationResult = FluentValidation.Results.ValidationResult;

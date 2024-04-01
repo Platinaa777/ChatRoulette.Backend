@@ -3,11 +3,10 @@ using AuthService.Application.Security;
 using AuthService.Application.Utils;
 using AuthService.Domain.Errors.TokenErrors;
 using AuthService.Domain.Errors.UserErrors;
-using AuthService.Domain.Models.TokenAggregate;
 using AuthService.Domain.Models.TokenAggregate.Repos;
 using AuthService.Domain.Models.TokenAggregate.ValueObjects;
 using AuthService.Domain.Models.UserAggregate.Repos;
-using AuthService.Domain.Shared;
+using DomainDriverDesignAbstractions;
 using MediatR;
 
 namespace AuthService.Application.Commands.LoginUser;

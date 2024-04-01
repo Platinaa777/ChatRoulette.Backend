@@ -1,10 +1,10 @@
 using AuthService.Domain.Models.UserAggregate.Enumerations;
 using AuthService.Domain.Models.UserAggregate.ValueObjects;
-using AuthService.Domain.Shared;
+using DomainDriverDesignAbstractions;
 
 namespace AuthService.Domain.Models.UserAggregate;
 
-public class User : AggregateRoot
+public class User : AggregateRoot<string>
 {
     public User(
         string id,

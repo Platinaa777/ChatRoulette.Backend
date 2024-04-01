@@ -1,4 +1,4 @@
-namespace AuthService.Domain.Shared;
+namespace DomainDriverDesignAbstractions;
 
 public class Error : IEquatable<Error>
 {

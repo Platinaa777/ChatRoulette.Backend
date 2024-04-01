@@ -1,22 +1,19 @@
-using System.Reflection;
 using AuthService.Application.Assembly;
 using AuthService.Application.Behaviors;
 using AuthService.Application.Cache;
 using AuthService.Application.Commands.CreateUser;
 using AuthService.Application.JwtConfig;
-using AuthService.Application.Queries.GetUser;
 using AuthService.Application.Security;
 using AuthService.DataContext.Database;
 using AuthService.Domain.Models.TokenAggregate.Repos;
 using AuthService.Domain.Models.UserAggregate.Repos;
-using AuthService.Domain.Shared;
 using AuthService.Infrastructure.Cache;
 using AuthService.Infrastructure.Extensions.Jwt;
 using AuthService.Infrastructure.JwtGenerator;
 using AuthService.Infrastructure.Repos;
 using AuthService.Infrastructure.Security;
+using DomainDriverDesignAbstractions;
 using FluentValidation;
-using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
 

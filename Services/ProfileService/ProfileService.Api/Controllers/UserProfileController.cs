@@ -1,14 +1,12 @@
+using DomainDriverDesignAbstractions;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using ProfileService.Application.Commands.AddUserProfileCommand;
 using ProfileService.Application.Commands.ChangeNickNameProfileCommand;
 using ProfileService.Application.Models;
-using ProfileService.Application.Queries;
 using ProfileService.Application.Queries.GetTopUserQuery;
 using ProfileService.Application.Queries.GetUserProfileQuery;
-using ProfileService.Domain.Shared;
 using ProfileService.HttpModels.Requests;
-using ProfileService.HttpModels.Responses;
 
 namespace ProfileService.Api.Controllers;
 

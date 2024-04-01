@@ -1,4 +1,4 @@
-using ProfileService.Domain.Shared;
+using DomainDriverDesignAbstractions;
 
 namespace ProfileService.Application.Validations;
 

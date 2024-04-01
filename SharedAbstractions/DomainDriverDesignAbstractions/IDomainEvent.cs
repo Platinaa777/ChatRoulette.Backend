@@ -1,6 +1,6 @@
 using MediatR;
 
-namespace ProfileService.Domain.Shared;
+namespace DomainDriverDesignAbstractions;
 
 public interface IDomainEvent : INotification
 {

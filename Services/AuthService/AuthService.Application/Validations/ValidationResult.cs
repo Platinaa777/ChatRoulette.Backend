@@ -1,4 +1,4 @@
-using AuthService.Domain.Shared;
+using DomainDriverDesignAbstractions;
 
 namespace AuthService.Application.Validations;
 

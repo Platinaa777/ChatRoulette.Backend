@@ -1,11 +1,12 @@
+using DomainDriverDesignAbstractions;
 using MediatR;
 using ProfileService.Application.Models;
 using ProfileService.Domain.Models.UserProfileAggregate.Repos;
-using ProfileService.Domain.Shared;
 
 namespace ProfileService.Application.Queries.GetTopUserQuery;
 
-public class GetTopUsersQueryHandler : IRequestHandler<GetTopUsersQuery, Result<List<UserProfileInformation>>>
+public class GetTopUsersQueryHandler
+    : IRequestHandler<GetTopUsersQuery, Result<List<UserProfileInformation>>>
 {
     private readonly IUserProfileRepository _profileRepository;
 

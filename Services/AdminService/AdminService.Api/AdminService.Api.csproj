@@ -6,4 +6,20 @@
         <ImplicitUsings>enable</ImplicitUsings>
     </PropertyGroup>
 
+    <ItemGroup>
+      <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.9.0" />
+      <PackageReference Include="Serilog.AspNetCore" Version="8.0.2-dev-00336" />
+      <PackageReference Include="Serilog.Enrichers.Environment" Version="3.0.0-dev-00806" />
+      <PackageReference Include="Serilog.Sinks.Elasticsearch" Version="10.0.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\..\..\Infrastructure\MessageBroker\MassTransit.Client\MassTransit.Client.csproj" />
+      <ProjectReference Include="..\..\..\Infrastructure\MessageBroker\MassTransit.Contracts\MassTransit.Contracts.csproj" />
+      <ProjectReference Include="..\..\..\Infrastructure\SwaggerConfigurations\SwaggerConfigurations.csproj" />
+      <ProjectReference Include="..\AdminService.Application\AdminService.Application.csproj" />
+      <ProjectReference Include="..\AdminService.HttpModels\AdminService.HttpModels.csproj" />
+      <ProjectReference Include="..\AdminService.Infrastructure\AdminService.Infrastructure.csproj" />
+    </ItemGroup>
+
 </Project>

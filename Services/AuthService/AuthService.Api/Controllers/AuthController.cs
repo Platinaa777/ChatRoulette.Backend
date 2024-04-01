@@ -1,14 +1,12 @@
 using AuthService.Api.Mappers;
 using AuthService.Application.Commands.GenerateToken;
 using AuthService.Application.Commands.LogoutUser;
-using AuthService.Domain.Shared;
 using AuthService.HttpModels.Requests;
 using AuthService.HttpModels.Responses;
+using DomainDriverDesignAbstractions;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Primitives;
 using CookieOptions = Microsoft.AspNetCore.Http.CookieOptions;
 
 namespace AuthService.Api.Controllers;

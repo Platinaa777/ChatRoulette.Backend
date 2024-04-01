@@ -1,9 +1,9 @@
+using DomainDriverDesignAbstractions;
 using MediatR;
 using ProfileService.Domain.Models.FriendInvitationAggregate.Errors;
 using ProfileService.Domain.Models.FriendInvitationAggregate.Repos;
 using ProfileService.Domain.Models.UserProfileAggregate.Errors;
 using ProfileService.Domain.Models.UserProfileAggregate.Repos;
-using ProfileService.Domain.Shared;
 
 namespace ProfileService.Application.Commands.RejectFriendInvitationCommand;
 

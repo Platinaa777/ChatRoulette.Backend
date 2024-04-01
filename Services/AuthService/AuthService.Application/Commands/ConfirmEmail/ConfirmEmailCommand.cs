@@ -1,4 +1,4 @@
-using AuthService.Domain.Shared;
+using DomainDriverDesignAbstractions;
 using MassTransit.Contracts.UserEvents;
 using MediatR;
 

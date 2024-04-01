@@ -1,9 +1,9 @@
 using System.Transactions;
 using Dapper;
+using DomainDriverDesignAbstractions;
 using MediatR;
 using Newtonsoft.Json;
 using Npgsql;
-using ProfileService.Domain.Shared;
 using ProfileService.Infrastructure.OutboxPattern;
 using ProfileService.Infrastructure.Repos.Interfaces;
 

@@ -1,5 +1,5 @@
+using DomainDriverDesignAbstractions;
 using ProfileService.Domain.Models.UserProfileAggregate.Errors;
-using ProfileService.Domain.Shared;
 
 namespace ProfileService.Domain.Models.UserProfileAggregate.ValueObjects;
  

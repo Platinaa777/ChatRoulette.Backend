@@ -1,9 +1,9 @@
+using DomainDriverDesignAbstractions;
 using Newtonsoft.Json;
 using ProfileService.Domain.Models.Identity;
 using ProfileService.Domain.Models.UserProfileAggregate.Errors;
 using ProfileService.Domain.Models.UserProfileAggregate.Snapshot;
 using ProfileService.Domain.Models.UserProfileAggregate.ValueObjects;
-using ProfileService.Domain.Shared;
 
 namespace ProfileService.Domain.Models.UserProfileAggregate;
 

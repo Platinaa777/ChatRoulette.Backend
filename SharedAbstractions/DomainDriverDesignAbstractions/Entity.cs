@@ -1,4 +1,4 @@
-namespace ProfileService.Domain.Shared;
+namespace DomainDriverDesignAbstractions;
 
 public abstract class Entity<TKey> : IEquatable<Entity<TKey>> 
     where TKey : IEquatable<TKey>

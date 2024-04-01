@@ -1,6 +1,6 @@
 using System.Reflection;
 
-namespace AuthService.Domain.Shared;
+namespace DomainDriverDesignAbstractions;
 
 public abstract class Enumeration : IComparable
 {
@@ -35,7 +35,7 @@ public abstract class Enumeration : IComparable
             return false;
         }
 
-        var typeMatches = GetType().Equals(obj.GetType());
+        var typeMatches = GetType() == obj.GetType();
         var valueMatches = Id.Equals(otherValue.Id);
 
         return typeMatches && valueMatches;

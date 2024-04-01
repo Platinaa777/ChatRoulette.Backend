@@ -1,5 +1,5 @@
 using AuthService.Application.Models;
-using AuthService.Domain.Shared;
+using DomainDriverDesignAbstractions;
 using MediatR;
 
 namespace AuthService.Application.Commands.GenerateToken;

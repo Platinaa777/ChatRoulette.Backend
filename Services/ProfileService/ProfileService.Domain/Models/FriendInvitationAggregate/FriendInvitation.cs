@@ -1,10 +1,9 @@
+using DomainDriverDesignAbstractions;
 using ProfileService.Domain.Models.FriendInvitationAggregate.Enumerations;
 using ProfileService.Domain.Models.FriendInvitationAggregate.Errors;
 using ProfileService.Domain.Models.FriendInvitationAggregate.Events;
 using ProfileService.Domain.Models.FriendInvitationAggregate.Snapshot;
 using ProfileService.Domain.Models.Identity;
-using ProfileService.Domain.Models.UserProfileAggregate.ValueObjects;
-using ProfileService.Domain.Shared;
 
 namespace ProfileService.Domain.Models.FriendInvitationAggregate;
 

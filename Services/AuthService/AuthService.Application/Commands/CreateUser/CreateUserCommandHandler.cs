@@ -1,16 +1,10 @@
 using AuthService.Application.BusMapper;
 using AuthService.Application.Cache;
 using AuthService.Application.Cache.Models;
-using AuthService.Application.Mappers;
-using AuthService.Application.Models;
 using AuthService.Application.Security;
-using AuthService.Application.Utils;
 using AuthService.Domain.Errors.UserErrors;
-using AuthService.Domain.Models.TokenAggregate.Repos;
-using AuthService.Domain.Models.UserAggregate;
 using AuthService.Domain.Models.UserAggregate.Repos;
-using AuthService.Domain.Models.UserAggregate.ValueObjects;
-using AuthService.Domain.Shared;
+using DomainDriverDesignAbstractions;
 using MassTransit.Client.EventBus;
 using MediatR;
 using Newtonsoft.Json;

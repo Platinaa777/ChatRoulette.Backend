@@ -1,23 +1,23 @@
 using AuthService.Domain.Errors.TokenErrors;
 using AuthService.Domain.Models.TokenAggregate.ValueObjects;
-using AuthService.Domain.Shared;
+using DomainDriverDesignAbstractions;
 
 namespace AuthService.Domain.Models.TokenAggregate;
 
-public class RefreshToken : AggregateRoot
+public class RefreshToken : AggregateRoot<string>
 {
     public static Result<RefreshToken> Create(Guid id, string token, DateTime expiredAt, bool isUsed, string userId)
     {
         var refreshToken = Token.Create(token);
         if (refreshToken.IsFailure)
-            return new Result<RefreshToken>(null, false, refreshToken.Error);
+            return Result.Failure<RefreshToken>(refreshToken.Error);
         
         var userIdResult = UserId.CreateId(userId);
         if (userIdResult.IsFailure)
-            return new Result<RefreshToken>(null, false, userIdResult.Error);
+            return Result.Failure<RefreshToken>(userIdResult.Error);
 
         if (expiredAt < DateTime.Now)
-            return new Result<RefreshToken>(null, false, TokenError.InvalidExpiredTime);
+            return Result.Failure<RefreshToken>(TokenError.InvalidExpiredTime);
 
         return new RefreshToken(
             id: id.ToString(),

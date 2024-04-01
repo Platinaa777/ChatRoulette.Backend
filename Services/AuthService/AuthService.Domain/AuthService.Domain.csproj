@@ -9,5 +9,9 @@
     <ItemGroup>
       <PackageReference Include="MediatR" Version="12.2.0" />
     </ItemGroup>
+    
+    <ItemGroup>
+      <ProjectReference Include="..\..\..\SharedAbstractions\DomainDriverDesignAbstractions\DomainDriverDesignAbstractions.csproj" />
+    </ItemGroup>
 
 </Project>

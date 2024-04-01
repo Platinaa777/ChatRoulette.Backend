@@ -1,4 +1,4 @@
-using AuthService.Domain.Shared;
+using DomainDriverDesignAbstractions;
 using MediatR;
 using Microsoft.Extensions.Logging;
 

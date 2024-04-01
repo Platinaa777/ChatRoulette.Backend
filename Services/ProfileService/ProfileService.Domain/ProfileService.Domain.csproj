@@ -16,4 +16,8 @@
       </Reference>
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\..\..\SharedAbstractions\DomainDriverDesignAbstractions\DomainDriverDesignAbstractions.csproj" />
+    </ItemGroup>
+
 </Project>

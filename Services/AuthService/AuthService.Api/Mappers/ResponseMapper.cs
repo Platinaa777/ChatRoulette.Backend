@@ -1,6 +1,6 @@
 using AuthService.Application.Models;
-using AuthService.Domain.Shared;
 using AuthService.HttpModels.Responses;
+using DomainDriverDesignAbstractions;
 
 namespace AuthService.Api.Mappers;
 

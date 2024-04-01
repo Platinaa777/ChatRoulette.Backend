@@ -1,6 +1,5 @@
+using DomainDriverDesignAbstractions;
 using MediatR;
-using ProfileService.Domain.Shared;
-using ProfileService.HttpModels.Responses;
 
 namespace ProfileService.Application.Queries.GetUserProfileQuery;
 

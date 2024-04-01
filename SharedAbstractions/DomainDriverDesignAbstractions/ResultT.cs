@@ -1,4 +1,4 @@
-namespace ProfileService.Domain.Shared;
+namespace DomainDriverDesignAbstractions;
 
 public class Result<TValue> : Result
 {

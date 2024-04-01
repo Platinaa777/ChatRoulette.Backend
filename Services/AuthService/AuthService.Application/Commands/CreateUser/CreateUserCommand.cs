@@ -1,9 +1,7 @@
-using AuthService.Application.Models;
 using AuthService.Application.Security;
 using AuthService.Domain.Models.UserAggregate;
 using AuthService.Domain.Models.UserAggregate.Enumerations;
-using AuthService.Domain.Models.UserAggregate.ValueObjects;
-using AuthService.Domain.Shared;
+using DomainDriverDesignAbstractions;
 using MediatR;
 
 namespace AuthService.Application.Commands.CreateUser;

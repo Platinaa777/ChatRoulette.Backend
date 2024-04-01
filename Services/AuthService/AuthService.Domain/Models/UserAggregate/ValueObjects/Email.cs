@@ -1,6 +1,6 @@
 using System.Text.RegularExpressions;
 using AuthService.Domain.Errors.UserErrors;
-using AuthService.Domain.Shared;
+using DomainDriverDesignAbstractions;
 
 namespace AuthService.Domain.Models.UserAggregate.ValueObjects;
 

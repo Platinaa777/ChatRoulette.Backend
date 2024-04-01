@@ -1,9 +1,7 @@
+using DomainDriverDesignAbstractions;
 using MediatR;
-using ProfileService.Domain.Models.UserProfileAggregate;
 using ProfileService.Domain.Models.UserProfileAggregate.Errors;
 using ProfileService.Domain.Models.UserProfileAggregate.Repos;
-using ProfileService.Domain.Shared;
-using ProfileService.HttpModels.Responses;
 
 namespace ProfileService.Application.Queries.GetUserProfileQuery;
 

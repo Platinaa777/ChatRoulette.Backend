@@ -1,8 +1,7 @@
+using DomainDriverDesignAbstractions;
 using MediatR;
 using ProfileService.Domain.Models.FriendInvitationAggregate.Events;
-using ProfileService.Domain.Models.UserProfileAggregate;
 using ProfileService.Domain.Models.UserProfileAggregate.Repos;
-using ProfileService.Domain.Shared;
 
 namespace ProfileService.Application.Events;
 

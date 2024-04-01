@@ -1,6 +1,6 @@
+using DomainDriverDesignAbstractions;
 using MediatR;
 using Microsoft.Extensions.Logging;
-using ProfileService.Domain.Shared;
 
 namespace ProfileService.Application.Behaviors;
 

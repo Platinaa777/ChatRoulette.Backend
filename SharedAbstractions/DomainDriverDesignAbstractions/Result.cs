@@ -1,11 +1,11 @@
-namespace AuthService.Domain.Shared;
+namespace DomainDriverDesignAbstractions;
 
 public class Result
 {
     protected Result(bool isSuccess, Error error)
     {
-        if (isSuccess && error != Shared.Error.None ||
-            !isSuccess && error == Shared.Error.None)
+        if (isSuccess && error != Error.None ||
+            !isSuccess && error == Error.None)
         {
             throw new ArgumentException("Invalid result value");
         }

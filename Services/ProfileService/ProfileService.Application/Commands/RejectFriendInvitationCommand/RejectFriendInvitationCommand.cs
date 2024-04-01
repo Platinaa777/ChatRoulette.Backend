@@ -1,5 +1,5 @@
+using DomainDriverDesignAbstractions;
 using MediatR;
-using ProfileService.Domain.Shared;
 
 namespace ProfileService.Application.Commands.RejectFriendInvitationCommand;
 

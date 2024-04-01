@@ -1,7 +1,7 @@
+using DomainDriverDesignAbstractions;
 using FluentValidation;
 using MediatR;
 using ProfileService.Application.Validations;
-using ProfileService.Domain.Shared;
 
 namespace ProfileService.Application.Behaviors;
 

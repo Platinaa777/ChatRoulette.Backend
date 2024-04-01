@@ -1,6 +1,6 @@
+using DomainDriverDesignAbstractions;
 using MediatR;
 using ProfileService.Application.Models;
-using ProfileService.Domain.Shared;
 
 namespace ProfileService.Application.Queries.GetTopUserQuery;
 

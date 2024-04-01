@@ -1,7 +1,5 @@
-using MassTransit.Contracts.UserEvents;
+using DomainDriverDesignAbstractions;
 using MediatR;
-using ProfileService.Domain.Models.UserProfileAggregate;
-using ProfileService.Domain.Shared;
 
 namespace ProfileService.Application.Commands.ChangeNickNameProfileCommand;
 
