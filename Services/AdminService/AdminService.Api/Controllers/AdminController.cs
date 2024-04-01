@@ -17,6 +17,6 @@ public class AdminController : ControllerBase
     [HttpGet("complaint/{count:int}")]
     public async Task<ActionResult> GetUnhandledComplaints(int count)
     {
-        
+        return Ok();
     }
 }

@@ -1,8 +1,8 @@
 using System.Text.RegularExpressions;
-using AuthService.Domain.Errors.UserErrors;
+using AdminService.Domain.Errors;
 using DomainDriverDesignAbstractions;
 
-namespace AuthService.Domain.Models.UserAggregate.ValueObjects;
+namespace AdminService.Domain.Models.ComplaintAggregate.ValueObjects;
 
 public class Email : ValueObject
 {
@@ -13,7 +13,7 @@ public class Email : ValueObject
     public static Result<Email> Create(string email)
     {
         if (!EmailValidator.IsMatch(email))
-            return Result.Failure<Email>(UserError.InvalidEmail);
+            return Result.Failure<Email>(ComplaintError.InvalidEmail);
         return new Email(email);
     }
     
@@ -22,14 +22,6 @@ public class Email : ValueObject
         Value = email;
     }
 
-    public Result<Email> ChangeEmail(string email)
-    {
-        if (!EmailValidator.IsMatch(email))
-            return Result.Failure<Email>(UserError.InvalidEmail);
-
-        return new Email(email);
-    }
-    
     protected override IEnumerable<object> GetEqualityComponents()
     {
         yield return Value;

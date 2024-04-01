@@ -13,17 +13,14 @@ public class UnitOfWork : IUnitOfWork
 {
     private readonly IDbConnectionFactory<NpgsqlConnection> _factory;
     private readonly IChangeTracker _tracker;
-    private readonly IPublisher _publisher;
     private NpgsqlTransaction? _transaction;
 
     public UnitOfWork(
         IDbConnectionFactory<NpgsqlConnection> factory, 
-        IChangeTracker tracker,
-        IPublisher publisher)
+        IChangeTracker tracker)
     {
         _factory = factory;
         _tracker = tracker;
-        _publisher = publisher;
     }
 
     public async ValueTask StartTransaction(CancellationToken token)
@@ -51,7 +48,7 @@ public class UnitOfWork : IUnitOfWork
                         Type = domainEvent.GetType().Name,
                         StartedAtUtc = DateTime.UtcNow,
                         Content = JsonConvert.SerializeObject(domainEvent, 
-                            new JsonSerializerSettings() {TypeNameHandling = TypeNameHandling.All})
+                            new JsonSerializerSettings() { TypeNameHandling = TypeNameHandling.All })
                     })).ToList();
         
         var connection = await _factory.CreateConnection(token);

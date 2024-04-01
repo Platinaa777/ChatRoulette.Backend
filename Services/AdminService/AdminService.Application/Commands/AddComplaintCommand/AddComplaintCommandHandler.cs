@@ -13,7 +13,7 @@ public class AddComplaintCommandHandler :
     
     public Task<Result> Handle(AddComplaintCommand request, CancellationToken cancellationToken)
     {
-        
-        
+
+        return Task.FromResult(Result.Success());
     }
 }

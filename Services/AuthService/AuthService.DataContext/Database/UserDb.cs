@@ -1,9 +1,6 @@
 using AuthService.DataContext.Configurations;
-using AuthService.Domain.Models;
 using AuthService.Domain.Models.TokenAggregate;
 using AuthService.Domain.Models.UserAggregate;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace AuthService.DataContext.Database;

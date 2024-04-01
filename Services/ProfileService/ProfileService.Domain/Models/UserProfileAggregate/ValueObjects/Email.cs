@@ -22,10 +22,10 @@ public class Email : ValueObject
         Value = email;
     }
 
-    public Email ChangeEmail(string email)
+    public Result<Email> ChangeEmail(string email)
     {
         if (!EmailValidator.IsMatch(email))
-            throw new ArgumentException("Invalid email");
+            return Result.Failure<Email>(UserProfileErrors.InvalidEmail);
 
         return new Email(email);
     }
