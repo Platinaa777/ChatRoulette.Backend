@@ -2,6 +2,11 @@
 	<s:String x:Key="/Default/Environment/AssemblyExplorer/XmlDocument/@EntryValue">&lt;AssemblyExplorer&gt;
   &lt;Assembly Path="/usr/lib/dotnet/packs/Microsoft.AspNetCore.App.Ref/7.0.15/ref/net7.0/Microsoft.AspNetCore.SignalR.dll" /&gt;
 &lt;/AssemblyExplorer&gt;</s:String>
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=5d11f47a_002D3d55_002D40fd_002D9c70_002De34f7a61554e/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="HandleAddToFriendsList_WhenTwoFriendsEqual_ShouldBeOneFriend" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
+  &lt;TestAncestor&gt;
+    &lt;TestId&gt;xUnit::C220B12F-5EDC-4D4C-A117-E36660CD232D::net7.0::Domain.Tests.UserProfileTests.HandleAddToFriendsList_WhenTwoFriendsEqual_ShouldBeOneFriend&lt;/TestId&gt;
+  &lt;/TestAncestor&gt;
+&lt;/SessionState&gt;</s:String>
 	
 	
 	

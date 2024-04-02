@@ -7,5 +7,7 @@ public class UserProfileSnapshot
     public string Email { get; init; } = string.Empty;
     public int Age { get; init; }
     public int Rating { get; init; }
-    public string FriendIds { get; init; } = string.Empty;
+    public string? Avatar { get; init; }
+    public List<string> FriendIds { get; set; } = new();
+    public string? AchievementSnapshots { get; set; }
 }

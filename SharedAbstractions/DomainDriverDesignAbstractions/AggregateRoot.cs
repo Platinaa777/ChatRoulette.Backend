@@ -14,7 +14,7 @@ public class AggregateRoot<T> : Entity<T> where T : IEquatable<T>
     }
 
     public List<IDomainEvent> GetDomainEvents() =>
-        _domainEvents;
+        _domainEvents.ToList();
 
     public void ClearDomainEvents()
     {

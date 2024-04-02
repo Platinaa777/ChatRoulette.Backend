@@ -26,7 +26,7 @@ public static class FriendInvitationQuery
             sender_id = @SenderId,
             receiver_id = @ReceiverId,
             status = @InvitationStatus,
-            sent_at = @SentAtUtc,
+            sent_at = @SentAtUtc
         WHERE id = @Id
         ";
     

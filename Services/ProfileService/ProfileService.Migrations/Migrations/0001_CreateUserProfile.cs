@@ -15,9 +15,17 @@ public class CreateUserProfile : Migration
                 email TEXT NOT NULL,
                 age int,
                 rating int,
-                friends text,
+                avatar text,
+                achievements text,
                 CONSTRAINT EMAIL_UNIQUE_CHECK UNIQUE (email),
                 CONSTRAINT RATING_POSITIVE CHECK (rating >= 0));
+        ");
+        
+        Execute.Sql(@"
+            CREATE TABLE if not exists friends_link (
+                  profile_id text,
+                  friend_id text,
+                  CONSTRAINT FRIEND_PAIR_UNIQUE UNIQUE (profile_id, friend_id));
         ");
     }
 
@@ -25,6 +33,7 @@ public class CreateUserProfile : Migration
     {
         Execute.Sql(@"
             DROP TABLE if exists user_profiles;
+            DROP TABLE if exists friends_link;
         ");
     }
 }

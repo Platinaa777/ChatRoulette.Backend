@@ -6,7 +6,7 @@ namespace ProfileService.Domain.Models.UserProfileAggregate.ValueObjects;
 public class Rating : ValueObject
 {
     private const int MAX_RATING = 1000;
-    public int Value { get; set; }
+    public int Value { get; private set; }
     
     public static Result<Rating> Create(int rating)
     {

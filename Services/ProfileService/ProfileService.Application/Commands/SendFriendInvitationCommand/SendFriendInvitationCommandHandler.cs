@@ -14,17 +14,22 @@ public class SendFriendInvitationCommandHandler
 {
     private readonly IUserProfileRepository _profileRepository;
     private readonly IFriendInvitationRepository _invitationRepository;
+    private readonly IUnitOfWork _unitOfWork;
 
     public SendFriendInvitationCommandHandler(
         IUserProfileRepository profileRepository,
-        IFriendInvitationRepository invitationRepository)
+        IFriendInvitationRepository invitationRepository,
+        IUnitOfWork unitOfWork)
     {
         _profileRepository = profileRepository;
         _invitationRepository = invitationRepository;
+        _unitOfWork = unitOfWork;
     }
     
-    public async Task<Result> Handle(Commands.SendFriendInvitationCommand.SendFriendInvitationCommand request, CancellationToken cancellationToken)
+    public async Task<Result> Handle(SendFriendInvitationCommand request, CancellationToken cancellationToken)
     {
+        await _unitOfWork.StartTransaction(cancellationToken);
+        
         var firstProfile = await _profileRepository.FindUserByEmailAsync(request.InvitationSenderEmail);
         if (firstProfile is null)
             return Result.Failure(UserProfileErrors.EmailNotFound);
@@ -59,6 +64,7 @@ public class SendFriendInvitationCommandHandler
         if (!result)
             return Result.Failure(InvitationErrors.CantAddInvitation);
 
+        await _unitOfWork.SaveChangesAsync(cancellationToken);
         return Result.Success();
     }
 }

@@ -22,8 +22,11 @@ public static class AddUserProfileCommandToDomain
             command.NickName,
             command.Email,
             command.Age,
-            rating: 0,
-            friends: new List<string>()); // new account -> no friends and 0 rating
+            // new account
+            rating: 0,  //  0 rating
+            friends: new List<string>(), // no friends
+            jsonAchievements: string.Empty,
+            ""); // no achievements
     }
 
     public static AddUserProfileCommand ToCommandFromMessage(this UserFullyRegistered req)

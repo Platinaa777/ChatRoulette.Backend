@@ -101,7 +101,7 @@ public class FriendInvitationRepository : IFriendInvitationRepository
         };
 
         var connection = await _factory.CreateConnection(default);
-        var command = new CommandDefinition(FriendInvitationQuery.SqlUpdateInvitation, parameters);
+        var command = new CommandDefinition(FriendInvitationQuery.SqlDeleteInvitation, parameters);
 
         var result = await connection.ExecuteAsync(command);
 

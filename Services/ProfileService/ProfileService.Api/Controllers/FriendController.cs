@@ -19,7 +19,7 @@ public class FriendController : ControllerBase
         _mediator = mediator;
     }
 
-    [HttpPost]
+    [HttpPost("add-friend")]
     public async Task<ActionResult<Result>> AddFriend([FromBody] FriendRequest request)
     {
         var response = await _mediator.Send(
@@ -31,7 +31,7 @@ public class FriendController : ControllerBase
         return Ok(response);
     }
     
-    [HttpPut]
+    [HttpPut("accept-invitation-to-friends")]
     public async Task<ActionResult<Result>> AcceptInvitationToFriends([FromBody] FriendRequest request)
     {
         var response = await _mediator.Send(
@@ -43,7 +43,7 @@ public class FriendController : ControllerBase
         return Ok(response);
     }
     
-    [HttpPut]
+    [HttpPut("reject-invitation-to-friends")]
     public async Task<ActionResult<Result>> RejectInvitationToFriends([FromBody] FriendRequest request)
     {
         var response = await _mediator.Send(

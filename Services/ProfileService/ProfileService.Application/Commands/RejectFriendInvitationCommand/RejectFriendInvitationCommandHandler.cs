@@ -32,7 +32,7 @@ public class RejectFriendInvitationCommandHandler
         if (firstProfile is null)
             return Result.Failure(UserProfileErrors.EmailNotFound);
         
-        var secondProfile = await _profileRepository.FindUserByEmailAsync(request.InvitationSenderEmail);
+        var secondProfile = await _profileRepository.FindUserByEmailAsync(request.InvitationReceiverEmail);
         if (secondProfile is null)
             return Result.Failure(UserProfileErrors.EmailNotFound);
         
@@ -53,11 +53,6 @@ public class RejectFriendInvitationCommandHandler
         {
             return Result.Failure(InvitationErrors.InvalidOperation);
         }
-        
-        invitationBetweenUsers.SetRejected();
-        var response = await _invitationRepository.Update(invitationBetweenUsers);
-        if (!response)
-            return Result.Failure(InvitationErrors.CantUpdateInvitationStatus);
         
         await _invitationRepository.Remove(invitationBetweenUsers.Id);
         await _unitOfWork.SaveChangesAsync(cancellationToken);

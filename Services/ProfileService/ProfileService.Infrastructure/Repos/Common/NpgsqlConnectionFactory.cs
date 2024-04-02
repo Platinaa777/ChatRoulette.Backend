@@ -8,7 +8,7 @@ namespace ProfileService.Infrastructure.Repos.Common;
 public class NpgsqlConnectionFactory : IDbConnectionFactory<NpgsqlConnection>
 {
     private readonly string _connectionString;
-    private NpgsqlConnection _connection;
+    private NpgsqlConnection? _connection;
 
     public NpgsqlConnectionFactory(IOptions<DatabaseOptions> connectionString)
     {
@@ -21,7 +21,7 @@ public class NpgsqlConnectionFactory : IDbConnectionFactory<NpgsqlConnection>
 
         _connection = new NpgsqlConnection(_connectionString);
         await _connection.OpenAsync(token);
-        return _connection;
+        return _connection;    
     }
 
     public void Dispose()

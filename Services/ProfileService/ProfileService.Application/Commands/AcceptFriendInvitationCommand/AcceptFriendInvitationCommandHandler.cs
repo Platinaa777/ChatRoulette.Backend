@@ -33,7 +33,7 @@ public class AcceptFriendInvitationCommandHandler
         if (firstProfile is null)
             return Result.Failure(UserProfileErrors.EmailNotFound);
         
-        var secondProfile = await _profileRepository.FindUserByEmailAsync(request.InvitationSenderEmail);
+        var secondProfile = await _profileRepository.FindUserByEmailAsync(request.InvitationReceiverEmail);
         if (secondProfile is null)
             return Result.Failure(UserProfileErrors.EmailNotFound);
         
@@ -56,15 +56,9 @@ public class AcceptFriendInvitationCommandHandler
         }
         
         invitationBetweenUsers.SetAccepted();
-        var response = await _invitationRepository.Update(invitationBetweenUsers);
-        if (!response)
-            return Result.Failure(InvitationErrors.CantUpdateInvitationStatus);
-
         var removeResult = await _invitationRepository.Remove(invitationBetweenUsers.Id);
         if (!removeResult)
             return Result.Failure(InvitationErrors.CantUpdateInvitationStatus);
-        
-        // implement outbox pattern for transactional scope for aggregates (1 transaction ~ 1 aggregate root)
         
         await _unitOfWork.SaveChangesAsync(cancellationToken);
         return Result.Success();

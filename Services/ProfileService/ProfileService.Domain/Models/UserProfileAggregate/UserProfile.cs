@@ -1,6 +1,7 @@
 using DomainDriverDesignAbstractions;
 using Newtonsoft.Json;
 using ProfileService.Domain.Models.Identity;
+using ProfileService.Domain.Models.UserProfileAggregate.Entities;
 using ProfileService.Domain.Models.UserProfileAggregate.Errors;
 using ProfileService.Domain.Models.UserProfileAggregate.Snapshot;
 using ProfileService.Domain.Models.UserProfileAggregate.ValueObjects;
@@ -15,29 +16,34 @@ public class UserProfile : AggregateRoot<Id>
         Email email,
         Age age,
         Rating rating,
-        List<Id> friends)
+        HashSet<Id> friends,
+        HashSet<Achievement> achievements,
+        Avatar avatar)
     {
         Id = id;
         NickName = nickName;
         Email = email;
         Age = age;
         Rating = rating;
+        Avatar = avatar;
         _friends = friends;
+        _achievements = achievements;
     }
 
     public void AddFriend(UserProfile friend)
     {
-        _friends.Add(friend.Id);
+        if (friend.Id != Id)
+            _friends.Add(friend.Id);
+    }
+
+    public void DeleteFriend(UserProfile friend)
+    {
+        _friends.Remove(friend.Id);
     }
 
     public bool CheckIsFriend(Id profileId)
     {
-        foreach (var id in _friends)
-        {
-            if (id == profileId)
-                return true;
-        }
-        return false;
+        return _friends.Contains(profileId);
     }
 
     public Result IncreaseRating(int points)
@@ -62,13 +68,9 @@ public class UserProfile : AggregateRoot<Id>
         return Result.Success();
     }
 
-    public void SetEmail(string email)
+    public void ChangeAvatar(Avatar newAvatar)
     {
-        var newEmail = Email.Create(email);
-        if (newEmail.IsFailure)
-            return;
-
-        Email = newEmail.Value;
+        Avatar = newAvatar;
     }
 
     public UserProfileSnapshot Save()
@@ -79,8 +81,15 @@ public class UserProfile : AggregateRoot<Id>
             NickName = NickName.Value,
             Email = Email.Value,
             Age = Age.Value,
-            FriendIds = JsonConvert.SerializeObject(_friends.Select(x => x.Value.ToString()), Formatting.Indented),
-            Rating = Rating.Value
+            Rating = Rating.Value,
+            Avatar = Avatar.Value,
+            FriendIds = _friends.Select(x => x.Value.ToString()).ToList(),
+            AchievementSnapshots = JsonConvert.SerializeObject(_achievements.Select(x => new AchievementSnapshot()
+                {
+                    Id = x.Id,
+                    Content = x.Content,
+                    Photo = x.Photo
+                }).ToList(), Formatting.Indented)
         };
     }
 
@@ -92,22 +101,34 @@ public class UserProfile : AggregateRoot<Id>
             snapshot.Email,
             snapshot.Age,
             snapshot.Rating,
-            JsonConvert.DeserializeObject<List<string>>(snapshot.FriendIds) ?? new List<string>());
+            snapshot.FriendIds ?? new List<string>(),
+            snapshot.AchievementSnapshots ?? string.Empty,
+            snapshot.Avatar ?? string.Empty);
 
         if (result.IsSuccess)
             return result.Value;
         return null!;
     }
 
-    private readonly List<Id> _friends = new();
+    private readonly HashSet<Achievement> _achievements = new();
+    private readonly HashSet<Id> _friends = new();
     public Name NickName { get; private set; }
     public Email Email { get; private set; }
     public Age Age { get; private set; }
-    public IReadOnlyList<Id> Friends => _friends;
+    public IReadOnlyList<Id> Friends => _friends.ToList();
+    public IReadOnlyList<Achievement> Achievements => _achievements.ToList();
     public Rating Rating { get; private set; }
+    public Avatar Avatar { get; set; }
 
-    public static Result<UserProfile> Create(string id, string nickName, string email, int age, int rating,
-        List<string> friends)
+    public static Result<UserProfile> Create(
+        string id,
+        string nickName,
+        string email,
+        int age,
+        int rating,
+        List<string> friends,
+        string jsonAchievements,
+        string avatar)
     {
         var idResult = Id.Create(id);
         if (idResult.IsFailure)
@@ -137,12 +158,34 @@ public class UserProfile : AggregateRoot<Id>
                 friendsIds.Add(result.Value);
         }
 
+        List<AchievementSnapshot>? achievements =
+            JsonConvert.DeserializeObject<List<AchievementSnapshot>>(jsonAchievements);
+        
+        HashSet<Achievement> domainAchievements = new();
+
+        if (achievements is not null)
+        {
+            foreach (var achievement in achievements)
+            {
+                var domainAchievement = Achievement.Create(
+                    achievement.Id,
+                    achievement.Content,
+                    achievement.Photo);
+
+                if (domainAchievement.IsSuccess)
+                    domainAchievements.Add(domainAchievement.Value);
+            }    
+        }
+        
+
         return new UserProfile(
             idResult.Value,
             nickNameResult.Value,
             emailResult.Value,
             ageResult.Value,
             ratingResult.Value,
-            friendsIds.ToList());
+            friendsIds,
+            domainAchievements,
+            Avatar.Create(avatar));
     }
 }

@@ -17,8 +17,4 @@
       <ProjectReference Include="..\ProfileService.Domain\ProfileService.Domain.csproj" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="Repos\UoW\" />
-    </ItemGroup>
-
 </Project>

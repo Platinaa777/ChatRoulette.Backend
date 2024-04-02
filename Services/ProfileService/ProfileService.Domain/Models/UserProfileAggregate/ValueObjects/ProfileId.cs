@@ -8,7 +8,7 @@ public class ProfileId
     : ValueObject, IEquatable<ProfileId>
         
 {
-    public Guid Value { get; set; }
+    public Guid Value { get; private set; }
     
     public static Result<ProfileId> Create(string id)
     {

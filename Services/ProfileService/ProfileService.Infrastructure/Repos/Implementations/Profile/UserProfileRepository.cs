@@ -1,5 +1,6 @@
 using Dapper;
 using Npgsql;
+using ProfileService.Domain.Models.Identity;
 using ProfileService.Domain.Models.UserProfileAggregate;
 using ProfileService.Domain.Models.UserProfileAggregate.Repos;
 using ProfileService.Domain.Models.UserProfileAggregate.Snapshot;
@@ -27,7 +28,16 @@ public class UserProfileRepository : IUserProfileRepository
         var connection = await _factory.CreateConnection(default);
         
         IEnumerable<UserProfileSnapshot> result = await connection
-            .QueryAsync<UserProfileSnapshot>(ProfileQuery.SqlFindById, 
+            .QueryAsync<UserProfileSnapshot, (string? profileId, string? friendId), UserProfileSnapshot>(
+                ProfileQuery.SqlFindById, (profile, fl) =>
+                {
+                    if (fl.profileId is not null)
+                    {
+                        profile.FriendIds!.Add(fl.friendId!);
+                    }
+                    return profile;
+                },
+                splitOn: "ProfileId",
                 param: parameters);
 
         var userDb = result.FirstOrDefault();
@@ -49,10 +59,25 @@ public class UserProfileRepository : IUserProfileRepository
         var connection = await _factory.CreateConnection(default);
 
         IEnumerable<UserProfileSnapshot> result = await connection
-                                .QueryAsync<UserProfileSnapshot>(ProfileQuery.SqlFindByEmail, 
-                                                    param: parameters);
+            .QueryAsync<UserProfileSnapshot, (string? profileId, string? friendId), UserProfileSnapshot>(
+                ProfileQuery.SqlFindByEmail, (profile, fl) =>
+                {
+                    if (fl.profileId is not null)
+                    {
+                        profile.FriendIds.Add(fl.friendId!);
+                    }
+                    return profile;
+                },
+                splitOn: "ProfileId",
+                param: parameters);
 
-        var userDb = result.FirstOrDefault();
+        var userDb = result.GroupBy(x => x.Id).Select(x =>
+        {
+            var userProfile = x.First();
+            userProfile.FriendIds = x.Select(usp => usp.FriendIds.Single()).ToList();
+
+            return userProfile;
+        }).FirstOrDefault();
 
         if (userDb == null) return null;
 
@@ -84,6 +109,42 @@ public class UserProfileRepository : IUserProfileRepository
         var connection = await _factory.CreateConnection(default);
         var result = await connection.ExecuteAsync(command);
 
+        var parameters = new { Id = user.Id.Value.ToString() };
+        var list = await connection.QueryAsync<string>(FriendQuery.GetAllFriends, parameters);
+        
+        var friendIds = new HashSet<string>();
+        foreach (var id in list)
+            friendIds.Add(id);
+        
+        foreach (var friendId in user.Friends)
+        {
+            if (!friendIds.Contains(friendId.Value.ToString()))
+            {
+                // add to friends table
+                var updateParameters = new
+                {
+                    Id = user.Id.Value.ToString(),
+                    FriendId = friendId.Value.ToString() 
+                };
+                await connection.ExecuteAsync(FriendQuery.UpdateFriendsTable, updateParameters);
+            }
+        }
+
+        foreach (var friendId in friendIds)
+        {
+            var friendIdResult = Id.Create(friendId).Value;
+            if (!user.CheckIsFriend(friendIdResult))
+            {
+                // remove from friends table
+                var removeParameters = new
+                {
+                    Id = user.Id.Value.ToString(),
+                    FriendId = friendId 
+                };
+                await connection.ExecuteAsync(FriendQuery.DeleteFriendsFromTable, removeParameters);
+            }
+        }
+
         return result == 1;
     }
 
@@ -92,7 +153,16 @@ public class UserProfileRepository : IUserProfileRepository
         var connection = await _factory.CreateConnection(default);
         
         IEnumerable<UserProfileSnapshot> result = await connection
-            .QueryAsync<UserProfileSnapshot>(ProfileQuery.SqlGetAllUsers);
+            .QueryAsync<UserProfileSnapshot, (string? profileId, string? friendId), UserProfileSnapshot>(
+            ProfileQuery.SqlGetAllUsers, (profile, fl) =>
+            {
+                if (fl.profileId is not null)
+                {
+                    profile.FriendIds.Add(fl.friendId!);
+                }
+                return profile;
+            },
+            splitOn: "ProfileId");
 
         List<UserProfile> profiles = new();
         foreach (var profile in result)
