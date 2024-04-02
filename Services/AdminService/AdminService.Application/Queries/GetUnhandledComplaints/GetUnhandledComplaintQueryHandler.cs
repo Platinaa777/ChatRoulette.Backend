@@ -32,7 +32,8 @@ public class GetUnhandledComplaintQueryHandler
                 Id = complaint.Id.Value.ToString(),
                 Content = complaint.Content.Value,
                 SenderEmail = complaint.SenderEmail.Value,
-                ViolatorEmail = complaint.ViolatorEmail.Value
+                ViolatorEmail = complaint.ViolatorEmail.Value,
+                ComplaintType = complaint.ComplaintType.Name
             });
         }
 

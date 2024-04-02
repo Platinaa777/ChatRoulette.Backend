@@ -9,7 +9,7 @@ public class Id : ValueObject, IEquatable<Id>
 
     public static Result<Id> Create(string id)
     {
-        if (Guid.TryParse(id, out var guidId))
+        if (!Guid.TryParse(id, out var guidId))
         {
             return Result.Failure<Id>(ComplaintError.InvalidId);
         }

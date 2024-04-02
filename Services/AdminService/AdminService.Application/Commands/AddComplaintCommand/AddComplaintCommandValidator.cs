@@ -10,5 +10,6 @@ public class AddComplaintCommandValidator : AbstractValidator<AddComplaintComman
         RuleFor(x => x.Content).NotEmpty();
         RuleFor(x => x.SenderEmail).EmailAddress();
         RuleFor(x => x.PossibleViolatorEmail).EmailAddress();
+        RuleFor(x => x.SenderEmail).NotEqual(x => x.PossibleViolatorEmail);
     }
 }
