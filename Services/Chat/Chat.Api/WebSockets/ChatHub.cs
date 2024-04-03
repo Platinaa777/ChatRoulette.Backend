@@ -97,7 +97,6 @@ public class ChatHub : Hub
     
     public async Task OnStartRelayIce(string roomId)
     {
-        Console.WriteLine($"ON START RELAY ICE {roomId}");
         await Clients.Groups(roomId).SendAsync("PeerConnection",
             roomId,
             "",
@@ -110,8 +109,6 @@ public class ChatHub : Hub
         
         if (room is null)
             return;
-        
-        Console.WriteLine($"SENDING ICE {roomId}");
         
         foreach (var peer in room.PeerLinks)
         {

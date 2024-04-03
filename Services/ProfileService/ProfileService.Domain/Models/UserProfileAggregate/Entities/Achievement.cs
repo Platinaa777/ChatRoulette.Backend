@@ -8,31 +8,35 @@ namespace ProfileService.Domain.Models.UserProfileAggregate.Entities;
 public class Achievement : Entity<int>
 {
 
-    public static Result<Achievement> Create(int id, string content, string photo)
+    public static Result<Achievement> Create(int id, string photo)
     {
         var achievementType = AchievementType.FromValue(id);
         if (achievementType is null)
             return Result.Failure<Achievement>(AchievementErrors.TypeDoesNotExist);
+        
+        var achievementContent = AchievementContent.FromValue(id);
+        if (achievementContent is null)
+            return Result.Failure<Achievement>(AchievementErrors.TypeDoesNotExist);
 
-        var achievementBodyResult = AchievementBody.Create(achievementType.Name, content, photo);
+        var achievementBodyResult = AchievementBody.Create(
+            title: achievementType.Name,
+            content: achievementContent.Name,
+            photo);
+        
         if (achievementBodyResult.IsFailure)
             return Result.Failure<Achievement>(achievementBodyResult.Error);
 
         return new Achievement(
             id,
-            achievementBodyResult.Value.Content,
             achievementBodyResult.Value.Photo);
     }
 
     private Achievement(
         int id,
-        string content,
         string photo) : base(id)
     {
-        Content = content;
         Photo = photo;
     }
 
-    public string Content { get; private set; }
     public string Photo { get; private set; }
 }

@@ -33,7 +33,7 @@ public class ChatUser : AggregateRoot<string>
             PreviousParticipantEmails.Remove(lastPeer);
         }
 
-        PreviousParticipantEmails.Add(chatUser.Id);
+        PreviousParticipantEmails.Add(chatUser.Email);
     }
 
     public bool CheckInHistory(string peerEmail)

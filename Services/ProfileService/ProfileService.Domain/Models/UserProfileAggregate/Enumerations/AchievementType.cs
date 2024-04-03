@@ -7,7 +7,7 @@ public class AchievementType : Enumeration
     public static readonly AchievementType NothingToDo = new AchievementType(1, nameof(NothingToDo));
     public static readonly AchievementType ManyFriends = new AchievementType(2, nameof(ManyFriends));
     public static readonly AchievementType DoomSlayer = new AchievementType(3, nameof(DoomSlayer));
-    public static readonly AchievementType ShapeShifter = new AchievementType(4, nameof(ShapeShifter));
+    public static readonly AchievementType MasterOfAdvancement = new AchievementType(4, nameof(MasterOfAdvancement));
 
     public AchievementType(int id, string name) : base(id, name)
     {

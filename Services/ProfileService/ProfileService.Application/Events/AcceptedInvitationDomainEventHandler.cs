@@ -23,8 +23,8 @@ public class AcceptedInvitationDomainEventHandler
     {
         await _unitOfWork.StartTransaction(cancellationToken);
         
-        var profileUser1 = await _profileRepository.FindUserByIdAsync(notification.senderId);
-        var profileUser2 = await _profileRepository.FindUserByIdAsync(notification.receiverId);
+        var profileUser1 = await _profileRepository.FindUserByIdAsync(notification.SenderId);
+        var profileUser2 = await _profileRepository.FindUserByIdAsync(notification.ReceiverId);
 
         if (profileUser1 is null || profileUser2 is null)
             return;

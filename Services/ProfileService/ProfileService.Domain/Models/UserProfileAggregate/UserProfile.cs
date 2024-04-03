@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using ProfileService.Domain.Models.Identity;
 using ProfileService.Domain.Models.UserProfileAggregate.Entities;
 using ProfileService.Domain.Models.UserProfileAggregate.Errors;
+using ProfileService.Domain.Models.UserProfileAggregate.Events;
 using ProfileService.Domain.Models.UserProfileAggregate.Snapshot;
 using ProfileService.Domain.Models.UserProfileAggregate.ValueObjects;
 
@@ -33,7 +34,18 @@ public class UserProfile : AggregateRoot<Id>
     public void AddFriend(UserProfile friend)
     {
         if (friend.Id != Id)
+        {
             _friends.Add(friend.Id);
+            if (_friends.Count >= 35)
+            {
+                RaiseDomainEvent(new GotManyFriendsDomainEvent(Id.Value.ToString()));
+            }
+        }
+    }
+
+    public void AddAchievement(Achievement achievement)
+    {
+        _achievements.Add(achievement);
     }
 
     public void DeleteFriend(UserProfile friend)
@@ -55,6 +67,12 @@ public class UserProfile : AggregateRoot<Id>
             return Result.Failure(ratingResult.Error);
 
         Rating = ratingResult.Value;
+
+        if (Rating.Value >= 250 && _achievements.All(x => x.Id != 4))
+        {
+            RaiseDomainEvent(new Got250RatingOnProfileDomainEvent(Id.Value.ToString()));
+        }
+        
         return Result.Success();
     }
 
@@ -87,7 +105,6 @@ public class UserProfile : AggregateRoot<Id>
             AchievementSnapshots = JsonConvert.SerializeObject(_achievements.Select(x => new AchievementSnapshot()
                 {
                     Id = x.Id,
-                    Content = x.Content,
                     Photo = x.Photo
                 }).ToList(), Formatting.Indented)
         };
@@ -169,7 +186,6 @@ public class UserProfile : AggregateRoot<Id>
             {
                 var domainAchievement = Achievement.Create(
                     achievement.Id,
-                    achievement.Content,
                     achievement.Photo);
 
                 if (domainAchievement.IsSuccess)
