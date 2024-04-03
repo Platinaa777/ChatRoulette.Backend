@@ -14,7 +14,7 @@ public class TwoSeatsRoom : AggregateRoot<string>
 
     public int Close()
     {
-        DateTime temp = DateTime.Now;
+        DateTime temp = DateTime.UtcNow;
         ClosedAt = temp;
         return temp.Subtract(CreatedAt).Minutes;
     }

@@ -37,7 +37,7 @@ public class ChatHub : Hub
 
         UserJoinResponse response = await _mediator.Send(findRoomCommand);
         // add client to special group
-        await Groups.AddToGroupAsync(Context.ConnectionId, response?.RoomId!);
+        await Groups.AddToGroupAsync(Context.ConnectionId, response.RoomId!);
         // Console.WriteLine($"Client {Context.ConnectionId} was joined in room {response?.RoomId}");
         if (response!.CreateOffer)
         {
@@ -55,7 +55,7 @@ public class ChatHub : Hub
         }
     }
 
-    public async Task OnPeerOffer(string roomId, string email, string offer)
+    public async Task OnPeerOffer(string roomId, string offer)
     {
         var room = await _mediator.Send(new GetRoomQuery() { RoomId = roomId });
         
@@ -97,7 +97,7 @@ public class ChatHub : Hub
     
     public async Task OnStartRelayIce(string roomId)
     {
-        // Console.WriteLine($"START TO GROUP {roomId}");
+        Console.WriteLine($"ON START RELAY ICE {roomId}");
         await Clients.Groups(roomId).SendAsync("PeerConnection",
             roomId,
             "",
@@ -110,7 +110,9 @@ public class ChatHub : Hub
         
         if (room is null)
             return;
-
+        
+        Console.WriteLine($"SENDING ICE {roomId}");
+        
         foreach (var peer in room.PeerLinks)
         {
             if (peer.ConnectionId != Context.ConnectionId)

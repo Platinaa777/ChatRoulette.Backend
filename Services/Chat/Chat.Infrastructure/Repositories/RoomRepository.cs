@@ -19,18 +19,24 @@ public class RoomRepository : IRoomRepository
     
     public async Task<TwoSeatsRoom?> TryToConnectRoom(ChatUser chatUser)
     {
-        foreach (var room in _dbContext.Rooms)
+        var rooms = await _dbContext.Rooms
+            .Where(x => x.ClosedAt == null)
+            .ToListAsync();
+        
+        foreach (var room in rooms)
         {
             lock (_locker)
             {
                 if (room.PeerLinks.Count == 1 && !chatUser.CheckInHistory(chatUser.Email))
                 {
                     room.AddPeer(chatUser);
+                    _dbContext.Rooms.Update(room);
+                    _dbContext.SaveChanges();
                     return room;
-                }
+                }    
             }
         }
-
+        
         return null;
     }
     
@@ -42,6 +48,7 @@ public class RoomRepository : IRoomRepository
             DateTime.UtcNow);
 
         await _dbContext.Rooms.AddAsync(room);
+        await _dbContext.SaveChangesAsync();
         return room;
     }
 
@@ -52,7 +59,7 @@ public class RoomRepository : IRoomRepository
             return false;
 
         room.Close();
-
+        await _dbContext.SaveChangesAsync();
         return true;
     }
     
