@@ -2,6 +2,7 @@ using System.Collections.Concurrent;
 using Chat.DataContext.Database;
 using Chat.Domain.Entities;
 using Chat.Domain.Repositories;
+using Chat.Domain.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 
 namespace Chat.Infrastructure.Repositories;
@@ -22,9 +23,9 @@ public class RoomRepository : IRoomRepository
         {
             lock (_locker)
             {
-                if (room.PeerEmails.Count == 1 && !chatUser.CheckInHistory(room.PeerEmails[0]))
+                if (room.PeerLinks.Count == 1 && !chatUser.CheckInHistory(chatUser.Email))
                 {
-                    room.AddPeer(chatUser.Id);
+                    room.AddPeer(chatUser);
                     return room;
                 }
             }
@@ -37,7 +38,7 @@ public class RoomRepository : IRoomRepository
     {
         var room = new TwoSeatsRoom(
             id: Guid.NewGuid().ToString(),
-            new List<string>() { chatUser.Email },
+            new List<UserLink>() { chatUser.ToUserLink() },
             DateTime.UtcNow);
 
         await _dbContext.Rooms.AddAsync(room);
@@ -62,6 +63,6 @@ public class RoomRepository : IRoomRepository
 
     public async Task<List<TwoSeatsRoom>> GetAllRooms()
     {
-        return _dbContext.Rooms.ToList();
+        return await _dbContext.Rooms.ToListAsync();
     }
 }

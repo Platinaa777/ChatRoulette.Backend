@@ -65,7 +65,7 @@ namespace Chat.DataContext.Migrations
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("created_at");
 
-                    b.Property<string>("PeerEmails")
+                    b.Property<string>("PeerLinks")
                         .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("peers_emails");

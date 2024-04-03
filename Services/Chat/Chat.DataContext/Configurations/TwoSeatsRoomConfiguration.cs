@@ -1,4 +1,5 @@
 using Chat.Domain.Entities;
+using Chat.Domain.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Newtonsoft.Json;
@@ -22,12 +23,12 @@ public class TwoSeatsRoomConfiguration : IEntityTypeConfiguration<TwoSeatsRoom>
         builder.Property(r => r.ClosedAt)
             .HasColumnName("closed_at");
 
-        builder.Property(x => x.PeerEmails)
+        builder.Property(x => x.PeerLinks)
             .HasColumnName("peers_emails")
             .HasConversion(
                 val => 
                     JsonConvert.SerializeObject(val, Formatting.Indented),
                 val =>
-                    JsonConvert.DeserializeObject<List<string>>(val) ?? new List<string>());
+                    JsonConvert.DeserializeObject<List<UserLink>>(val) ?? new List<UserLink>());
     }
 }

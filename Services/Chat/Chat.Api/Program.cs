@@ -36,8 +36,8 @@ builder.Services.AddSignalR(options =>
 builder.Services.AddTransient<ChatHub>();
 builder.Services.AddMediatR(cfg 
     => cfg.RegisterServicesFromAssemblyContaining<ConnectUserCommand>());
-builder.Services.AddSingleton<IRoomRepository, RoomRepository>();
-builder.Services.AddSingleton<IChatUserRepository, ChatUserRepository>();
+builder.Services.AddScoped<IRoomRepository, RoomRepository>();
+builder.Services.AddScoped<IChatUserRepository, ChatUserRepository>();
 builder.Services.AddControllers();
 builder.Services.AddSwaggerGen();
 builder.AddEventBusClient();

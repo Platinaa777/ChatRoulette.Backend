@@ -29,6 +29,12 @@ public class ConnectUserCommandHandler : IRequestHandler<ConnectUserCommand, Use
 
             await _chatUserRepository.Add(chatUser);
         }
+
+        if (chatUser.ConnectionId != request.ConnectionId)
+        {
+            chatUser.RefreshConnectionId(request.ConnectionId);
+            await _chatUserRepository.Update(chatUser);
+        }
             
         var room = await _roomRepository.TryToConnectRoom(chatUser);
 
@@ -41,7 +47,7 @@ public class ConnectUserCommandHandler : IRequestHandler<ConnectUserCommand, Use
             ConnectionId = request.ConnectionId,
             Email = request.Email,
             RoomId = room.Id,
-            CreateOffer = room.PeerEmails.Count == 2
+            CreateOffer = room.PeerLinks.Count == 2
         };
     }
 }

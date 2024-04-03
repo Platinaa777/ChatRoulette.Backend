@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Chat.DataContext.Migrations
 {
     [DbContext(typeof(ChatDbContext))]
-    [Migration("20240403111942_Initial")]
+    [Migration("20240403125629_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -68,7 +68,7 @@ namespace Chat.DataContext.Migrations
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("created_at");
 
-                    b.Property<string>("PeerEmails")
+                    b.Property<string>("PeerLinks")
                         .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("peers_emails");

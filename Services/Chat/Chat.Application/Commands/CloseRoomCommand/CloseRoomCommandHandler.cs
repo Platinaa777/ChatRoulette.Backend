@@ -34,10 +34,10 @@ public class CloseRoomCommandHandler : IRequestHandler<CloseRoomCommand, bool>
         if (!closeRoomResponse)
             return false;
 
-        if (room.PeerEmails.Count == 2)
+        if (room.PeerLinks.Count == 2)
         {
-            var chatUser1 = await _chatUserRepository.FindByEmail(room.PeerEmails[0]);
-            var chatUser2 = await _chatUserRepository.FindByEmail(room.PeerEmails[1]);
+            var chatUser1 = await _chatUserRepository.FindByEmail(room.PeerLinks[0].Email);
+            var chatUser2 = await _chatUserRepository.FindByEmail(room.PeerLinks[1].Email);
             
             if (chatUser1 is null || chatUser2 is null)
                 return true;

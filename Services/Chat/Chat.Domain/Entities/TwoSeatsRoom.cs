@@ -1,13 +1,14 @@
+using Chat.Domain.ValueObjects;
 using DomainDriverDesignAbstractions;
 
 namespace Chat.Domain.Entities;
 
 public class TwoSeatsRoom : AggregateRoot<string>
 {
-    public TwoSeatsRoom(string id, List<string> peerEmails, DateTime createdAt)
+    public TwoSeatsRoom(string id, List<UserLink> peerLinks, DateTime createdAt)
     {
         Id = id;
-        PeerEmails = peerEmails;
+        PeerLinks = peerLinks;
         CreatedAt = createdAt;
     }
 
@@ -18,12 +19,17 @@ public class TwoSeatsRoom : AggregateRoot<string>
         return temp.Subtract(CreatedAt).Minutes;
     }
 
-    public void AddPeer(string peerId)
+    public void AddPeer(ChatUser peer)
     {
-        PeerEmails.Add(peerId);
+        var userLink = peer.ToUserLink();
+
+        if (!PeerLinks.Contains(userLink))
+        {
+            PeerLinks.Add(userLink);    
+        }
     }
 
-    public List<string> PeerEmails { get; private set; } 
+    public List<UserLink> PeerLinks { get; private set; } 
     public DateTime CreatedAt { get; private set; }
     public DateTime? ClosedAt { get; private set; }
 }

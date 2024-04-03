@@ -16,13 +16,18 @@ public class ChatUser : AggregateRoot<string>
         ConnectionId = connectionId;
         PreviousParticipantEmails = previousParticipantEmails;
     }
-    public string Email { get; set; }
-    public string ConnectionId { get; set; }
+    public string Email { get; private set; }
+    public string ConnectionId { get; private set; }
     public HashSet<string> PreviousParticipantEmails { get; private set; } = new();
+
+    public void RefreshConnectionId(string newConnectionId)
+    {
+        ConnectionId = newConnectionId;
+    }
 
     public void AddPeerToHistory(ChatUser chatUser)
     {
-        if (PreviousParticipantEmails.Count >= 10)
+        if (PreviousParticipantEmails.Count >= 3)
         {
             var lastPeer = PreviousParticipantEmails.Last();
             PreviousParticipantEmails.Remove(lastPeer);
@@ -31,9 +36,9 @@ public class ChatUser : AggregateRoot<string>
         PreviousParticipantEmails.Add(chatUser.Id);
     }
 
-    public bool CheckInHistory(string peerId)
+    public bool CheckInHistory(string peerEmail)
     {
-        return PreviousParticipantEmails.Contains(peerId);
+        return PreviousParticipantEmails.Contains(peerEmail);
     }
     private ChatUser() { }
 }
