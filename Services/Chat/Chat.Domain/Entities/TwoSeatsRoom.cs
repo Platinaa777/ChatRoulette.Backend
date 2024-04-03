@@ -1,23 +1,29 @@
-using Chat.Domain.SeedWork;
+using DomainDriverDesignAbstractions;
 
 namespace Chat.Domain.Entities;
 
-public class TwoSeatsRoom : Entity
+public class TwoSeatsRoom : AggregateRoot<string>
 {
-    public TwoSeatsRoom()
+    public TwoSeatsRoom(string id, List<string> peerEmails, DateTime createdAt)
     {
-        Id = Guid.NewGuid().ToString();
-        Peers = new List<ChatUser?>();
-        _createdAt = DateTime.Now;
+        Id = id;
+        PeerEmails = peerEmails;
+        CreatedAt = createdAt;
     }
 
     public int Close()
     {
-        _closedAt = DateTime.Now;
-        return _closedAt.Subtract(_createdAt).Minutes;
+        DateTime temp = DateTime.Now;
+        ClosedAt = temp;
+        return temp.Subtract(CreatedAt).Minutes;
     }
 
-    public readonly List<ChatUser?> Peers;
-    private readonly DateTime _createdAt;
-    private DateTime _closedAt;
+    public void AddPeer(string peerId)
+    {
+        PeerEmails.Add(peerId);
+    }
+
+    public List<string> PeerEmails { get; private set; } 
+    public DateTime CreatedAt { get; private set; }
+    public DateTime? ClosedAt { get; private set; }
 }

@@ -10,6 +10,8 @@ var builder = WebApplication.CreateBuilder(args);
 
 var cfg = builder.Configuration;
 
+builder.AddDataLayer();
+
 builder.Services.AddCors(corsOptions =>
 {
     corsOptions.AddDefaultPolicy(policy =>

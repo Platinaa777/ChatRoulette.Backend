@@ -34,7 +34,7 @@ public class ChatHub : Hub
     {
         var findRoomCommand = new ConnectUserCommand() { ConnectionId = connectionId, Email = email };
 
-        UserJoinResponse? response = await _mediator.Send(findRoomCommand);
+        UserJoinResponse response = await _mediator.Send(findRoomCommand);
         // add client to special group
         await Groups.AddToGroupAsync(Context.ConnectionId, response?.RoomId!);
         // Console.WriteLine($"Client {Context.ConnectionId} was joined in room {response?.RoomId}");
@@ -131,54 +131,54 @@ public class ChatHub : Hub
 
     private async Task SwitchRoom(string command)
     {
-        var rooms = await _mediator.Send(new GetAllRoomsQuery());
-        TwoSeatsRoom? storedRoom = null;
-        
-        foreach (var room in rooms)
-        {
-            foreach (var userRoom in room.Peers)
-            {
-                if (userRoom?.Id == Context.ConnectionId)
-                {
-                    storedRoom = room;
-                    break;
-                }            
-            }
-        }
-        
-        if (storedRoom is null)
-            return;
-
-        // close room
-        var response = await _mediator.Send(new CloseRoomCommand() { RoomId = storedRoom.Id });
-
-        if (!response)
-            return;
-        
-        // send to peers in group to stop their video tracks
-        await Clients.Groups(storedRoom.Id).SendAsync("PeerConnection",
-            storedRoom.Id,
-            "",
-            command);
-
-        ChatUser? peer1 = null;
-        ChatUser? peer2 = null;
-        if (storedRoom.Peers.Count == 2)
-        {
-            peer1 = storedRoom.Peers[0];
-            peer2 = storedRoom.Peers[1];    
-        }
-        
-        if (peer1 is not null)
-        {
-            // Console.WriteLine("Disconnected: " + peer1?.ConnectionId);
-            await Groups.RemoveFromGroupAsync(peer1?.Id!, storedRoom.Id);    
-        }
-
-        if (peer2 is not null)
-        {
-            // Console.WriteLine("Disconnected: " + peer2?.ConnectionId);
-            await Groups.RemoveFromGroupAsync(peer2?.Id!, storedRoom.Id);    
-        }
+        // var rooms = await _mediator.Send(new GetAllRoomsQuery());
+        // TwoSeatsRoom? storedRoom = null;
+        //
+        // foreach (var room in rooms)
+        // {
+        //     foreach (var userRoom in room.PeerIds)
+        //     {
+        //         if (userRoom?.Id == Context.ConnectionId)
+        //         {
+        //             storedRoom = room;
+        //             break;
+        //         }            
+        //     }
+        // }
+        //
+        // if (storedRoom is null)
+        //     return;
+        //
+        // // close room
+        // var response = await _mediator.Send(new CloseRoomCommand() { RoomId = storedRoom.Id });
+        //
+        // if (!response)
+        //     return;
+        //
+        // // send to peers in group to stop their video tracks
+        // await Clients.Groups(storedRoom.Id).SendAsync("PeerConnection",
+        //     storedRoom.Id,
+        //     "",
+        //     command);
+        //
+        // ChatUser? peer1 = null;
+        // ChatUser? peer2 = null;
+        // if (storedRoom.PeerIds.Count == 2)
+        // {
+        //     peer1 = storedRoom.PeerIds[0];
+        //     peer2 = storedRoom.PeerIds[1];    
+        // }
+        //
+        // if (peer1 is not null)
+        // {
+        //     // Console.WriteLine("Disconnected: " + peer1?.ConnectionId);
+        //     await Groups.RemoveFromGroupAsync(peer1?.Id!, storedRoom.Id);    
+        // }
+        //
+        // if (peer2 is not null)
+        // {
+        //     // Console.WriteLine("Disconnected: " + peer2?.ConnectionId);
+        //     await Groups.RemoveFromGroupAsync(peer2?.Id!, storedRoom.Id);    
+        // }
     }
 }

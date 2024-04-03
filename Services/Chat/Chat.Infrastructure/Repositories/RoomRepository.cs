@@ -1,24 +1,31 @@
 using System.Collections.Concurrent;
+using Chat.DataContext.Database;
 using Chat.Domain.Entities;
 using Chat.Domain.Repositories;
+using Microsoft.EntityFrameworkCore;
 
 namespace Chat.Infrastructure.Repositories;
 
 public class RoomRepository : IRoomRepository
 {
-    private ConcurrentDictionary<string, TwoSeatsRoom> _rooms = new();
+    private readonly ChatDbContext _dbContext;
     private readonly object _locker = new object();
+
+    public RoomRepository(ChatDbContext dbContext)
+    {
+        _dbContext = dbContext;
+    }
     
     public async Task<TwoSeatsRoom?> TryToConnectRoom(ChatUser chatUser)
     {
-        foreach (var key in _rooms.Keys)
+        foreach (var room in _dbContext.Rooms)
         {
             lock (_locker)
             {
-                if (_rooms[key].Peers.Count == 1 && !_rooms[key].Peers[0]!.PreviousParticipantIds.Contains(chatUser.Id))
+                if (room.PeerEmails.Count == 1 && !chatUser.CheckInHistory(room.PeerEmails[0]))
                 {
-                    _rooms[key].Peers.Add(chatUser);
-                    return _rooms[key];
+                    room.AddPeer(chatUser.Id);
+                    return room;
                 }
             }
         }
@@ -28,33 +35,33 @@ public class RoomRepository : IRoomRepository
     
     public async Task<TwoSeatsRoom> CreateRoomWithConnect(ChatUser chatUser)
     {
-        // generate room with guid id
-        var room = new TwoSeatsRoom();
-        room.Peers.Add(chatUser);
-        _rooms[room.Id] = room;
+        var room = new TwoSeatsRoom(
+            id: Guid.NewGuid().ToString(),
+            new List<string>() { chatUser.Email },
+            DateTime.UtcNow);
+
+        await _dbContext.Rooms.AddAsync(room);
         return room;
     }
 
     public async Task<bool> CloseRoom(string roomId)
     {
-        return _rooms.TryRemove(roomId, out var _);
+        var room = await _dbContext.Rooms.FirstOrDefaultAsync(x => x.Id == roomId);
+        if (room is null)
+            return false;
+
+        room.Close();
+
+        return true;
     }
     
     public async Task<TwoSeatsRoom?> FindRoomById(string id)
     {
-        foreach (var key in _rooms.Keys)
-        {
-            if (key == id)
-            {
-                return _rooms[key];
-            }
-        }
-
-        return null;
+        return await _dbContext.Rooms.FirstOrDefaultAsync(x => x.Id == id);
     }
 
     public async Task<List<TwoSeatsRoom>> GetAllRooms()
     {
-        return _rooms.Select(x => x.Value).ToList();
+        return _dbContext.Rooms.ToList();
     }
 }

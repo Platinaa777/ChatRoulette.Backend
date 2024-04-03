@@ -34,28 +34,26 @@ public class CloseRoomCommandHandler : IRequestHandler<CloseRoomCommand, bool>
         if (!closeRoomResponse)
             return false;
 
-        if (room.Peers.Count == 2)
+        if (room.PeerEmails.Count == 2)
         {
-            var chatUser1 = await _chatUserRepository.FindById(room.Peers[0]!.Id);
-            var chatUser2 = await _chatUserRepository.FindById(room.Peers[1]!.Id);
-
+            var chatUser1 = await _chatUserRepository.FindByEmail(room.PeerEmails[0]);
+            var chatUser2 = await _chatUserRepository.FindByEmail(room.PeerEmails[1]);
+            
             if (chatUser1 is null || chatUser2 is null)
                 return true;
-
+            
             int durationOfConversation = room.Close();
             
-            chatUser1.PreviousParticipantIds.Add(chatUser2!.Id);
-            chatUser2.PreviousParticipantIds.Add(chatUser1!.Id);
-
-            var task1 = _chatUserRepository.Update(chatUser1);
-            var task2 = _chatUserRepository.Update(chatUser2);
+            chatUser1.AddPeerToHistory(chatUser2);
+            chatUser2.AddPeerToHistory(chatUser1);
+            
+            await _chatUserRepository.Update(chatUser1);
+            await _chatUserRepository.Update(chatUser2);
             
             _busClient.PublishAsync(new UserWasTalked(chatUser1.Email, durationOfConversation),
                 cancellationToken);
             _busClient.PublishAsync(new UserWasTalked(chatUser2.Email, durationOfConversation),
                 cancellationToken);
-
-            Task.WaitAll(task1, task2);
         }
 
         return true;

@@ -4,7 +4,7 @@ namespace Chat.Domain.Repositories;
 
 public interface IChatUserRepository
 {
-    Task<ChatUser?> FindById(string id);
+    Task<ChatUser?> FindByEmail(string email);
     Task Add(ChatUser chatUser);
     Task Update(ChatUser chatUser);
 }

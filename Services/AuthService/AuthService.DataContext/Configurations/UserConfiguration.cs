@@ -42,7 +42,8 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
         builder.Property(u => u.IsSubmittedEmail)
             .HasColumnName("confirmation");
 
-        builder.HasIndex(u => u.Email);
+        builder.HasIndex(u => u.Email)
+            .IsUnique();
 
         builder.Ignore(u => u.Age);
         builder.Ignore(u => u.NickName);

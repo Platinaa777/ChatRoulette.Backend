@@ -1,9 +1,10 @@
+using Chat.Domain.Entities;
 using Chat.Domain.Repositories;
 using MediatR;
 
 namespace Chat.Application.Queries.GetRoom;
 
-public class GetRoomQueryHandler : IRequestHandler<GetRoomQuery, List<string>>
+public class GetRoomQueryHandler : IRequestHandler<GetRoomQuery, TwoSeatsRoom?>
 {
     private readonly IRoomRepository _roomRepository;
 
@@ -12,12 +13,12 @@ public class GetRoomQueryHandler : IRequestHandler<GetRoomQuery, List<string>>
         _roomRepository = roomRepository;
     }
     
-    public async Task<List<string>> Handle(GetRoomQuery request, CancellationToken cancellationToken)
+    public async Task<TwoSeatsRoom?> Handle(GetRoomQuery request, CancellationToken cancellationToken)
     {
         var room = await _roomRepository.FindRoomById(request.RoomId);
-        if (room == null)
+        if (room is null)
             return null;
 
-        return room.Peers.Select(x => x.Id).ToList();
+        return room;
     }
 }

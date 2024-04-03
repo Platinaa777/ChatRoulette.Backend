@@ -8,6 +8,7 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\Chat.DataContext\Chat.DataContext.csproj" />
       <ProjectReference Include="..\Chat.Domain\Chat.Domain.csproj" />
     </ItemGroup>
 

@@ -5,7 +5,7 @@ using MediatR;
 
 namespace Chat.Application.Commands.ConnectUser;
 
-public class ConnectUserCommandHandler : IRequestHandler<ConnectUserCommand, UserJoinResponse?>
+public class ConnectUserCommandHandler : IRequestHandler<ConnectUserCommand, UserJoinResponse>
 {
     private readonly IRoomRepository _roomRepository;
     private readonly IChatUserRepository _chatUserRepository;
@@ -15,14 +15,18 @@ public class ConnectUserCommandHandler : IRequestHandler<ConnectUserCommand, Use
         _chatUserRepository = chatUserRepository;
     }
     
-    public async Task<UserJoinResponse?> Handle(ConnectUserCommand request, CancellationToken cancellationToken)
+    public async Task<UserJoinResponse> Handle(ConnectUserCommand request, CancellationToken cancellationToken)
     {
-        var chatUser = await _chatUserRepository.FindById(request.ConnectionId!);
+        var chatUser = await _chatUserRepository.FindByEmail(request.Email);
 
         if (chatUser is null)
         {
-            chatUser = new ChatUser(request.Email!, request.ConnectionId!);
-            // store user in database
+            chatUser = new ChatUser(
+                id: Guid.NewGuid().ToString(),
+                request.Email,
+                request.ConnectionId,
+                new());
+
             await _chatUserRepository.Add(chatUser);
         }
             
@@ -34,10 +38,10 @@ public class ConnectUserCommandHandler : IRequestHandler<ConnectUserCommand, Use
         
         return new UserJoinResponse()
         {
-            ConnectionId = request.ConnectionId!,
-            Email = request.Email!,
+            ConnectionId = request.ConnectionId,
+            Email = request.Email,
             RoomId = room.Id,
-            CreateOffer = room.Peers.Count == 2
+            CreateOffer = room.PeerEmails.Count == 2
         };
     }
 }

@@ -9,12 +9,17 @@
     <ItemGroup>
       <ProjectReference Include="..\..\..\Infrastructure\SwaggerConfigurations\SwaggerConfigurations.csproj" />
       <ProjectReference Include="..\Chat.Application\Chat.Application.csproj" />
+      <ProjectReference Include="..\Chat.DataContext\Chat.DataContext.csproj" />
       <ProjectReference Include="..\Chat.Infrastructure\Chat.Infrastructure.csproj" />
     </ItemGroup>
 
     <ItemGroup>
       <PackageReference Include="Microsoft.AspNet.SignalR" Version="2.4.3" />
       <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="7.0.17" />
+      <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.17">
+        <PrivateAssets>all</PrivateAssets>
+        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      </PackageReference>
       <PackageReference Include="Serilog.AspNetCore" Version="8.0.2-dev-00336" />
       <PackageReference Include="Serilog.Sinks.Elasticsearch" Version="10.0.0" />
     </ItemGroup>

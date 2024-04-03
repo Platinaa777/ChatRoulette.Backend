@@ -1,5 +1,7 @@
+using Chat.DataContext.Database;
 using MassTransit;
 using MassTransit.Client.Configuration;
+using Microsoft.EntityFrameworkCore;
 
 namespace Chat.Api.Infrastructure;
 
@@ -23,6 +25,19 @@ public static class ServicesRegistrator
                 
                 cfg.ConfigureEndpoints(context);
             });
+        });
+
+        return builder;
+    }
+
+    public static WebApplicationBuilder AddDataLayer(this WebApplicationBuilder builder)
+    {
+        builder.Services.AddDbContext<ChatDbContext>(options =>
+        {
+            options.UseNpgsql(
+                builder.Configuration.GetConnectionString("PostgresSQL"),
+                b => 
+                    b.MigrationsAssembly("Chat.DataContext"));
         });
 
         return builder;
