@@ -1,9 +1,9 @@
 using DomainDriverDesignAbstractions;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using ProfileService.Application.Commands.AcceptFriendInvitationCommand;
-using ProfileService.Application.Commands.RejectFriendInvitationCommand;
-using ProfileService.Application.Commands.SendFriendInvitationCommand;
+using ProfileService.Application.Commands.AcceptFriendInvitation;
+using ProfileService.Application.Commands.RejectFriendInvitation;
+using ProfileService.Application.Commands.SendFriendInvitation;
 using ProfileService.HttpModels.Requests;
 
 namespace ProfileService.Api.Controllers;

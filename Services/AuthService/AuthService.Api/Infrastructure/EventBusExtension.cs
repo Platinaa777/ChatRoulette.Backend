@@ -12,7 +12,8 @@ public static class EventBusExtension
         {
             cfg.SetKebabCaseEndpointNameFormatter();
             cfg.AddConsumer<UserSubmitEmailConsumer>();
-            
+            cfg.AddConsumer<ComplaintApprovedByAdminConsumer>();
+
             cfg.UsingRabbitMq((context, cfg) =>
             {
                 EventBusOptions options = context.GetRequiredService<EventBusOptions>();

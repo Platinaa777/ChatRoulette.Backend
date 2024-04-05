@@ -20,6 +20,7 @@ public class ApprovedComplaintDomainEventHandler
         var busCommand = new ComplaintApprovedByAdmin()
         {
             Id = notification.ComplaintId,
+            SenderEmail = notification.SenderEmail,
             ViolatorEmail = notification.ViolatorEmail,
             MinutesToBan = notification.MinutesToBan,
             Type = notification.Type

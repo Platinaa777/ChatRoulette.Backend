@@ -2,7 +2,7 @@ using MassTransit;
 using MassTransit.Contracts.UserEvents;
 using MediatR;
 using ProfileService.Application.Commands;
-using ProfileService.Application.Commands.AddUserProfileCommand;
+using ProfileService.Application.Commands.AddUserProfile;
 
 namespace ProfileService.Api.Consumers;
 

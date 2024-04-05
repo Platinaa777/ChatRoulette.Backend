@@ -5,8 +5,9 @@ using Npgsql;
 using ProfileService.Api.BackgroundJobs;
 using ProfileService.Application.Assembly;
 using ProfileService.Application.Behaviors;
-using ProfileService.Application.Queries.GetUserProfileQuery;
+using ProfileService.Application.Queries.GetUserProfile;
 using ProfileService.Domain.Models.FriendInvitationAggregate.Repos;
+using ProfileService.Domain.Models.UserHistoryAggregate.Repos;
 using ProfileService.Domain.Models.UserProfileAggregate.Repos;
 using ProfileService.Infrastructure.Configuration;
 using ProfileService.Infrastructure.Repos.Common;
@@ -24,6 +25,7 @@ public static class ServicesRegistrator
         builder.Services.AddControllers();
         builder.Services.AddScoped<IUserProfileRepository, UserProfileRepository>();
         builder.Services.AddScoped<IFriendInvitationRepository, FriendInvitationRepository>();
+        builder.Services.AddScoped<IUserHistoryRepository, IUserHistoryRepository>();
         
         builder.Services.AddMediatR(cfg =>
             cfg.RegisterServicesFromAssemblyContaining<GetUserProfileQueryHandler>());

@@ -36,6 +36,7 @@ public class Complaint : AggregateRoot<Id>
     {
         RaiseDomainEvent(new ApprovedComplaintDomainEvent(
             Id.Value.ToString(),
+            SenderEmail.Value,
             ViolatorEmail.Value,
             minutesToBan,
             ComplaintType.Name));

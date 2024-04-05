@@ -12,7 +12,9 @@ public static class EventBusExtension
         {
             cfg.SetKebabCaseEndpointNameFormatter();
             cfg.AddConsumer<ProfileUserRegisterConsumer>();
-            
+            cfg.AddConsumer<UserRatingCalculatorConsumer>();
+            cfg.AddConsumer<ComplaintApprovedConsumer>();
+
             cfg.UsingRabbitMq((context, cfg) =>
             {
                 EventBusOptions options = context.GetRequiredService<EventBusOptions>();
