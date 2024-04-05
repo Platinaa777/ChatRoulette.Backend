@@ -1,4 +1,5 @@
 using AuthService.DataContext.Database;
+using AuthService.Domain.Models.Shared;
 using AuthService.Domain.Models.UserAggregate;
 using AuthService.Domain.Models.UserAggregate.Enumerations;
 using AuthService.Domain.Models.UserAggregate.Repos;
@@ -16,17 +17,17 @@ public class UserRepository : IUserRepository
         _context = context;
     }
     
-    public async Task<User?> FindUserByIdAsync(string id)
+    public async Task<User?> FindUserByIdAsync(Id id)
     {
         var existingUser = await _context.Users.FirstOrDefaultAsync(u => u.Id == id);
 
         return existingUser;
     }
 
-    public async Task<User?> FindUserByEmailAsync(string email)
+    public async Task<User?> FindUserByEmailAsync(Email email)
     {
         User? existingUser = await _context.Users
-            .FirstOrDefaultAsync(u => u.Email == Email.Create(email).Value);
+            .FirstOrDefaultAsync(u => u.Email == email);
         
         return existingUser;
     }

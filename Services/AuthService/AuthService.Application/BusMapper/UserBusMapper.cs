@@ -8,7 +8,7 @@ public static class UserBusMapper
     public static UserRegistered ToBusMessage(this User user)
         => new UserRegistered()
         {
-            Id = user.Id,
+            Id = user.Id.Value,
             Email = user.Email.Value,
             UserName = user.UserName.Value,
         };

@@ -1,5 +1,6 @@
 using AuthService.Domain.Errors.UserErrors;
 using AuthService.Domain.Models.UserAggregate.Repos;
+using AuthService.Domain.Models.UserAggregate.ValueObjects;
 using DomainDriverDesignAbstractions;
 using MediatR;
 
@@ -20,7 +21,11 @@ public class ConfirmEmailCommandHandler : IRequestHandler<ConfirmEmailCommand, R
     
     public async Task<Result<string>> Handle(ConfirmEmailCommand request, CancellationToken cancellationToken)
     {
-        var user = await _userRepository.FindUserByEmailAsync(request.Email);
+        var emailResult = Email.Create(request.Email);
+        if (emailResult.IsFailure)
+            return Result.Failure<string>(emailResult.Error);
+        
+        var user = await _userRepository.FindUserByEmailAsync(emailResult.Value);
 
         if (user == null)
             return Result.Failure<string>(UserError.UserNotFound);
@@ -33,6 +38,6 @@ public class ConfirmEmailCommandHandler : IRequestHandler<ConfirmEmailCommand, R
 
         await _unitOfWork.SaveChangesAsync(cancellationToken);
         
-        return user.Id;
+        return user.Id.Value;
     }
 }

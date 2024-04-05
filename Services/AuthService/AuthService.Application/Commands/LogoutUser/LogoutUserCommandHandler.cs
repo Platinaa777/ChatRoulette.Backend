@@ -36,7 +36,7 @@ public class LogoutUserCommandHandler : IRequestHandler<LogoutUserCommand, Resul
         if (storedToken is null || storedToken.WasUsed() || storedToken.IsExpired())
             return Result.Failure(TokenError.InvalidRefreshToken);
         
-        var user = await _userRepository.FindUserByIdAsync(storedToken.UserId.Value);
+        var user = await _userRepository.FindUserByIdAsync(storedToken.UserId);
 
         if (user is null || !user.IsSubmittedEmail)
             return Result.Failure<AuthTokens>(UserError.UnactivatedUser);

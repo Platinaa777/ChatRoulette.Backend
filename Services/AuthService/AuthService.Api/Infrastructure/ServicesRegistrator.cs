@@ -1,3 +1,4 @@
+using AuthService.Api.BackgroundJobs;
 using AuthService.Application.Assembly;
 using AuthService.Application.Behaviors;
 using AuthService.Application.Cache;
@@ -7,6 +8,7 @@ using AuthService.Application.Security;
 using AuthService.DataContext.Database;
 using AuthService.Domain.Models.TokenAggregate.Repos;
 using AuthService.Domain.Models.UserAggregate.Repos;
+using AuthService.Domain.Models.UserHistoryAggregate.Repos;
 using AuthService.Infrastructure.Cache;
 using AuthService.Infrastructure.Extensions.Jwt;
 using AuthService.Infrastructure.JwtGenerator;
@@ -15,6 +17,7 @@ using AuthService.Infrastructure.Security;
 using DomainDriverDesignAbstractions;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
+using Quartz;
 using Serilog;
 
 namespace AuthService.Api.Infrastructure;
@@ -26,6 +29,7 @@ public static class ServicesRegistrator
         builder.Services.AddControllers();
         builder.Services.AddScoped<IUserRepository, UserRepository>();
         builder.Services.AddScoped<ITokenRepository, RefreshTokenRepository>();
+        builder.Services.AddScoped<IUserHistoryRepository, UserHistoryRepository>();
 
         builder.Services.AddMediatR(cfg =>
         {
@@ -102,6 +106,26 @@ public static class ServicesRegistrator
         {
             config.ReadFrom.Configuration(ctx.Configuration);
         });
+
+        return builder;
+    }
+    
+    public static WebApplicationBuilder AddBackgroundJobs(this WebApplicationBuilder builder)
+    {
+        builder.Services.AddQuartz(cfg =>
+        {
+            var key = new JobKey(nameof(OutboxMessageJob));
+
+            cfg.AddJob<OutboxMessageJob>(key)
+                .AddTrigger(tg => 
+                    tg.ForJob(key)
+                        .WithSimpleSchedule(schedule => 
+                            schedule.WithIntervalInSeconds(10)
+                                .RepeatForever()));
+            
+        });
+
+        builder.Services.AddQuartzHostedService();
 
         return builder;
     }

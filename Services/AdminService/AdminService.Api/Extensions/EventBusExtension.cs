@@ -11,7 +11,7 @@ public static class EventBusExtension
         builder.Services.AddMassTransit(cfg =>
         {
             cfg.SetKebabCaseEndpointNameFormatter();
-            cfg.AddConsumer<ComplaintRegisterConsumer>();
+            cfg.AddConsumer<ComplaintRegisteredConsumer>();
             
             cfg.UsingRabbitMq((context, cfg) =>
             {

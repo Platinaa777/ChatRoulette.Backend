@@ -1,6 +1,6 @@
-using AdminService.Application.Commands.AcceptComplaintCommand;
-using AdminService.Application.Commands.AddComplaintCommand;
-using AdminService.Application.Commands.RejectComplaintCommand;
+using AdminService.Application.Commands.AcceptComplaint;
+using AdminService.Application.Commands.AddComplaint;
+using AdminService.Application.Commands.RejectComplaint;
 using AdminService.Application.Models;
 using AdminService.Application.Queries.GetUnhandledComplaints;
 using AdminService.HttpModels.Requests;

@@ -1,3 +1,4 @@
+using AuthService.Domain.Models.Shared;
 using AuthService.Domain.Models.UserAggregate;
 using AuthService.Domain.Models.UserAggregate.Enumerations;
 using AuthService.Domain.Models.UserAggregate.ValueObjects;
@@ -22,7 +23,10 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
         builder.HasKey(u => u.Id);
         builder.Property(id => id.Id)
             .HasColumnName("id")
-            .ValueGeneratedNever();
+            .ValueGeneratedNever()
+            .HasConversion(
+                val => val.Value,
+                value => Id.CreateId(value).Value);
 
         // for name
         builder.Property(n => n.UserName)

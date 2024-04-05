@@ -1,13 +1,15 @@
+using AuthService.Domain.Models.Shared;
 using AuthService.Domain.Models.UserAggregate.Enumerations;
+using AuthService.Domain.Models.UserAggregate.Events;
 using AuthService.Domain.Models.UserAggregate.ValueObjects;
 using DomainDriverDesignAbstractions;
 
 namespace AuthService.Domain.Models.UserAggregate;
 
-public class User : AggregateRoot<string>
+public class User : AggregateRoot<Id>
 {
-    public User(
-        string id,
+    private User(
+        Id id,
         Name userName,
         Email email,
         Name nickName,
@@ -47,17 +49,22 @@ public class User : AggregateRoot<string>
 
     public void AddUserExtraInformation(Name nickname, Age age)
     {
+        RaiseDomainEvent(new CreateUserDomainEvent(Id.Value));
         NickName = nickname;
         Age = age;
     }
     
     public static Result<User> Create(
-        Guid id, string userName,
+        string id, string userName,
         string email, string nickName, int age,
         string password, string salt, string? role)
     {
         Salt saltResult = new Salt(salt);
         RoleType roleType = RoleType.FromName(role) is null ? RoleType.UnactivatedUser : RoleType.FromName(role)!;
+
+        var idResult = Id.CreateId(id);
+        if (idResult.IsFailure)
+            return Result.Failure<User>(idResult.Error);
 
         var userNameResult = Name.Create(userName);
         if (userNameResult.IsFailure)
@@ -78,9 +85,8 @@ public class User : AggregateRoot<string>
         var passwordResult = Password.Create(password);
         if (passwordResult.IsFailure)
             return Result.Failure<User>(passwordResult.Error);
-
         return new User(
-            id.ToString(),
+            idResult.Value,
             userNameResult.Value,
             emailResult.Value,
             nickNameResult.Value,

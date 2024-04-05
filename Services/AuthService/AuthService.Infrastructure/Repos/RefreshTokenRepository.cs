@@ -1,8 +1,8 @@
 using AuthService.DataContext.Database;
+using AuthService.Domain.Models.Shared;
 using AuthService.Domain.Models.TokenAggregate;
 using AuthService.Domain.Models.TokenAggregate.Repos;
 using AuthService.Domain.Models.TokenAggregate.ValueObjects;
-using AuthService.Domain.Models.UserAggregate.Repos;
 using Microsoft.EntityFrameworkCore;
 
 namespace AuthService.Infrastructure.Repos;
@@ -36,7 +36,7 @@ public class RefreshTokenRepository : ITokenRepository
         return await _context.RefreshTokens.FirstOrDefaultAsync(x => x.Token == token);
     }
 
-    public async Task<RefreshToken?> FindValidRefreshTokenByUserId(UserId userId)
+    public async Task<RefreshToken?> FindValidRefreshTokenByUserId(Id userId)
     {
         return await _context.RefreshTokens.FirstOrDefaultAsync(t => t.UserId == userId && !t.IsUsed);
     }

@@ -12,10 +12,10 @@ public class FeedbackConfiguration : IEntityTypeConfiguration<Feedback>
 {
     public void Configure(EntityTypeBuilder<Feedback> builder)
     {
-        ConfigureComplaint(builder);
+        ConfigureFeedback(builder);
     }
 
-    private void ConfigureComplaint(EntityTypeBuilder<Feedback> builder)
+    private void ConfigureFeedback(EntityTypeBuilder<Feedback> builder)
     {
         builder.ToTable("feedbacks");
 

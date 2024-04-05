@@ -6,6 +6,7 @@ using AuthService.Domain.Errors.UserErrors;
 using AuthService.Domain.Models.TokenAggregate.Repos;
 using AuthService.Domain.Models.TokenAggregate.ValueObjects;
 using AuthService.Domain.Models.UserAggregate.Repos;
+using AuthService.Domain.Models.UserAggregate.ValueObjects;
 using DomainDriverDesignAbstractions;
 using MediatR;
 
@@ -35,7 +36,11 @@ public class LoginUserCommandHandler : IRequestHandler<LoginUserCommand, Result<
     
     public async Task<Result<AuthTokens>> Handle(LoginUserCommand request, CancellationToken cancellationToken)
     {
-        var user = await _userRepository.FindUserByEmailAsync(request.Email);
+        var emailResult = Email.Create(request.Email);
+        if (emailResult.IsFailure)
+            return Result.Failure<AuthTokens>(emailResult.Error);
+        
+        var user = await _userRepository.FindUserByEmailAsync(emailResult.Value);
 
         if (user is null || !user.IsSubmittedEmail)
             return Result.Failure<AuthTokens>(UserError.UnactivatedUser);
@@ -55,11 +60,7 @@ public class LoginUserCommandHandler : IRequestHandler<LoginUserCommand, Result<
         if (authPairResult.IsFailure)
             return Result.Failure<AuthTokens>(authPairResult.Error);
 
-        var userIdResult = UserId.CreateId(user.Id);
-        if (userIdResult.IsFailure)
-            return Result.Failure<AuthTokens>(userIdResult.Error);
-
-        var token = await _tokenRepository.FindValidRefreshTokenByUserId(userIdResult.Value);
+        var token = await _tokenRepository.FindValidRefreshTokenByUserId(user.Id);
 
         // should mark refresh as not valid anymore
         if (token is not null)

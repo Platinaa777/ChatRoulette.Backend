@@ -1,4 +1,4 @@
-using AdminService.Application.Commands.AddFeedbackCommand;
+using AdminService.Application.Commands.AddFeedback;
 using AdminService.Application.Queries.GetUnwatchedFeedbacks;
 using AdminService.Domain.Models.FeedbackAggregate;
 using AdminService.HttpModels.Requests.Feedback;

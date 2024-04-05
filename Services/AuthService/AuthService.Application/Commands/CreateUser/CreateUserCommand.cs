@@ -1,6 +1,7 @@
 using AuthService.Application.Security;
 using AuthService.Domain.Models.UserAggregate;
 using AuthService.Domain.Models.UserAggregate.Enumerations;
+using AuthService.Domain.Models.UserAggregate.ValueObjects;
 using DomainDriverDesignAbstractions;
 using MediatR;
 
@@ -25,7 +26,8 @@ public static class CreateUserCommandToDomain
         
         var hashedPassword = hasher.HashPasswordWithSalt(command.Password, salt);
 
-        return User.Create(Guid.NewGuid(),
+        return User.Create(
+            id: Guid.NewGuid().ToString(),
             command.UserName,
             command.Email,
             command.NickName,

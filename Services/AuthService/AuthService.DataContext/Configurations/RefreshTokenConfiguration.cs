@@ -1,3 +1,4 @@
+using AuthService.Domain.Models.Shared;
 using AuthService.Domain.Models.TokenAggregate;
 using AuthService.Domain.Models.TokenAggregate.ValueObjects;
 using Microsoft.EntityFrameworkCore;
@@ -14,7 +15,10 @@ public class RefreshTokenConfiguration : IEntityTypeConfiguration<RefreshToken>
         builder.HasKey(t => t.Id);
         builder.Property(id => id.Id)
             .HasColumnName("id")
-            .ValueGeneratedNever();
+            .ValueGeneratedNever()
+            .HasConversion(
+                val => val.Value.ToString(),
+                value => Id.CreateId(value).Value);
         
         builder.HasIndex(t => t.Token)
             .IsUnique();
@@ -36,6 +40,6 @@ public class RefreshTokenConfiguration : IEntityTypeConfiguration<RefreshToken>
             .HasColumnName("user_id")
             .HasConversion(
                 to => to.Value,
-                from => UserId.CreateId(from).Value);
+                from => Id.CreateId(from).Value);
     }
 }

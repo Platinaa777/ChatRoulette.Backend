@@ -25,15 +25,15 @@ public static class SeedExtensions
         var salt1 = new Salt(passwordHasher.GenerateSalt());
         var hashedPassword1 = Password.Create(passwordHasher.HashPasswordWithSalt("admin123", salt1.Value)).Value;
         
-        var admin = new User(
-            id: Guid.NewGuid().ToString(),
-            Name.Create("denis").Value,
-            Email.Create("m@edu.hse.ru").Value,
-            Name.Create("platina777").Value,
-            Age.Create(19).Value,
-            hashedPassword1,
-            salt1,
-            RoleType.Admin);
+        var admin = User.Create(
+            Guid.NewGuid().ToString(),
+            "denis",
+            "m@edu.hse.ru",
+            "platina777",
+            19,
+            hashedPassword1.Value,
+            salt1.Value,
+            RoleType.Admin.Name).Value;
         admin.SubmitEmail();
 
         await repository.AddUserAsync(admin);

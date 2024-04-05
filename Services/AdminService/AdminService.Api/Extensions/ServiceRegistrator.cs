@@ -1,8 +1,7 @@
 using AdminService.Api.BackgroundJob;
 using AdminService.Application.Assembly;
 using AdminService.Application.Behaviors;
-using AdminService.Application.Commands.AcceptComplaintCommand;
-using AdminService.Application.Commands.AddComplaintCommand;
+using AdminService.Application.Commands.AddComplaint;
 using AdminService.Domain.Models.ComplaintAggregate.Repos;
 using AdminService.Domain.Models.FeedbackAggregate.Repos;
 using AdminService.Infrastructure.Repos;
@@ -78,5 +77,4 @@ public static class ServiceRegistrator
 
         return builder;
     }
-
 }

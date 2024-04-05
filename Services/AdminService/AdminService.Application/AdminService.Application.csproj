@@ -12,6 +12,8 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\..\..\Infrastructure\MessageBroker\MassTransit.Client\MassTransit.Client.csproj" />
+      <ProjectReference Include="..\..\..\Infrastructure\MessageBroker\MassTransit.Contracts\MassTransit.Contracts.csproj" />
       <ProjectReference Include="..\AdminService.Domain\AdminService.Domain.csproj" />
     </ItemGroup>
 

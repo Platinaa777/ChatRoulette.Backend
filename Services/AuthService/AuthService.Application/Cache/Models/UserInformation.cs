@@ -17,7 +17,7 @@ public static class UserInformationCacheExtension
     public static UserInformation ToCache(this User user)
         => new UserInformation()
         {
-            Id = user.Id,
+            Id = user.Id.Value,
             Email = user.Email.Value,
             NickName = user.NickName.Value,
             Age = user.Age.Value

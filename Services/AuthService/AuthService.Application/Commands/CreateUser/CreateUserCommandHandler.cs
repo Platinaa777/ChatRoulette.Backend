@@ -52,7 +52,8 @@ public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, Resul
         // push to event bus
         await _eventBusClient.PublishAsync(user.ToBusMessage(), cancellationToken);
         // cache 
-        await _cache.SetAsync(user.Id, 
+        await _cache.SetAsync(
+            key: user.Id.Value, 
             value: JsonConvert.SerializeObject(user.ToCache()), 
             cancellationToken);
 

@@ -32,9 +32,14 @@ public class Complaint : AggregateRoot<Id>
     public ComplaintType ComplaintType { get; private set; }
     public bool IsHandled { get; private set; }
 
-    public void SetAccepted()
+    public void SetAccepted(int minutesToBan)
     {
-        RaiseDomainEvent(new AcceptComplaintDomainEvent(SenderEmail.Value));
+        RaiseDomainEvent(new ApprovedComplaintDomainEvent(
+            Id.Value.ToString(),
+            ViolatorEmail.Value,
+            minutesToBan,
+            ComplaintType.Name));
+        
         IsHandled = true;
     }
 
