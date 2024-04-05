@@ -60,38 +60,3 @@ public class ValidationPipelineBehavior<TRequest, TResponse>
         return (result as TResult)!;
     }
 }
-
-// public class ValidationPipelineBehaviorT<TRequest, TResponse>
-//     : IPipelineBehavior<TRequest, Result<TResponse>>
-//     where TRequest : IRequest<Result<TResponse>>
-//     where TResponse : Result<TResponse>
-// {
-//     private readonly IEnumerable<IValidator<TRequest>> _validators;
-//
-//     public ValidationPipelineBehaviorT(IEnumerable<IValidator<TRequest>> validators)
-//     {
-//         _validators = validators;
-//     }
-//
-//     public async Task<Result<TResponse>> Handle(TRequest request, RequestHandlerDelegate<Result<TResponse>> next, CancellationToken cancellationToken)
-//     {
-//         var failures = _validators
-//             .Select(v => v.Validate(request))
-//             .SelectMany(result => result.Errors)
-//             .Where(error => error != null)
-//             .ToList();
-//
-//         if (failures.Any())
-//         {
-//             var errors = failures
-//                 .Select(failure => new Error(
-//                     failure.PropertyName,
-//                     failure.ErrorMessage))
-//                 .ToArray();
-//             
-//             return (Result<TResponse>)Result.Failure<TResponse>(errors[0]);    
-//         }
-//         
-//         return await next();
-//     }
-// }

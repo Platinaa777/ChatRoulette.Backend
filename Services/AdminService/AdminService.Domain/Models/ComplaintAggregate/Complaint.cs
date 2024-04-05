@@ -1,6 +1,8 @@
 using AdminService.Domain.Errors;
 using AdminService.Domain.Models.ComplaintAggregate.Enumerations;
+using AdminService.Domain.Models.ComplaintAggregate.Events;
 using AdminService.Domain.Models.ComplaintAggregate.ValueObjects;
+using AdminService.Domain.Models.Shared;
 using DomainDriverDesignAbstractions;
 
 namespace AdminService.Domain.Models.ComplaintAggregate;
@@ -29,6 +31,18 @@ public class Complaint : AggregateRoot<Id>
     public Email ViolatorEmail { get; private set; }
     public ComplaintType ComplaintType { get; private set; }
     public bool IsHandled { get; private set; }
+
+    public void SetAccepted()
+    {
+        RaiseDomainEvent(new AcceptComplaintDomainEvent(SenderEmail.Value));
+        IsHandled = true;
+    }
+
+    public void SetRejected()
+    {
+        IsHandled = true;
+    }
+    
 
     public static Result<Complaint> Create(
         string id,

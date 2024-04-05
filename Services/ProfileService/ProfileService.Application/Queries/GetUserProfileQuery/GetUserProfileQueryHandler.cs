@@ -1,7 +1,9 @@
 using DomainDriverDesignAbstractions;
 using MediatR;
+using ProfileService.Domain.Models.UserProfileAggregate.Enumerations;
 using ProfileService.Domain.Models.UserProfileAggregate.Errors;
 using ProfileService.Domain.Models.UserProfileAggregate.Repos;
+using ProfileService.Domain.Models.UserProfileAggregate.ValueObjects;
 
 namespace ProfileService.Application.Queries.GetUserProfileQuery;
 
@@ -27,7 +29,12 @@ public class GetUserProfileQueryHandler : IRequestHandler<GetUserProfileQuery, R
             Email = result.Email.Value,
             Age = result.Age.Value,
             Rating = result.Rating.Value,
-            FriendIds = result.Friends.Select(x => x.Value.ToString()).ToList()
+            FriendIds = result.Friends.Select(x => x.Value.ToString()).ToList(),
+            Achivements = result.Achievements.Select(x => new AchivementResponse()
+            {
+                Title = AchievementType.FromValue(x.Id)!.Name,
+                Content = AchievementContent.FromValue(x.Id)!.Name
+            }).ToList()
         };
     }
 }

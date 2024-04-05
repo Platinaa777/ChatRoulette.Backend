@@ -1,4 +1,5 @@
 using AdminService.Domain.Models.ComplaintAggregate.ValueObjects;
+using AdminService.Domain.Models.Shared;
 
 namespace AdminService.Domain.Models.ComplaintAggregate.Repos;
 

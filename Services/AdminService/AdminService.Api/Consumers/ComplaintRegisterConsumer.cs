@@ -24,6 +24,10 @@ public class ComplaintRegisterConsumer
         using var scope = _scopeFactory.CreateScope();
         
         var mediator = scope.ServiceProvider.GetRequiredService<IMediator>();
+        
+        _logger.LogInformation("{@Consumer} was accepted complaint {@Id}",
+            nameof(ComplaintRegisterConsumer),
+            context.Message.Id);
 
         var result = await mediator.Send(new AddComplaintCommand(
             context.Message.Id,
@@ -36,5 +40,9 @@ public class ComplaintRegisterConsumer
         {
             throw new ArgumentException("Message was unhandled");
         }
+        
+        _logger.LogInformation("{@Consumer} was handled complaint {@Id}",
+            nameof(ComplaintRegisterConsumer),
+            context.Message.Id);
     }
 }

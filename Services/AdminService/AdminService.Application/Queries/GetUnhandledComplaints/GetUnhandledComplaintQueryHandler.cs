@@ -22,7 +22,7 @@ public class GetUnhandledComplaintQueryHandler
         var complaints = await _complaintRepository.GetComplaints(request.Count);
 
         if (complaints.Count == 0)
-            return Result.Failure<List<ComplaintInformation>>(ComplaintError.NotFoundAnyComplaint);
+            return Result.Failure<List<ComplaintInformation>>(ComplaintError.NotFoundAnyComplaints);
 
         var complaintInformationList = new List<ComplaintInformation>();
         foreach (var complaint in complaints)

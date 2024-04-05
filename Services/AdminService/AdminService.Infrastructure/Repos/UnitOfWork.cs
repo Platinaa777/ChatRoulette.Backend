@@ -1,5 +1,6 @@
 using AdminService.DataContext.Outbox;
 using AdminService.Domain.Models.ComplaintAggregate.ValueObjects;
+using AdminService.Domain.Models.Shared;
 using DomainDriverDesignAbstractions;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;

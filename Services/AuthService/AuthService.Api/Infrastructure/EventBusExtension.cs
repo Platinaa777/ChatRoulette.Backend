@@ -1,8 +1,6 @@
 using AuthService.Api.Consumers;
 using MassTransit;
 using MassTransit.Client.Configuration;
-using MassTransit.Contracts.UserEvents;
-using Microsoft.Extensions.Options;
 
 namespace AuthService.Api.Infrastructure;
 

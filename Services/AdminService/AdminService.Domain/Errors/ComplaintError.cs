@@ -8,7 +8,9 @@ public class ComplaintError : Error
     public static Error EmptyContentMessage = new("Complaint.Error", "Content of complaint must be has text");
     public static Error InvalidEmail = new("Complaint.Error", "Invalid text of email");
     public static Error InvalidComplaintType = new("Complaint.Error", "This type of complaint does not exist");
-    public static Error NotFoundAnyComplaint = new("Complaint.Error", "No stored complaints");
+    public static Error NotFoundAnyComplaints = new("Complaint.Error", "No stored complaints");
+    public static Error ComplaintNotFound = new("Complaint.Error", "Complaint not found");
+    public static Error CantUpdateComplaint = new("Complaint.Error", "Complaint cant be updated");
 
     
     public ComplaintError(string code, string message) : base(code, message)

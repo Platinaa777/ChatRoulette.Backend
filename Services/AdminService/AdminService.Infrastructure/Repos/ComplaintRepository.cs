@@ -1,6 +1,7 @@
 using AdminService.Domain.Models.ComplaintAggregate;
 using AdminService.Domain.Models.ComplaintAggregate.Repos;
 using AdminService.Domain.Models.ComplaintAggregate.ValueObjects;
+using AdminService.Domain.Models.Shared;
 using Microsoft.EntityFrameworkCore;
 
 namespace AdminService.Infrastructure.Repos;

@@ -22,6 +22,34 @@ namespace AdminService.DataContext.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
+            modelBuilder.Entity("AdminService.DataContext.Outbox.OutboxMessage", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Error")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime?>("HandledAtUtc")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime>("StartedAtUtc")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("OutboxMessages");
+                });
+
             modelBuilder.Entity("AdminService.Domain.Models.ComplaintAggregate.Complaint", b =>
                 {
                     b.Property<Guid>("Id")
@@ -55,6 +83,31 @@ namespace AdminService.DataContext.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("complaints", (string)null);
+                });
+
+            modelBuilder.Entity("AdminService.Domain.Models.FeedbackAggregate.Feedback", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
+
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("content");
+
+                    b.Property<string>("EmailFrom")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("email_from");
+
+                    b.Property<bool>("IsWatched")
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_watched");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("feedbacks", (string)null);
                 });
 #pragma warning restore 612, 618
         }

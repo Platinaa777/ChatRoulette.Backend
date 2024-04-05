@@ -7,4 +7,5 @@ public class ProfileResponse
     public int Age { get; init; }
     public int Rating { get; init; }
     public List<string> FriendIds { get; init; } = new();
+    public List<AchivementResponse> Achivements { get; set; }
 }

@@ -2,12 +2,10 @@ namespace MassTransit.Client.EventBus;
 
 public class EventBusClient : IEventBusClient
 {
-    private readonly IBus _bus;
     private readonly IPublishEndpoint _publisher;
 
-    public EventBusClient(IBus bus, IPublishEndpoint publisher)
+    public EventBusClient(IPublishEndpoint publisher)
     {
-        _bus = bus;
         _publisher = publisher;
     }
     

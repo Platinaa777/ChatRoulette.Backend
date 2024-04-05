@@ -15,7 +15,7 @@ public class Content : ValueObject
         return new Content(content);
     }
     
-    public Content(string content)
+    private Content(string content)
     {
         Value = content;
     }

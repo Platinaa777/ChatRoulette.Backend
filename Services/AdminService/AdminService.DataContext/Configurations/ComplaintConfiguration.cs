@@ -1,12 +1,13 @@
 using AdminService.Domain.Models.ComplaintAggregate;
 using AdminService.Domain.Models.ComplaintAggregate.Enumerations;
 using AdminService.Domain.Models.ComplaintAggregate.ValueObjects;
+using AdminService.Domain.Models.Shared;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace AdminService.DataContext.Configurations;
 
-public class ComplaintConfigurations : IEntityTypeConfiguration<Complaint>
+public class ComplaintConfiguration : IEntityTypeConfiguration<Complaint>
 {
     public void Configure(EntityTypeBuilder<Complaint> builder)
     {
