@@ -1,3 +1,4 @@
+using Amazon.S3;
 using DomainDriverDesignAbstractions;
 using FluentValidation;
 using MediatR;
@@ -12,9 +13,12 @@ using ProfileService.Domain.Models.UserProfileAggregate.Repos;
 using ProfileService.Infrastructure.Configuration;
 using ProfileService.Infrastructure.Repos.Common;
 using ProfileService.Infrastructure.Repos.Implementations.Friend;
+using ProfileService.Infrastructure.Repos.Implementations.History;
 using ProfileService.Infrastructure.Repos.Implementations.Profile;
 using ProfileService.Infrastructure.Repos.Interfaces;
 using Quartz;
+using S3.Client;
+using Serilog;
 
 namespace ProfileService.Api.Extensions;
 
@@ -25,7 +29,7 @@ public static class ServicesRegistrator
         builder.Services.AddControllers();
         builder.Services.AddScoped<IUserProfileRepository, UserProfileRepository>();
         builder.Services.AddScoped<IFriendInvitationRepository, FriendInvitationRepository>();
-        builder.Services.AddScoped<IUserHistoryRepository, IUserHistoryRepository>();
+        builder.Services.AddScoped<IUserHistoryRepository, UserHistoryRepository>();
         
         builder.Services.AddMediatR(cfg =>
             cfg.RegisterServicesFromAssemblyContaining<GetUserProfileQueryHandler>());
@@ -55,20 +59,54 @@ public static class ServicesRegistrator
 
     public static WebApplicationBuilder AddBackgroundJobs(this WebApplicationBuilder builder)
     {
-        builder.Services.AddQuartz(cfg =>
-        {
-            var key = new JobKey(nameof(OutboxBackgroundJob));
+        // builder.Services.AddQuartz(cfg =>
+        // {
+        //     var key = new JobKey(nameof(OutboxBackgroundJob));
+        //
+        //     cfg.AddJob<OutboxBackgroundJob>(key)
+        //         .AddTrigger(tg => 
+        //             tg.ForJob(key)
+        //                 .WithSimpleSchedule(schedule => 
+        //                     schedule.WithIntervalInSeconds(10)
+        //                         .RepeatForever()));
+        //     
+        // });
+        //
+        // builder.Services.AddQuartzHostedService();
 
-            cfg.AddJob<OutboxBackgroundJob>(key)
-                .AddTrigger(tg => 
-                    tg.ForJob(key)
-                        .WithSimpleSchedule(schedule => 
-                            schedule.WithIntervalInSeconds(10)
-                                .RepeatForever()));
-            
+        return builder;
+    }
+
+    public static WebApplicationBuilder AddLoggingWithSerilog(this WebApplicationBuilder builder)
+    {
+        builder.Host.UseSerilog((ctx, config) =>
+        {
+            config.ReadFrom.Configuration(ctx.Configuration);
         });
 
-        builder.Services.AddQuartzHostedService();
+        return builder;
+    }
+
+    public static WebApplicationBuilder AddS3Storage(this WebApplicationBuilder builder)
+    {
+        builder.Services.AddScoped<IS3Client, S3Client>();
+        
+        builder.Services.AddSingleton<IAmazonS3>(x =>
+        {
+            var serviceUrl = Environment.GetEnvironmentVariable("AWS_SERVICE_URL");
+            var region = Environment.GetEnvironmentVariable("AWS_REGION");
+            var accessKey = Environment.GetEnvironmentVariable("AWS_ACCESS_KEY");
+            var secretKey = Environment.GetEnvironmentVariable("AWS_SECRET_KEY");
+            
+            var cfg = new AmazonS3Config
+            {
+                ServiceURL = serviceUrl,
+                AuthenticationRegion = region,
+                ForcePathStyle = true
+            };
+
+            return new AmazonS3Client(accessKey, secretKey, cfg);
+        });
 
         return builder;
     }

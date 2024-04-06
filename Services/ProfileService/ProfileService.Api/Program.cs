@@ -1,20 +1,20 @@
+using dotenv.net;
 using MassTransit.Client.Extensions;
 using ProfileService.Api.Extensions;
 using Serilog;
 using SwaggerConfigurations.Extensions;
 
+DotEnv.Load();
 var builder = WebApplication.CreateBuilder(args);
-builder.Host.UseSerilog((ctx, config) =>
-{
-    config.ReadFrom.Configuration(ctx.Configuration);
-});
 
+builder.AddLoggingWithSerilog();
 builder.AddApplicationServices();
 builder.AddDataLayer();
 builder.AddSwagger();
 builder.AddMassTransit();
 builder.AddEventBusClient();
 builder.AddBackgroundJobs();
+builder.AddS3Storage();
 
 var app = builder.Build();
 
