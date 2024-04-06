@@ -15,6 +15,11 @@ public class Avatar : ValueObject
     {
         Value = avatar;
     }
+
+    public bool IsExists()
+    {
+        return !string.IsNullOrWhiteSpace(Value);
+    }
     
     protected override IEnumerable<object> GetEqualityComponents()
     {

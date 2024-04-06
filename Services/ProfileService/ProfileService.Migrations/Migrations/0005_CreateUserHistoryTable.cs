@@ -12,8 +12,10 @@ public class CreateUserHistoryTable : Migration
                 history_id text PRIMARY KEY,
                 user_id text,
                 doom_points int,
+                avatar_points int,
                 CONSTRAINT HISTORY_USER_ID UNIQUE (user_id),
-                CONSTRAINT DOOM_POINTS_POSITIVE CHECK (doom_points >= 0));
+                CONSTRAINT DOOM_POINTS_POSITIVE CHECK (doom_points >= 0),
+                CONSTRAINT AVATAR_POINTS_POSITIVE CHECK (avatar_points >= 0));
         ");
     }
 

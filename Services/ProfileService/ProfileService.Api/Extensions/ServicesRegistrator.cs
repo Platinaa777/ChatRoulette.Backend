@@ -59,20 +59,20 @@ public static class ServicesRegistrator
 
     public static WebApplicationBuilder AddBackgroundJobs(this WebApplicationBuilder builder)
     {
-        // builder.Services.AddQuartz(cfg =>
-        // {
-        //     var key = new JobKey(nameof(OutboxBackgroundJob));
-        //
-        //     cfg.AddJob<OutboxBackgroundJob>(key)
-        //         .AddTrigger(tg => 
-        //             tg.ForJob(key)
-        //                 .WithSimpleSchedule(schedule => 
-        //                     schedule.WithIntervalInSeconds(10)
-        //                         .RepeatForever()));
-        //     
-        // });
-        //
-        // builder.Services.AddQuartzHostedService();
+        builder.Services.AddQuartz(cfg =>
+        {
+            var key = new JobKey(nameof(OutboxBackgroundJob));
+        
+            cfg.AddJob<OutboxBackgroundJob>(key)
+                .AddTrigger(tg => 
+                    tg.ForJob(key)
+                        .WithSimpleSchedule(schedule => 
+                            schedule.WithIntervalInSeconds(10)
+                                .RepeatForever()));
+            
+        });
+        
+        builder.Services.AddQuartzHostedService();
 
         return builder;
     }

@@ -18,7 +18,7 @@ public class AddUserProfileCommandHandler : IRequestHandler<AddUserProfile.AddUs
         _unitOfWork = unitOfWork;
     }
     
-    public async Task<Result> Handle(AddUserProfile.AddUserProfileCommand request, CancellationToken cancellationToken)
+    public async Task<Result> Handle(AddUserProfileCommand request, CancellationToken cancellationToken)
     {
         await _unitOfWork.StartTransaction(cancellationToken);
         

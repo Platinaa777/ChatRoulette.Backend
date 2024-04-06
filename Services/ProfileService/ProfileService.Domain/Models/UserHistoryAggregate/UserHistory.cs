@@ -10,17 +10,26 @@ public class UserHistory : AggregateRoot<Id>
     private UserHistory(
         Id id,
         Id userId,
-        int doomSlayerPoints)
+        int doomSlayerPoints,
+        int avatarPoints)
     {
         Id = id;
+        UserId = userId;
         DoomSlayerPoints = doomSlayerPoints;
+        AvatarPoints = avatarPoints;
     }
     public int DoomSlayerPoints { get; private set; }
+    public int AvatarPoints { get; private set; }
     public Id UserId { get; init; }
 
     public void IncreaseDoomSlayerPoints()
     {
         DoomSlayerPoints++;
+    }
+    
+    public void IncreaseAvatarPoints()
+    {
+        AvatarPoints++;
     }
     
     public UserHistorySnapshot Save()
@@ -29,7 +38,8 @@ public class UserHistory : AggregateRoot<Id>
         {
             Id = Id.Value.ToString(),
             UserId = UserId.Value.ToString(),
-            DoomSlayerPoints = DoomSlayerPoints
+            DoomSlayerPoints = DoomSlayerPoints,
+            AvatarPoints = AvatarPoints
         };
     }
 
@@ -38,14 +48,19 @@ public class UserHistory : AggregateRoot<Id>
         var result = Create(
             snapshot.Id,
             snapshot.UserId,
-            snapshot.DoomSlayerPoints);
+            snapshot.DoomSlayerPoints,
+            snapshot.AvatarPoints);
 
         if (result.IsSuccess)
             return result.Value;
         return null!;
     }
 
-    public static Result<UserHistory> Create(string id, string userId, int doomSlayerPoints)
+    public static Result<UserHistory> Create(
+        string id,
+        string userId,
+        int doomSlayerPoints,
+        int avatarPoints)
     {
         var idResult = Id.Create(id);
         if (idResult.IsFailure)
@@ -57,7 +72,14 @@ public class UserHistory : AggregateRoot<Id>
         
         if (doomSlayerPoints < 0)
             return Result.Failure<UserHistory>(UserHistoryError.NegativeDoomSlayerPoints);
+        
+        if (avatarPoints < 0)
+            return Result.Failure<UserHistory>(UserHistoryError.NegativeAvatarPoints);
 
-        return new UserHistory(idResult.Value, userIdResult.Value, doomSlayerPoints);
+        return new UserHistory(
+            idResult.Value,
+            userIdResult.Value,
+            doomSlayerPoints,
+            avatarPoints);
     }
 }

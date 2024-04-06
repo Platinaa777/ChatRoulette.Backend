@@ -86,9 +86,15 @@ public class UserProfile : AggregateRoot<Id>
         return Result.Success();
     }
 
-    public void ChangeAvatar(Avatar newAvatar)
+    public void ChangeAvatar(string newAvatar)
     {
-        Avatar = newAvatar;
+        Avatar = Avatar.Create(newAvatar);
+        RaiseDomainEvent(new ChangeAvatarDomainEvent(Id.Value.ToString()));
+    }
+
+    public void RefreshAvatar(string avatar)
+    {
+        Avatar = Avatar.Create(avatar);
     }
 
     public UserProfileSnapshot Save()

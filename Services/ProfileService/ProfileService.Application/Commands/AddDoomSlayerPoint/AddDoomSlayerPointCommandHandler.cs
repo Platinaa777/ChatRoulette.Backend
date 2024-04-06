@@ -38,7 +38,8 @@ public class AddDoomSlayerPointCommandHandler
             userHistory = UserHistory.Create(
                 id: Guid.NewGuid().ToString(),
                 userProfile.Id.Value.ToString(),
-                0).Value;
+                doomSlayerPoints: 0,
+                avatarPoints: 0).Value;
 
             await _historyRepository.AddHistory(userHistory);
         }

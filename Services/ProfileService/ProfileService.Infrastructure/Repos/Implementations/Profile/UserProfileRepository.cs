@@ -74,7 +74,12 @@ public class UserProfileRepository : IUserProfileRepository
         var userDb = result.GroupBy(x => x.Id).Select(x =>
         {
             var userProfile = x.First();
-            userProfile.FriendIds = x.Select(usp => usp.FriendIds.Single()).ToList();
+            userProfile.FriendIds = x.SelectMany(usp =>
+            {
+                return usp.FriendIds
+                    .Where(friendId => !string.IsNullOrWhiteSpace(friendId))
+                    .Select(friendId => friendId);
+            }).ToList();
 
             return userProfile;
         }).FirstOrDefault();

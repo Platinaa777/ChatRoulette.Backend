@@ -26,7 +26,7 @@ public class UserHistoryRepository : IUserHistoryRepository
     
     public async Task<UserHistory?> FindByUserId(Id id)
     {
-        var parameters = new { UserId = id };
+        var parameters = new { UserId = id.Value.ToString() };
 
         var connection = await _factory.CreateConnection(default);
         
@@ -49,7 +49,7 @@ public class UserHistoryRepository : IUserHistoryRepository
 
     public async Task<UserHistory?> FindByHistoryId(Id id)
     {
-        var parameters = new { Id = id };
+        var parameters = new { Id = id.Value.ToString() };
 
         var connection = await _factory.CreateConnection(default);
         

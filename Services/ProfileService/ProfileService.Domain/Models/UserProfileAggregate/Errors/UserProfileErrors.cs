@@ -18,6 +18,8 @@ public class UserProfileErrors : Error
     public static readonly Error CantIncreaseNegativePointsToRating = new("UserProfile.Error.Rating", "Cant subtract some points from rating");
     public static readonly Error FriendDoesNotExist = new("UserProfile.Error.Rating", "This friends does not exist in your friends list");
     public static readonly Error CantRemoveUserFromFriends = new("UserProfile.Error.Rating", "Cant remove user from friends list");
+    public static readonly Error AvatarUploadError = new("UserProfile.Error.Avatar", "Cant upload avatar in the system");
+    public static readonly Error AvatarDoesNotExists = new("UserProfile.Error.Avatar", "Avatar cant be update because does not exist");
 
 
     public UserProfileErrors(string code, string message) : base(code, message)

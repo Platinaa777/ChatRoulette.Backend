@@ -13,7 +13,7 @@ public class S3Client : IS3Client
         _amazonS3 = amazonS3;
     }
     
-    public async Task<string?> UploadFileAsync(Stream avatar, string bucket, string filename, string contentType)
+    public async Task<S3ObjectDto?> UploadFileAsync(Stream avatar, string bucket, string filename, string contentType)
     {
         var request = new PutObjectRequest()
         {
@@ -25,7 +25,7 @@ public class S3Client : IS3Client
         request.Metadata.Add("Content-Type", contentType);
         await _amazonS3.PutObjectAsync(request);
 
-        return bucket + "/" + filename;
+        return await FindFileAsync(bucket, filename);
     }
 
     public async Task<S3ObjectDto?> FindFileAsync(string bucket, string filename)
@@ -42,7 +42,7 @@ public class S3Client : IS3Client
         {
             BucketName = bucket,
             Key = filename,
-            Expires = DateTime.Now.AddMinutes(1)
+            Expires = DateTime.Now.AddHours(24)
         };
 
         S3ObjectDto s3Object = new S3ObjectDto()
@@ -64,5 +64,15 @@ public class S3Client : IS3Client
         }
 
         return list;
+    }
+
+    public async Task DeleteFile(string bucket, string key)
+    {
+        await _amazonS3.DeleteObjectAsync(bucket, key);
+    }
+
+    public async Task CreateBucket(string bucket)
+    {
+        await _amazonS3.PutBucketAsync(bucket);
     }
 }
