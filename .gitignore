@@ -3,6 +3,6 @@
 **/bin/
 **/obj/
 .idea/*
-
+**/.env
 
 ./Services/AuthService/pgdata/*
