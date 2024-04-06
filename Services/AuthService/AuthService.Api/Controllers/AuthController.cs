@@ -24,7 +24,7 @@ public class AuthController : ControllerBase
 
     [HttpGet("test")]
     [Authorize]
-    public async Task<ActionResult<string>> GetAnswer()
+    public ActionResult<string> GetAnswer()
     {
         return Ok("hello world");
     }

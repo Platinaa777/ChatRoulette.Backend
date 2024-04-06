@@ -1,4 +1,3 @@
-using AuthService.Infrastructure.Extensions;
 using AuthService.Infrastructure.Extensions.Jwt;
 using Ocelot.DependencyInjection;
 using Ocelot.Gateway.Middlewares;
@@ -50,6 +49,7 @@ var configuration = new OcelotPipelineConfiguration
         await next.Invoke();
     }
 };
+
 app.UseWebSockets();
 await app.UseOcelot(configuration);
 

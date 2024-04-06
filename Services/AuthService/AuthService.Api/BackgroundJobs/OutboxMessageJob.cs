@@ -55,7 +55,7 @@ public class OutboxMessageJob : IJob
 
                 await _dbContext.SaveChangesAsync();
             }
-            catch (Exception e)
+            catch 
             {
                 _logger.LogError(@"Outbox message has failed {@Id}", message.Id);
             }

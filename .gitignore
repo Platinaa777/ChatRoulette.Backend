@@ -5,4 +5,4 @@
 .idea/*
 **/.env
 
-./Services/AuthService/pgdata/*
+**/pgdata/

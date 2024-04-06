@@ -26,14 +26,7 @@
     </ItemGroup>
     
     <ItemGroup>
-      <Reference Include="Microsoft.AspNetCore">
-        <HintPath>..\..\..\..\..\..\..\usr\lib\dotnet\shared\Microsoft.AspNetCore.App\7.0.15\Microsoft.AspNetCore.dll</HintPath>
-      </Reference>
-    </ItemGroup>
-    
-    <ItemGroup>
       <ProjectReference Include="..\..\..\Infrastructure\MessageBroker\MassTransit.Contracts\MassTransit.Contracts.csproj" />
-      <ProjectReference Include="..\..\Chat\Chat.Application\Chat.Application.csproj" />
       <ProjectReference Include="..\AuthService.Application\AuthService.Application.csproj" />
       <ProjectReference Include="..\AuthService.DataContext\AuthService.DataContext.csproj" />
       <ProjectReference Include="..\AuthService.Domain\AuthService.Domain.csproj" />
