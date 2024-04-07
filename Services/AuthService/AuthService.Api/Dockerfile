@@ -60,7 +60,7 @@ RUN dotnet restore "ChatRoulette.sln"
 
 COPY . .
 
-WORKDIR /src/Services/Chat/Chat.Api
+WORKDIR /src/Services/AuthService/AuthService.Api
 
 RUN dotnet publish -c Release -o /app
 
@@ -71,4 +71,4 @@ EXPOSE 80
 EXPOSE 443
 
 COPY --from=build /app .
-ENTRYPOINT ["dotnet", "Chat.Api.dll"]
+ENTRYPOINT ["dotnet", "AuthService.Api.dll"]

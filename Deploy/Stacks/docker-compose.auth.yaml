@@ -1,0 +1,37 @@
+version: '3.9'
+
+volumes:
+  auth_db_data:
+  redis_data:
+
+networks:
+  chat-net:
+    external: true
+
+services:
+  auth_app:
+    image: platinaa777/chat-roulette:auth01
+    environment:
+      Jwt__Key: ${AUTH_JWT_KEY}
+      ConnectionStrings__PostgresSQL: ${CONNECTION_STRING}
+      MessageBroker__UserName: ${MESSAGE_BROKER_USER}
+      MessageBroker__Password: ${MESSAGE_BROKER_PASSWORD}
+    networks: [ chat-net ]
+    depends_on:
+      - postgres_db_auth
+      - redis_cache_auth
+  
+  postgres_db_auth:
+    image: postgres
+    environment:
+      POSTGRES_USER: ${AUTH_DB_USER}
+      POSTGRES_PASSWORD: ${AUTH_DB_PASS}
+    networks: [ chat-net ]
+    volumes:
+      - auth_db_data:/var/lib/postgresql/data
+
+  redis_cache_auth:
+    image: redis
+    volumes:
+      - redis_data:/data
+    networks: [ chat-net ]

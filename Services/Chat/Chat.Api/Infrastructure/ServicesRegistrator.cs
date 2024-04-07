@@ -39,6 +39,10 @@ public static class ServicesRegistrator
                 b => 
                     b.MigrationsAssembly("Chat.DataContext"));
         });
+        
+        using var scope = builder.Services.BuildServiceProvider().CreateScope();
+        var dbContext = scope.ServiceProvider.GetRequiredService<ChatDbContext>();
+        dbContext.Database.Migrate();
 
         return builder;
     }

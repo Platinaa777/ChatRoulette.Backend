@@ -70,6 +70,10 @@ public static class ServicesRegistrator
         });
 
         builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+        
+        using var scope = builder.Services.BuildServiceProvider().CreateScope();
+        var dbContext = scope.ServiceProvider.GetRequiredService<UserDb>();
+        dbContext.Database.Migrate();
 
         return builder;
     }

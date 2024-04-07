@@ -13,6 +13,9 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastructure", "{61F9CE89-6FE9-41E6-A47E-9C9EB2FBB141}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Chat", "Chat", "{38ACED50-1C63-4340-A28A-0D90C04628BB}"
+	ProjectSection(SolutionItems) = preProject
+		Services\Chat\docker-compose.yaml = Services\Chat\docker-compose.yaml
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "AuthService", "AuthService", "{0BFDBBB9-6CDD-4B89-90FD-CBBB948D8B87}"
 	ProjectSection(SolutionItems) = preProject
@@ -55,9 +58,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProfileService.Migrations", "Services\ProfileService\ProfileService.Migrations\ProfileService.Migrations.csproj", "{60869BF4-BB5B-4292-9D27-579F29D6DFC2}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{51970908-615C-4B63-AB5E-B7B2EA2A9E49}"
-	ProjectSection(SolutionItems) = preProject
-		Common\docker-compose.yaml = Common\docker-compose.yaml
-	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MessageBroker", "MessageBroker", "{4C3CABC0-485C-4D7B-9049-4B1DDFFA6C58}"
 EndProject

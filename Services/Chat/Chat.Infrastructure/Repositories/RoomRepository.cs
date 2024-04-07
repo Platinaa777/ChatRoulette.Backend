@@ -10,7 +10,6 @@ namespace Chat.Infrastructure.Repositories;
 public class RoomRepository : IRoomRepository
 {
     private readonly ChatDbContext _dbContext;
-    private readonly object _locker = new object();
 
     public RoomRepository(ChatDbContext dbContext)
     {
@@ -25,16 +24,13 @@ public class RoomRepository : IRoomRepository
         
         foreach (var room in rooms)
         {
-            lock (_locker)
+            if (room.PeerLinks.Count == 1 && !chatUser.CheckInHistory(chatUser.Email))
             {
-                if (room.PeerLinks.Count == 1 && !chatUser.CheckInHistory(chatUser.Email))
-                {
-                    room.AddPeer(chatUser);
-                    _dbContext.Rooms.Update(room);
-                    _dbContext.SaveChanges();
-                    return room;
-                }    
-            }
+                room.AddPeer(chatUser);
+                _dbContext.Rooms.Update(room);
+                _dbContext.SaveChanges();
+                return room;
+            }    
         }
         
         return null;

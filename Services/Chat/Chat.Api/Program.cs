@@ -5,6 +5,7 @@ using Chat.Domain.Repositories;
 using Chat.Infrastructure.Repositories;
 using MassTransit.Client.Extensions;
 using Serilog;
+using SwaggerConfigurations.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -32,7 +33,7 @@ builder.Services.AddSignalR(options =>
     options.ClientTimeoutInterval = TimeSpan.MaxValue;
 });
 
-// builder.AddSwagger();
+builder.AddSwagger();
 builder.Services.AddTransient<ChatHub>();
 builder.Services.AddMediatR(cfg 
     => cfg.RegisterServicesFromAssemblyContaining<ConnectUserCommand>());
@@ -44,9 +45,6 @@ builder.AddEventBusClient();
 builder.AddMassTransit();
 
 var app = builder.Build();
-
-// app.UseAuthentication();
-// app.UseAuthorization();
 
 app.UseSerilogRequestLogging();
 

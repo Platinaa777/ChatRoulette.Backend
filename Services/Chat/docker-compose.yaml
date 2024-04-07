@@ -5,17 +5,26 @@ networks:
     driver: bridge
 
 services:
-  postgres_db:
+  chat_postgres_db:
     image: postgres
     container_name: chat_db
     ports:
       - 5440:5432
     environment:
-      POSTGRES_USER: denis
-      POSTGRES_PASSWORD: denis123
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     networks: [ chat-app ]
     volumes:
       - ./pgdata:/var/lib/postgresql/data
+    
+  chat:
+    image: platinaa777/chat-roulette:chat01
+    container_name: chat-application
+    ports:
+      - "8003:80"
+    environment:
+      ConnectionStrings_PostgresSQL: ${CONNECTION_STRING}
+    networks: [ chat-app ]
 
 volumes:
-  postgres_db:
+  chat_postgres_db:

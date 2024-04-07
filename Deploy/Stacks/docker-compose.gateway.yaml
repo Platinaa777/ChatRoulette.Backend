@@ -1,0 +1,14 @@
+version: '3.9'
+
+networks:
+  chat-net:
+    external: true
+
+services:
+  gateway:
+    image: platinaa777/chat-roulette:gateway01
+    networks: [ chat-net ]
+    environment:
+      - Jwt__Key=${AUTH_JWT_KEY}
+    ports:
+      - "80:80"
