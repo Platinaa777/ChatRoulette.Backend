@@ -1,7 +1,7 @@
 version: '3.9'
 
 services:
-  redis_cache:
+  redis_cache_email:
     image: redis
     container_name: email-redis-cache
     ports:

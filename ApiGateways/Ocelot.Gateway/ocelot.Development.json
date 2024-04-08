@@ -171,7 +171,7 @@
     {
       "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE", "OPTIONS" ],
       "UpstreamPathTemplate": "/api/chat/negotiate",
-      "DownstreamPathTemplate": "/my-chat",
+      "DownstreamPathTemplate": "/my-chat/negotiate",
       "DownstreamScheme": "ws",
       "DownstreamHostAndPorts": [
         { "Host": "localhost", "Port": 8003 }

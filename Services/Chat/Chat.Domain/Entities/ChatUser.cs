@@ -29,7 +29,7 @@ public class ChatUser : AggregateRoot<string>
     {
         if (PreviousParticipantEmails.Count >= 3)
         {
-            var lastPeer = PreviousParticipantEmails.Last();
+            var lastPeer = PreviousParticipantEmails.First();
             PreviousParticipantEmails.Remove(lastPeer);
         }
 

@@ -11,4 +11,4 @@ services:
     environment:
       - Jwt__Key=${AUTH_JWT_KEY}
     ports:
-      - "80:80"
+      - "8081:80"

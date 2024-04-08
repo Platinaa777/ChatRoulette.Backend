@@ -13,8 +13,8 @@ services:
       - "15672:15672"
       - "15673:15672"
     environment:
-      RABBITMQ_DEFAULT_USER: ${MESSAGE_BROKER_USER}
-      RABBITMQ_DEFAULT_PASS: ${MESSAGE_BROKER_PASSWORD}      
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest      
     volumes:
       - rabbitdata:/var/lib/rabbitmq
     networks:

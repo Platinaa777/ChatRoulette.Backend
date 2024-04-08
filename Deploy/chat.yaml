@@ -1,0 +1,30 @@
+version: '3.9'
+
+services:
+  chat_app:
+    image: platinaa777/chat-roulette:chat01
+    environment:
+      ChatDbConnection__CHAT_DB_USER: ${CHAT_DB_USER}
+      ChatDbConnection__CHAT_DB_PASSWORD: ${CHAT_DB_PASS}
+      ChatDbConnection__CHAT_DB_HOST: db_chat_server
+      ChatDbConnection__CHAT_DB: chat
+      ChatDbConnection__CHAT_DB_PORT: 5432
+      MessageBroker__UserName: ${MESSAGE_BROKER_USER}
+      MessageBroker__Password: ${MESSAGE_BROKER_PASSWORD}
+    networks: [ chat-net ]
+  
+  db_chat_server:
+    image: postgres
+    environment:
+      POSTGRES_USER: ${CHAT_DB_USER}
+      POSTGRES_PASSWORD: ${CHAT_DB_PASS}
+    networks: [ chat-net ]
+    volumes:
+      - chat_db_data:/var/lib/postgresql/data
+
+volumes:
+  chat_db_data:
+
+networks:
+  chat-net:
+    external: true

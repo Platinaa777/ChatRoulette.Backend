@@ -17,7 +17,7 @@ builder.AddMassTransit();
 builder.AddCacheUserConfirmation();
 builder.AddLoggingWithSerilog();
 builder.AddBackgroundJobs();
-
+        
 var app = builder.Build();
 
 app.UseSerilogRequestLogging();

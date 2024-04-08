@@ -8,8 +8,6 @@ var builder = WebApplication.CreateBuilder(args);
 
 var env = builder.Configuration.GetSection("ENV").Value;
 Console.WriteLine(env);
-Console.WriteLine("key: " + builder.Configuration.GetSection("Jwt:Key").Value);
-Console.WriteLine("started...");
 
 builder.Configuration.SetBasePath(builder.Environment.ContentRootPath)
     .AddJsonFile($"ocelot.{env}.json")

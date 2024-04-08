@@ -63,9 +63,16 @@ public static class ServicesRegistrator
     {
         builder.Services.AddDbContext<UserDb>(options =>
         {
-            options.UseNpgsql(
-                builder.Configuration.GetConnectionString("PostgresSQL"),
-                b => 
+            var dbUser = builder.Configuration["AuthDbConnection:AUTH_DB_USER"];
+            var dbPassword = builder.Configuration["AuthDbConnection:AUTH_DB_PASSWORD"];
+            var dbHost = builder.Configuration["AuthDbConnection:AUTH_DB_HOST"];
+            var db = builder.Configuration["AuthDbConnection:AUTH_DB"];
+            var dbPort = builder.Configuration["AuthDbConnection:AUTH_DB_PORT"];
+            
+            string connectionString = $"User ID={dbUser};password={dbPassword};port={dbPort};host={dbHost};database={db}";
+            Console.WriteLine(connectionString);
+            
+            options.UseNpgsql(connectionString, b => 
                     b.MigrationsAssembly("AuthService.Migrations"));
         });
 
@@ -85,7 +92,7 @@ public static class ServicesRegistrator
         builder.Services.AddScoped<IJwtManager, JwtTokenCreator>();
         builder.Services.AddScoped<IHasherPassword, Hasher>();
         builder.Services.Configure<Jwt>(configuration.GetSection("Jwt"));
-        builder.AddJwtAuthentication(configuration.GetSection("Jwt:Key").Value!);
+        builder.AddJwtAuthentication(configuration.GetSection("Jwt:Key").Value!);    
 
         return builder;
     }

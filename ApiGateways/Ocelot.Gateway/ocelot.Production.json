@@ -71,6 +71,24 @@
           "Host": "auth_app"
         }
       ]
+    },
+    {
+      "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE", "OPTIONS" ],
+      "UpstreamPathTemplate": "/api/chat/negotiate",
+      "DownstreamPathTemplate": "/my-chat/negotiate",
+      "DownstreamScheme": "ws",
+      "DownstreamHostAndPorts": [
+        { "Host": "chat_app", "Port": 80 }
+      ]
+    },
+    {
+      "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE", "OPTIONS" ],
+      "UpstreamPathTemplate": "/api/chat",
+      "DownstreamPathTemplate": "/my-chat",
+      "DownstreamScheme": "ws",
+      "DownstreamHostAndPorts": [
+        { "Host": "chat_app", "Port": 80 }
+      ]
     }
   ],
   "GlobalConfiguration": {

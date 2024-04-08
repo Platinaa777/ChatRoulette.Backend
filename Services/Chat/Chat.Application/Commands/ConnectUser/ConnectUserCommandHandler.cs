@@ -35,7 +35,7 @@ public class ConnectUserCommandHandler : IRequestHandler<ConnectUserCommand, Use
             chatUser.RefreshConnectionId(request.ConnectionId);
             await _chatUserRepository.Update(chatUser);
         }
-            
+        
         var room = await _roomRepository.TryToConnectRoom(chatUser);
 
         // connect user to new created room because not any room exists
@@ -44,10 +44,10 @@ public class ConnectUserCommandHandler : IRequestHandler<ConnectUserCommand, Use
         
         return new UserJoinResponse()
         {
-            ConnectionId = request.ConnectionId,
-            Email = request.Email,
+            ConnectionId = chatUser.ConnectionId,
+            Email = chatUser.Email,
             RoomId = room.Id,
-            CreateOffer = room.PeerLinks.Count == 2
+            CreateOffer = room.CanCreateOffer()
         };
     }
 }

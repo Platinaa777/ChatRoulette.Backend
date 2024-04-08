@@ -12,6 +12,11 @@ public class TwoSeatsRoom : AggregateRoot<string>
         CreatedAt = createdAt;
     }
 
+    public bool CanCreateOffer()
+    {
+        return PeerLinks.Count == 2;
+    }
+
     public int Close()
     {
         DateTime temp = DateTime.UtcNow;

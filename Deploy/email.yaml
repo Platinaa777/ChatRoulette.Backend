@@ -1,0 +1,22 @@
+version: '3.9'
+
+services:
+  email_app:
+    image: platinaa777/chat-roulette:email01
+    environment:
+      MessageBroker__UserName: ${MESSAGE_BROKER_USER}
+      MessageBroker__Password: ${MESSAGE_BROKER_PASSWORD}
+    networks: [ chat-net ]
+
+  redis_cache_email:
+    image: redis
+    volumes:
+      - redis_data_email:/data
+    networks: [ chat-net ]
+
+volumes:
+  redis_data_email:
+
+networks:
+  chat-net:
+    external: true

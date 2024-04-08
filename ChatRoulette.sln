@@ -57,8 +57,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProfileService.HttpModels",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProfileService.Migrations", "Services\ProfileService\ProfileService.Migrations\ProfileService.Migrations.csproj", "{60869BF4-BB5B-4292-9D27-579F29D6DFC2}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{51970908-615C-4B63-AB5E-B7B2EA2A9E49}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MessageBroker", "MessageBroker", "{4C3CABC0-485C-4D7B-9049-4B1DDFFA6C58}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MassTransit.Client", "Infrastructure\MessageBroker\MassTransit.Client\MassTransit.Client.csproj", "{D32CABDF-E19C-416E-9B8C-D2F7AEE5822F}"
@@ -120,6 +118,26 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "S3.Client", "Infrastructure\AmazonS3\S3.Client\S3.Client.csproj", "{5AB37330-8A9B-4C78-8BE2-D0930B212A59}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "S3.Contracts", "Infrastructure\AmazonS3\S3.Contracts\S3.Contracts.csproj", "{C0C06558-562E-4FE6-931D-D739C3B61708}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Development", "Development", "{A625B87B-2838-453C-B57C-D3C44A8E4154}"
+	ProjectSection(SolutionItems) = preProject
+		Development\.env = Development\.env
+		Development\rabbitmq.yaml = Development\rabbitmq.yaml
+		Development\elastic.yaml = Development\elastic.yaml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Deploy", "Deploy", "{BA2D66F8-3390-4A30-B59B-64B64CD2561F}"
+	ProjectSection(SolutionItems) = preProject
+		Deploy\chat.yaml = Deploy\chat.yaml
+		Deploy\auth.yaml = Deploy\auth.yaml
+		Deploy\gateway.yaml = Deploy\gateway.yaml
+		Deploy\broker.yaml = Deploy\broker.yaml
+		Deploy\.env = Deploy\.env
+		Deploy\profile.yaml = Deploy\profile.yaml
+		Deploy\email.yaml = Deploy\email.yaml
+		Deploy\admin.yaml = Deploy\admin.yaml
+		Deploy\frontend.yaml = Deploy\frontend.yaml
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

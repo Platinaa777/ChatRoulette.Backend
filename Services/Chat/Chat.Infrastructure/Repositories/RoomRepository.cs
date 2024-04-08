@@ -24,11 +24,11 @@ public class RoomRepository : IRoomRepository
         
         foreach (var room in rooms)
         {
-            if (room.PeerLinks.Count == 1 && !chatUser.CheckInHistory(chatUser.Email))
+            if (room.PeerLinks.Count == 1 && !chatUser.CheckInHistory(room.PeerLinks[0].Email))
             {
                 room.AddPeer(chatUser);
                 _dbContext.Rooms.Update(room);
-                _dbContext.SaveChanges();
+                await _dbContext.SaveChangesAsync();
                 return room;
             }    
         }

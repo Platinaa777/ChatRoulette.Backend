@@ -1,4 +1,4 @@
-using Chat.Application.Commands.CloseRoomCommand;
+using Chat.Application.Commands.CloseRoom;
 using Chat.Application.Commands.ConnectUser;
 using Chat.Application.Queries.GetAllRooms;
 using Chat.Application.Queries.GetRoom;
@@ -17,6 +17,12 @@ public class ChatHub : Hub
     public ChatHub(IMediator mediator)
     {
         _mediator = mediator;
+    }
+
+    public override Task OnConnectedAsync()
+    {
+        Console.WriteLine("Connection Id: " + Context.ConnectionId);
+        return base.OnConnectedAsync();
     }
 
     public async Task GetId()
@@ -141,57 +147,32 @@ public class ChatHub : Hub
 
     private async Task SwitchRoom(string command)
     {
-        var rooms = await _mediator.Send(new GetAllRoomsQuery());
-        TwoSeatsRoom? storedRoom = null;
-        
-        foreach (var room in rooms)
+        var result = await _mediator.Send(new CloseRoomCommand()
         {
-            foreach (var userLink in room.PeerLinks)
-            {
-                if (userLink.ConnectionId == Context.ConnectionId)
-                {
-                    storedRoom = room;
-                    break;
-                }            
-            }
-        }
-        
-        if (storedRoom is null)
-            return;
-        
-        // close room
-        var response = await _mediator.Send(new CloseRoomCommand()
-        {
-            RoomId = storedRoom.Id
+            ConnectionId = Context.ConnectionId
         });
         
-        if (!response)
+        if (result.IsFailure)
             return;
         
         // send to peers in group to stop their video tracks
-        await Clients.Groups(storedRoom.Id).SendAsync("PeerConnection",
-            storedRoom.Id,
+        await Clients.Groups(result.Value.RoomId).SendAsync("PeerConnection",
+            result.Value.RoomId,
             "",
             command);
         
-        UserLink? peer1 = null;
-        UserLink? peer2 = null;
-        if (storedRoom.PeerLinks.Count == 2)
+        if (result.Value.FirstUser is not null)
         {
-            peer1 = storedRoom.PeerLinks[0];
-            peer2 = storedRoom.PeerLinks[1];    
+            await Groups.RemoveFromGroupAsync(
+                result.Value.FirstUser.ConnectionId, 
+                result.Value.RoomId);    
         }
         
-        if (peer1 is not null)
+        if (result.Value.SecondUser is not null)
         {
-            // Console.WriteLine("Disconnected: " + peer1?.ConnectionId);
-            await Groups.RemoveFromGroupAsync(peer1.ConnectionId, storedRoom.Id);    
-        }
-        
-        if (peer2 is not null)
-        {
-            // Console.WriteLine("Disconnected: " + peer2?.ConnectionId);
-            await Groups.RemoveFromGroupAsync(peer2.ConnectionId, storedRoom.Id);    
+            await Groups.RemoveFromGroupAsync(
+                result.Value.SecondUser.ConnectionId,
+                result.Value.RoomId);    
         }
     }
 }

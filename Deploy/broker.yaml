@@ -1,7 +1,7 @@
 version: '3.9'
 
 volumes:
-  rabbitdata:
+  rabbit_mq_data:
     driver: local
 
 networks:
@@ -19,6 +19,6 @@ services:
       - RABBITMQ_DEFAULT_USER=${MESSAGE_BROKER_USER}
       - RABBITMQ_DEFAULT_PASS=${MESSAGE_BROKER_PASSWORD}
     volumes:
-      - rabbitdata:/var/lib/rabbitmq
+      - rabbit_mq_data:/var/lib/rabbitmq
     networks:
       - chat-net
