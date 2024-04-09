@@ -12,6 +12,7 @@ public class OutboxMessageJob : IJob
     private readonly UserDb _dbContext;
     private readonly IPublisher _publisher;
     private readonly ILogger<OutboxMessageJob> _logger;
+    private static string WorkerName = "AuthService.OutboxMessageJob";
 
     public OutboxMessageJob(
         UserDb dbContext,
@@ -31,7 +32,6 @@ public class OutboxMessageJob : IJob
             .Take(3)
             .ToListAsync();
 
-        _logger.LogInformation("outbox message count: " + outboxMessages.Count());
         foreach (var message in outboxMessages)
         {
             try
@@ -48,12 +48,22 @@ public class OutboxMessageJob : IJob
                         message.Id);
                     continue;
                 }
+                
+                _logger.LogInformation(@"Outbox message {@BackgroundJobId} was received by {@Worker}, type: {@Type}, content: {@Content}",
+                    message.Id.ToString(),
+                    WorkerName,
+                    message.Type,
+                    message.Content);
 
                 await _publisher.Publish(domainEvent);
                 
                 message.HandledAtUtc = DateTime.UtcNow;
 
                 await _dbContext.SaveChangesAsync();
+                
+                _logger.LogInformation("Outbox message {@BackgroundJobId} was handled by {@Worker}",
+                    message.Id,
+                    WorkerName);
             }
             catch 
             {

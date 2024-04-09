@@ -61,17 +61,16 @@ public static class ServicesRegistrator
 
     public static WebApplicationBuilder AddDataLayer(this WebApplicationBuilder builder)
     {
+        var dbUser = builder.Configuration["AuthDbConnection:AUTH_DB_USER"];
+        var dbPassword = builder.Configuration["AuthDbConnection:AUTH_DB_PASSWORD"];
+        var dbHost = builder.Configuration["AuthDbConnection:AUTH_DB_HOST"];
+        var db = builder.Configuration["AuthDbConnection:AUTH_DB"];
+        var dbPort = builder.Configuration["AuthDbConnection:AUTH_DB_PORT"];
+            
+        string connectionString = $"User ID={dbUser};password={dbPassword};port={dbPort};host={dbHost};database={db}";
+        
         builder.Services.AddDbContext<UserDb>(options =>
         {
-            var dbUser = builder.Configuration["AuthDbConnection:AUTH_DB_USER"];
-            var dbPassword = builder.Configuration["AuthDbConnection:AUTH_DB_PASSWORD"];
-            var dbHost = builder.Configuration["AuthDbConnection:AUTH_DB_HOST"];
-            var db = builder.Configuration["AuthDbConnection:AUTH_DB"];
-            var dbPort = builder.Configuration["AuthDbConnection:AUTH_DB_PORT"];
-            
-            string connectionString = $"User ID={dbUser};password={dbPassword};port={dbPort};host={dbHost};database={db}";
-            Console.WriteLine(connectionString);
-            
             options.UseNpgsql(connectionString, b => 
                     b.MigrationsAssembly("AuthService.Migrations"));
         });

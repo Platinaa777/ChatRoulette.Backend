@@ -16,6 +16,7 @@ public class OutboxBackgroundJob : IJob
     private readonly IPublisher _publisher;
     private readonly IDbConnectionFactory<NpgsqlConnection> _connectionFactory;
     private readonly ILogger<OutboxBackgroundJob> _logger;
+    private string WorkerName = "ProfileService.OutboxBackgroundJob";
 
     public OutboxBackgroundJob(
         IPublisher publisher,
@@ -37,7 +38,6 @@ public class OutboxBackgroundJob : IJob
                      WHERE handled_at is null
                      LIMIT 10");
 
-        _logger.LogInformation("outbox message count: " + outboxMessages.Count());
         foreach (var message in outboxMessages)
         {
             try
@@ -54,6 +54,12 @@ public class OutboxBackgroundJob : IJob
                         message.Id);
                     continue;
                 }
+                
+                _logger.LogInformation(@"Outbox message {@BackgroundJobId} was received by {@Worker}, type: {@Type}, content: {@Content}",
+                    message.Id.ToString(),
+                    WorkerName,
+                    message.Type,
+                    message.Content);
 
                 await _publisher.Publish(domainEvent);
                 
@@ -70,6 +76,10 @@ public class OutboxBackgroundJob : IJob
                     SET handled_at = @HandledAt
                     WHERE id = @Id;                        
                 ", parameter);
+                
+                _logger.LogInformation("Outbox message {@BackgroundJobId} was handled by {@Worker}",
+                    message.Id,
+                    WorkerName);
             }
             catch (Exception e)
             {

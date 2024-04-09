@@ -9,7 +9,7 @@ public class Age : ValueObject
 
     public static Result<Age> Create(int age)
     {
-        if (age <= 0 || age >= 100)
+        if (age <= 15 || age >= 100)
             return Result.Failure<Age>(UserError.InvalidAge);
         return new Age(age);
     }

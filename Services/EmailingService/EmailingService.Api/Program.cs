@@ -1,16 +1,15 @@
+using dotenv.net;
 using EmailingService.Api.Infrastructure;
 using MassTransit.Client.Extensions;
 using Serilog;
 using SwaggerConfigurations.Extensions;
 
+DotEnv.Load();
+
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddControllers();
-builder.Host.UseSerilog((ctx, config) =>
-{
-    config.ReadFrom.Configuration(ctx.Configuration);
-});
-
+builder.AddApplicationLayer();
+builder.AddLoggingWithSerilog();
 builder.AddSwagger();
 builder.AddEventBusClient();
 builder.AddEmailConfig();

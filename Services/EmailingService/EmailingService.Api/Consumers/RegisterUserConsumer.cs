@@ -28,7 +28,9 @@ public class RegisterUserConsumer : IConsumer<UserRegistered>
     
     public async Task Consume(ConsumeContext<UserRegistered> context)
     {
-        _logger.LogInformation("Consumed message : email={@Email}; username={@UserName}", context.Message.Email, context.Message.UserName);
+        _logger.LogInformation("Consumed message : Email: {@Email}; Username: {@UserName}",
+            context.Message.Email,
+            context.Message.UserName);
         
         var email = new MimeMessage();
         email.From.Add(MailboxAddress.Parse(_emailConfiguration.Email));
