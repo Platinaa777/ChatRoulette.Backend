@@ -9,25 +9,23 @@ public class AcceptedInvitationDomainEventHandler
     : INotificationHandler<AcceptedInvitationDomainEvent>
 {
     private readonly IUserProfileRepository _profileRepository;
-    private readonly IUnitOfWork _unitOfWork;
 
     public AcceptedInvitationDomainEventHandler(
-        IUserProfileRepository profileRepository,
-        IUnitOfWork unitOfWork)
+        IUserProfileRepository profileRepository)
     {
         _profileRepository = profileRepository;
-        _unitOfWork = unitOfWork;
     }
     
     public async Task Handle(AcceptedInvitationDomainEvent notification, CancellationToken cancellationToken)
     {
-        await _unitOfWork.StartTransaction(cancellationToken);
-        
         var profileUser1 = await _profileRepository.FindUserByIdAsync(notification.SenderId);
         var profileUser2 = await _profileRepository.FindUserByIdAsync(notification.ReceiverId);
 
-        if (profileUser1 is null || profileUser2 is null)
-            return;
+        if (profileUser1 is null)
+            throw new ArgumentException($"User not found with id: {notification.SenderId}");
+
+        if (profileUser2 is null)
+            throw new ArgumentException($"User not found with id: {notification.ReceiverId}");
         
         profileUser1.AddFriend(profileUser2);
         profileUser2.AddFriend(profileUser1);
@@ -37,7 +35,5 @@ public class AcceptedInvitationDomainEventHandler
 
         if (!result1 || !result2)
             throw new ArgumentException("Database updating friends list of two users was occured exception");
-
-        await _unitOfWork.SaveChangesAsync(cancellationToken);
     }
 }

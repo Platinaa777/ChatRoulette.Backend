@@ -38,7 +38,7 @@ public class ComplaintApprovedConsumer : IConsumer<ComplaintApprovedByAdmin>
             _logger.LogInformation(@"Cant add to {@Email} doom slayer points {@Error}",
                 context.Message.SenderEmail,
                 result.Error);
-            throw new ArgumentException($"Error to add doom slayer points to {context.Message.SenderEmail}");
+            // throw new ArgumentException($"Error to add doom slayer points to {context.Message.SenderEmail}");
         }
     }
 }

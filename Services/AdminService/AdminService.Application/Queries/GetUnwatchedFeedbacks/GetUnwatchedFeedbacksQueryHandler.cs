@@ -1,11 +1,13 @@
+using AdminService.Application.Models;
 using AdminService.Domain.Models.FeedbackAggregate;
 using AdminService.Domain.Models.FeedbackAggregate.Repos;
+using DomainDriverDesignAbstractions;
 using MediatR;
 
 namespace AdminService.Application.Queries.GetUnwatchedFeedbacks;
 
 public class GetUnwatchedFeedbacksQueryHandler
-    : IRequestHandler<GetUnwatchedFeedbacksQuery, List<Feedback>>
+    : IRequestHandler<GetUnwatchedFeedbacksQuery, Result<List<FeedbackInformation>>>
 {
     private readonly IFeedbackRepository _feedbackRepository;
 
@@ -15,8 +17,16 @@ public class GetUnwatchedFeedbacksQueryHandler
         _feedbackRepository = feedbackRepository;
     }
 
-    public async Task<List<Feedback>> Handle(GetUnwatchedFeedbacksQuery request, CancellationToken cancellationToken)
+    public async Task<Result<List<FeedbackInformation>>> Handle(GetUnwatchedFeedbacksQuery request, CancellationToken cancellationToken)
     {
-        return await _feedbackRepository.GetFeedbacks(request.Count);
+        var response = await _feedbackRepository.GetFeedbacks(request.Count);
+
+        return response.Select(x => new FeedbackInformation()
+        {
+            Id = x.Id.Value.ToString(),
+            Email = x.EmailFrom.Value,
+            Content = x.Content.Value,
+            IsWatched = x.IsWatched
+        }).ToList();
     }
 }

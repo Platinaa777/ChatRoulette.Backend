@@ -1,6 +1,7 @@
 using DomainDriverDesignAbstractions;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using ProfileService.Api.Utils;
 using ProfileService.Application.Commands.ChangeAvatar;
 using ProfileService.Application.Commands.GenerateNewAvatarUrl;
 using ProfileService.Application.Models;
@@ -14,18 +15,26 @@ public class AvatarController : ControllerBase
 {
     private readonly IS3Client _s3Client;
     private readonly IMediator _mediator;
+    private readonly CredentialsChecker _credentialsChecker;
 
     public AvatarController(
         IS3Client s3Client,
-        IMediator mediator)
+        IMediator mediator,
+        CredentialsChecker credentialsChecker)
     {
         _s3Client = s3Client;
         _mediator = mediator;
+        _credentialsChecker = credentialsChecker;
     }
 
-    [HttpPost("change-avatar/{email}")]
-    public async Task<ActionResult<Result<AvatarInformation>>> ChangeAvatar(IFormFile formFile, [FromRoute] string email)
+    [HttpPost("change-avatar")]
+    public async Task<ActionResult<Result<AvatarInformation>>> ChangeAvatar(IFormFile formFile)
     {
+        var email = _credentialsChecker.GetEmailFromJwtHeader(Request.Cookies["access-token"]);
+
+        if (email is null)
+            return Unauthorized();
+        
         var result = await _mediator.Send(new ChangeAvatarCommand()
         {
             Avatar = formFile.OpenReadStream(),
@@ -52,9 +61,14 @@ public class AvatarController : ControllerBase
         return Ok();
     }
 
-    [HttpPost("{email}")]
-    public async Task<ActionResult> GenerateNewAvatarUrl(string email)
+    [HttpPost]
+    public async Task<ActionResult> GenerateNewAvatarUrl()
     {
+        var email = _credentialsChecker.GetEmailFromJwtHeader(Request.Cookies["access-token"]);
+
+        if (email is null)
+            return Unauthorized();
+        
         var result = await _mediator.Send(new GenerateNewAvatarUrlCommand()
         {
             Email = email

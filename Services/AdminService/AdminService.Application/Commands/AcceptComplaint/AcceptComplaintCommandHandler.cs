@@ -29,6 +29,9 @@ public class AcceptComplaintCommandHandler
         var complaint = await _complaintRepository.FindComplaintById(idResult.Value);
         if (complaint is null)
             return Result.Failure(ComplaintError.ComplaintNotFound);
+
+        if (complaint.IsHandledByAdmin())
+            return Result.Failure(ComplaintError.AlreadyHandled);
         
         complaint.SetAccepted(request.MinutesDuration);
 

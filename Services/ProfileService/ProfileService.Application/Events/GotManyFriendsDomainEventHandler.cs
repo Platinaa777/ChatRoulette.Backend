@@ -10,23 +10,18 @@ public class GotManyFriendsDomainEventHandler
     : INotificationHandler<GotManyFriendsDomainEvent>
 {
     private readonly IUserProfileRepository _userProfileRepository;
-    private readonly IUnitOfWork _unitOfWork;
 
     public GotManyFriendsDomainEventHandler(
-        IUserProfileRepository userProfileRepository,
-        IUnitOfWork unitOfWork)
+        IUserProfileRepository userProfileRepository)
     {
         _userProfileRepository = userProfileRepository;
-        _unitOfWork = unitOfWork;
     }
     
     public async Task Handle(GotManyFriendsDomainEvent notification, CancellationToken cancellationToken)
     {
-        await _unitOfWork.StartTransaction(cancellationToken);
-
         var userProfile = await _userProfileRepository.FindUserByIdAsync(notification.ProfileId);
         if (userProfile is null)
-            return;
+            throw new ArgumentException($"User not found with id: {notification.ProfileId}");
 
         // load from s3 the reference
         var manyFriendsAchievement = Achievement.Create(2, "many friends");
@@ -35,6 +30,5 @@ public class GotManyFriendsDomainEventHandler
         
         userProfile.AddAchievement(manyFriendsAchievement.Value);
         await _userProfileRepository.UpdateUserAsync(userProfile);
-        await _unitOfWork.SaveChangesAsync(cancellationToken);
     }
 }

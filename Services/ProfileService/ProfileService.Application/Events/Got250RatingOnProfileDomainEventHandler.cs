@@ -7,26 +7,21 @@ using ProfileService.Domain.Models.UserProfileAggregate.Repos;
 namespace ProfileService.Application.Events;
 
 public class Got250RatingOnProfileDomainEventHandler
-    : INotificationHandler<GotManyFriendsDomainEvent>
+    : INotificationHandler<Got250RatingOnProfileDomainEvent>
 {
     private readonly IUserProfileRepository _userProfileRepository;
-    private readonly IUnitOfWork _unitOfWork;
 
     public Got250RatingOnProfileDomainEventHandler(
-        IUserProfileRepository userProfileRepository,
-        IUnitOfWork unitOfWork)
+        IUserProfileRepository userProfileRepository)
     {
         _userProfileRepository = userProfileRepository;
-        _unitOfWork = unitOfWork;
     }
     
-    public async Task Handle(GotManyFriendsDomainEvent notification, CancellationToken cancellationToken)
+    public async Task Handle(Got250RatingOnProfileDomainEvent notification, CancellationToken cancellationToken)
     {
-        await _unitOfWork.StartTransaction(cancellationToken);
-
         var userProfile = await _userProfileRepository.FindUserByIdAsync(notification.ProfileId);
         if (userProfile is null)
-            return;
+            throw new ArgumentException($"Cant find user with {notification.ProfileId}");
 
         // load from s3 the reference
         var masterOfAdvancementAchievement = Achievement.Create(4, "master");
@@ -35,6 +30,5 @@ public class Got250RatingOnProfileDomainEventHandler
         
         userProfile.AddAchievement(masterOfAdvancementAchievement.Value);
         await _userProfileRepository.UpdateUserAsync(userProfile);
-        await _unitOfWork.SaveChangesAsync(cancellationToken);
     }
 }

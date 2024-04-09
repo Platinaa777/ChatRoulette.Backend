@@ -1,9 +1,11 @@
 using Amazon.S3;
+using AuthService.Infrastructure.JwtGenerator;
 using DomainDriverDesignAbstractions;
 using FluentValidation;
 using MediatR;
 using Npgsql;
 using ProfileService.Api.BackgroundJobs;
+using ProfileService.Api.Utils;
 using ProfileService.Application.Assembly;
 using ProfileService.Application.Behaviors;
 using ProfileService.Application.Queries.GetUserProfile;
@@ -30,6 +32,8 @@ public static class ServicesRegistrator
         builder.Services.AddScoped<IUserProfileRepository, UserProfileRepository>();
         builder.Services.AddScoped<IFriendInvitationRepository, FriendInvitationRepository>();
         builder.Services.AddScoped<IUserHistoryRepository, UserHistoryRepository>();
+        builder.Services.AddSingleton<CredentialsChecker>();
+        builder.Services.AddSingleton<JwtTokenCreator>();
         
         builder.Services.AddMediatR(cfg =>
             cfg.RegisterServicesFromAssemblyContaining<GetUserProfileQueryHandler>());

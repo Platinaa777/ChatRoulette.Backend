@@ -11,6 +11,7 @@ public class ComplaintError : Error
     public static Error NotFoundAnyComplaints = new("Complaint.Error", "No stored complaints");
     public static Error ComplaintNotFound = new("Complaint.Error", "Complaint not found");
     public static Error CantUpdateComplaint = new("Complaint.Error", "Complaint cant be updated");
+    public static Error AlreadyHandled = new("Complaint.Error", "Complaint already handled");
 
     
     public ComplaintError(string code, string message) : base(code, message)

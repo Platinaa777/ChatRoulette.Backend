@@ -1,4 +1,5 @@
 using AdminService.Application.Commands.AddFeedback;
+using AdminService.Application.Models;
 using AdminService.Application.Queries.GetUnwatchedFeedbacks;
 using AdminService.Domain.Models.FeedbackAggregate;
 using AdminService.HttpModels.Requests.Feedback;
@@ -35,7 +36,7 @@ public class FeedbackController : ControllerBase
     }
 
     [HttpGet("{count:int}")]
-    public async Task<ActionResult<List<Feedback>>> GetFeedbacks(int count)
+    public async Task<ActionResult<List<FeedbackInformation>>> GetFeedbacks(int count)
     {
         return Ok(await _mediator.Send(new GetUnwatchedFeedbacksQuery() { Count = count }));
     }

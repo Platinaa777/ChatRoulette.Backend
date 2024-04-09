@@ -54,7 +54,8 @@ public class ComplaintController : ControllerBase
     {
         var result = await _mediator.Send(new AcceptComplaintCommand()
         {
-            ComplaintId = request.Id
+            ComplaintId = request.Id,
+            MinutesDuration = request.DurationMinutes
         });
 
         if (result.IsFailure)
@@ -64,7 +65,7 @@ public class ComplaintController : ControllerBase
     }
 
     [HttpPut("reject")]
-    public async Task<ActionResult<Result>> MatkComplaintAsRejected([FromBody] RejectComplaintRequest request)
+    public async Task<ActionResult<Result>> MarkComplaintAsRejected([FromBody] RejectComplaintRequest request)
     {
         var result = await _mediator.Send(new RejectComplaintCommand()
         {

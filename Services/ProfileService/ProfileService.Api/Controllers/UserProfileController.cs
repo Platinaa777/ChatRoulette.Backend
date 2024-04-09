@@ -1,6 +1,7 @@
 using DomainDriverDesignAbstractions;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using ProfileService.Api.Utils;
 using ProfileService.Application.Commands.AddUserProfile;
 using ProfileService.Application.Commands.ChangeNickNameProfile;
 using ProfileService.Application.Models;
@@ -15,16 +16,25 @@ namespace ProfileService.Api.Controllers;
 public class UserProfileController : ControllerBase
 {
     private readonly IMediator _mediator;
+    private readonly CredentialsChecker _credentialsChecker;
 
-    public UserProfileController(IMediator mediator)
+    public UserProfileController(
+        IMediator mediator,
+        CredentialsChecker credentialsChecker)
     {
         _mediator = mediator;
+        _credentialsChecker = credentialsChecker;
     }
 
     [HttpGet("get-user-info")]
-    public async Task<ActionResult<ProfileResponse>> GetUser([FromQuery] string email)
+    public async Task<ActionResult<ProfileResponse>> GetUser()
     {
-        var result = await _mediator.Send(new GetUserProfileQuery() { Email = email });
+        var email = _credentialsChecker.GetEmailFromJwtHeader(Request.Cookies["access-token"]);
+
+        if (email is null)
+            return Unauthorized();
+
+        var result = await _mediator.Send(new GetUserProfileQuery(email));
 
         if (result.IsFailure)
             return BadRequest(result);
@@ -32,10 +42,10 @@ public class UserProfileController : ControllerBase
         return Ok(result);
     }
     
-    [HttpGet("get-top-users")]
-    public async Task<ActionResult<Result<List<UserProfileInformation>>>> GetTopUsers()
+    [HttpGet("get-top-users/{count:int}")]
+    public async Task<ActionResult<Result<List<UserProfileInformation>>>> GetTopUsers([FromRoute] int count)
     {
-        var result = await _mediator.Send(new GetTopUsersQuery());
+        var result = await _mediator.Send(new GetTopUsersQuery(count));
 
         if (result.IsFailure)
             return BadRequest(result);
@@ -60,9 +70,14 @@ public class UserProfileController : ControllerBase
     [HttpPut("change-user-nickname")]
     public async Task<ActionResult<Result>> ChangeNickName([FromBody] ChangeNicknameRequest request)
     {
+        var email = _credentialsChecker.GetEmailFromJwtHeader(Request.Cookies["access-token"]);
+
+        if (email is null)
+            return Unauthorized();
+        
         var result = await _mediator.Send(new ChangeNickNameProfileCommand()
         {
-            Email = request.Email,
+            Email = email,
             NickName = request.NickName
         });
         

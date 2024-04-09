@@ -30,6 +30,9 @@ public class RejectComplaintCommandHandler
         if (complaint is null)
             return Result.Failure(ComplaintError.ComplaintNotFound);
         
+        if (complaint.IsHandledByAdmin())
+            return Result.Failure(ComplaintError.AlreadyHandled);
+        
         complaint.SetRejected();
 
         if (!await _complaintRepository.UpdateComplaint(complaint))

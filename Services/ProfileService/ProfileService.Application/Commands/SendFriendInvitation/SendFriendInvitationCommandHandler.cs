@@ -26,7 +26,7 @@ public class SendFriendInvitationCommandHandler
         _unitOfWork = unitOfWork;
     }
     
-    public async Task<Result> Handle(SendFriendInvitation.SendFriendInvitationCommand request, CancellationToken cancellationToken)
+    public async Task<Result> Handle(SendFriendInvitationCommand request, CancellationToken cancellationToken)
     {
         await _unitOfWork.StartTransaction(cancellationToken);
         

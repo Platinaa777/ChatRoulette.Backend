@@ -3,7 +3,7 @@ using ProfileService.Domain.Models.UserProfileAggregate.Errors;
 
 namespace ProfileService.Domain.Models.UserProfileAggregate.ValueObjects;
 
-public class Rating : ValueObject
+public class Rating : ValueObject, IComparable<Rating>
 {
     private const int MAX_RATING = 1000;
     public int Value { get; private set; }
@@ -25,5 +25,14 @@ public class Rating : ValueObject
     protected override IEnumerable<object> GetEqualityComponents()
     {
         yield return Value;
+    }
+
+    public int CompareTo(Rating? other)
+    {
+        if (other is null) return 1;
+
+        if (other.Value == Value) return 0;
+        if (other.Value > Value) return -1;
+        return 1;
     }
 }

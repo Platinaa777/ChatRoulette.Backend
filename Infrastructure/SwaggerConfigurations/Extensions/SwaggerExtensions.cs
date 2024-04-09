@@ -1,4 +1,5 @@
 using System.Reflection;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
@@ -16,10 +17,35 @@ public static class SwaggerExtensions
         builder.Services.AddSwaggerGen(opt =>
         {
             opt.SwaggerDoc("v1", new OpenApiInfo() { 
-                Title = $"{Assembly.GetEntryAssembly().GetName().Name ?? "no name"}.v1",
+                Title = $"{Assembly.GetExecutingAssembly().GetName().Name ?? "no name"}.v1",
                 Version = "v1" 
             });
             opt.CustomSchemaIds(x => x.FullName);
+
+            // Add JWT Authentication options
+            var securityScheme = new OpenApiSecurityScheme
+            {
+                Name = "JWT Authentication",
+                Description = "Enter JWT Bearer token",
+                In = ParameterLocation.Header,
+                Type = SecuritySchemeType.Http,
+                Scheme = "bearer", // must be lower case
+                BearerFormat = "JWT",
+                Reference = new OpenApiReference
+                {
+                    Id = JwtBearerDefaults.AuthenticationScheme,
+                    Type = ReferenceType.SecurityScheme
+                }
+            };
+
+            opt.AddSecurityDefinition(JwtBearerDefaults.AuthenticationScheme, securityScheme);
+            opt.AddSecurityRequirement(new OpenApiSecurityRequirement
+            {
+                {
+                    securityScheme,
+                    new string[] { }
+                }
+            });
         });
 
         return builder;

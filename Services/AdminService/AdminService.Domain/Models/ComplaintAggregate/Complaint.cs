@@ -48,6 +48,11 @@ public class Complaint : AggregateRoot<Id>
     {
         IsHandled = true;
     }
+
+    public bool IsHandledByAdmin()
+    {
+        return IsHandled;
+    }
     
 
     public static Result<Complaint> Create(

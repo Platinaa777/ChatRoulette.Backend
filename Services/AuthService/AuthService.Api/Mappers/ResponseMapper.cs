@@ -11,9 +11,15 @@ public static class ResponseMapper
     {
         if (result.IsFailure)
         {
-            return new AuthenticationResponse(result.IsFailure, string.Empty, string.Empty);
+            return new AuthenticationResponse(
+                isAuthenticate: false, 
+                string.Empty,
+                string.Empty);
         }
 
-        return new AuthenticationResponse(result.IsSuccess, result.Value.Email, result.Value.AccessToken!);
+        return new AuthenticationResponse(
+            isAuthenticate: true,
+            result.Value.Email,
+            result.Value.AccessToken!);
     }    
 }

@@ -1,5 +1,6 @@
 using DomainDriverDesignAbstractions;
 using MediatR;
+using Microsoft.Net.Http.Headers;
 using ProfileService.Application.Models;
 using ProfileService.Domain.Models.UserProfileAggregate.Repos;
 
@@ -17,7 +18,7 @@ public class GetTopUsersQueryHandler
     
     public async Task<Result<List<UserProfileInformation>>> Handle(GetTopUsersQuery request, CancellationToken cancellationToken)
     {
-        var result = await _profileRepository.GetAllUsers();
+        var result = await _profileRepository.GetAllUsers(request.Count);
 
         List<UserProfileInformation> profiles = new();
         foreach (var profile in result)

@@ -6,5 +6,5 @@ public interface IUserProfileRepository
     Task<UserProfile?> FindUserByEmailAsync(string email);
     Task<bool> AddUserAsync(UserProfile user);
     Task<bool> UpdateUserAsync(UserProfile user);
-    Task<List<UserProfile>> GetAllUsers();
+    Task<List<UserProfile>> GetAllUsers(int count);
 }

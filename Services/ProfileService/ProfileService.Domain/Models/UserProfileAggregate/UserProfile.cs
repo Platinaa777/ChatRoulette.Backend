@@ -36,7 +36,7 @@ public class UserProfile : AggregateRoot<Id>
         if (friend.Id != Id)
         {
             _friends.Add(friend.Id);
-            if (_friends.Count >= 35)
+            if (_friends.Count >= 5)
             {
                 RaiseDomainEvent(new GotManyFriendsDomainEvent(Id.Value.ToString()));
             }

@@ -1,3 +1,4 @@
+using System.Collections;
 using Dapper;
 using Npgsql;
 using ProfileService.Domain.Models.Identity;
@@ -40,7 +41,18 @@ public class UserProfileRepository : IUserProfileRepository
                 splitOn: "ProfileId",
                 param: parameters);
 
-        var userDb = result.FirstOrDefault();
+        var userDb = result.GroupBy(x => x.Id).Select(x =>
+        {
+            var userProfile = x.First();
+            userProfile.FriendIds = x.SelectMany(usp =>
+            {
+                return usp.FriendIds
+                    .Where(friendId => !string.IsNullOrWhiteSpace(friendId))
+                    .Select(friendId => friendId);
+            }).ToList();
+
+            return userProfile;
+        }).FirstOrDefault();
         
         if (userDb == null) 
             return null;
@@ -153,30 +165,50 @@ public class UserProfileRepository : IUserProfileRepository
         return result == 1;
     }
 
-    public async Task<List<UserProfile>> GetAllUsers()
+    public async Task<List<UserProfile>> GetAllUsers(int count)
     {
         var connection = await _factory.CreateConnection(default);
-        
+
+        var parameters = new
+        {
+            Count = count
+        };
+
         IEnumerable<UserProfileSnapshot> result = await connection
             .QueryAsync<UserProfileSnapshot, (string? profileId, string? friendId), UserProfileSnapshot>(
-            ProfileQuery.SqlGetAllUsers, (profile, fl) =>
-            {
-                if (fl.profileId is not null)
+                ProfileQuery.SqlGetAllUsers, (profile, fl) =>
                 {
-                    profile.FriendIds.Add(fl.friendId!);
-                }
-                return profile;
-            },
-            splitOn: "ProfileId");
+                    if (fl.profileId is not null)
+                    {
+                        profile.FriendIds.Add(fl.friendId!);
+                    }
+
+                    return profile;
+                },
+                parameters,
+                splitOn: "ProfileId");
+
+        var dbUsers = result.GroupBy(x => x.Id).Select(x =>
+        {
+            var userProfile = x.First();
+            userProfile.FriendIds = x.SelectMany(usp =>
+            {
+                return usp.FriendIds
+                    .Where(friendId => !string.IsNullOrWhiteSpace(friendId))
+                    .Select(friendId => friendId);
+            }).ToList();
+
+            return userProfile;
+        });
 
         List<UserProfile> profiles = new();
-        foreach (var profile in result)
+        foreach (var profile in dbUsers)
         {
             var domainProfile = UserProfile.RestoreFromSnapshot(profile);
             _tracker.Track(domainProfile);
             profiles.Add(domainProfile);
         }
         
-        return profiles;
+        return profiles.OrderByDescending(p => p.Rating).Take(count).ToList();
     }
 }

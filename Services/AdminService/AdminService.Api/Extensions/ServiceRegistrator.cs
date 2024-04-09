@@ -29,7 +29,9 @@ public static class ServiceRegistrator
             cfg.AddOpenBehavior(typeof(ValidationPipelineBehavior<,>));
         });
         
-        builder.Services.AddValidatorsFromAssembly(ApplicationAssembly.Assembly, includeInternalTypes: true);
+        builder.Services.AddValidatorsFromAssembly(
+            ApplicationAssembly.Assembly,
+            includeInternalTypes: true);
         
         return builder;
     }

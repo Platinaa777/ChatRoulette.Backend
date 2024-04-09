@@ -11,7 +11,7 @@ public static class FriendInvitationQuery
     public const string SqlFindByProfileIds = $@"
             SELECT id, sender_id SenderId, receiver_id ReceiverId, status InvitationStatus, sent_at SentAtUtc
             FROM invitations
-            WHERE (sender_id = @SenderId and receiver_id = @ReceiverId) or (sender_id = @ReceiverId and receiver_id = @SenderId);
+            WHERE (sender_id = @SenderId and receiver_id = @ReceiverId);
          ";
 
     public const string SqlAddInvitation = $@"

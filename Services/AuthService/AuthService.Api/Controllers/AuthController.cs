@@ -79,10 +79,10 @@ public class AuthController : ControllerBase
                         
                     });
 
-            return Ok(result.ToAnswer());
+            return Ok(result);
         }
         
-        return BadRequest(result.ToAnswer());
+        return BadRequest(result);
     }
 
     private string CutBearer(string token)
@@ -91,7 +91,7 @@ public class AuthController : ControllerBase
     }
 
     [HttpPost("login")]
-    public async Task<ActionResult<AuthenticationResponse>> Login(LoginRequest request)
+    public async Task<ActionResult> Login(LoginRequest request)
     {
         var result = await _mediator.Send(request.ToCommand());
 
@@ -106,10 +106,10 @@ public class AuthController : ControllerBase
                     IsEssential = true
                 });
 
-            return Ok(result.ToAnswer());
+            return Ok(result);
         }
         
-        return BadRequest(result.ToAnswer());
+        return BadRequest(result);
     }
 
     [HttpPost("logout")]

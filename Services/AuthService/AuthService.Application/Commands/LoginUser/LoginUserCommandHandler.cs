@@ -7,8 +7,10 @@ using AuthService.Domain.Models.TokenAggregate.Repos;
 using AuthService.Domain.Models.TokenAggregate.ValueObjects;
 using AuthService.Domain.Models.UserAggregate.Repos;
 using AuthService.Domain.Models.UserAggregate.ValueObjects;
+using AuthService.Domain.Models.UserHistoryAggregate.Repos;
 using DomainDriverDesignAbstractions;
 using MediatR;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace AuthService.Application.Commands.LoginUser;
 
@@ -19,19 +21,22 @@ public class LoginUserCommandHandler : IRequestHandler<LoginUserCommand, Result<
     private readonly IHasherPassword _hasherPassword;
     private readonly IJwtManager _jwtManager;
     private readonly IUnitOfWork _unitOfWork;
+    private readonly IUserHistoryRepository _historyRepository;
 
     public LoginUserCommandHandler(
         IUserRepository userRepository,
         ITokenRepository tokenRepository,
         IHasherPassword hasherPassword,
         IJwtManager jwtManager,
-        IUnitOfWork unitOfWork)
+        IUnitOfWork unitOfWork,
+        IUserHistoryRepository historyRepository)
     {
         _userRepository = userRepository;
         _tokenRepository = tokenRepository;
         _hasherPassword = hasherPassword;
         _jwtManager = jwtManager;
         _unitOfWork = unitOfWork;
+        _historyRepository = historyRepository;
     }
     
     public async Task<Result<AuthTokens>> Handle(LoginUserCommand request, CancellationToken cancellationToken)
@@ -44,6 +49,14 @@ public class LoginUserCommandHandler : IRequestHandler<LoginUserCommand, Result<
 
         if (user is null || !user.IsSubmittedEmail)
             return Result.Failure<AuthTokens>(UserError.UnactivatedUser);
+        
+        var history = await _historyRepository.FindByUserId(user.Id);
+        
+        if (history is not null && 
+            history.BannedTime > DateTime.UtcNow)
+        {
+            return Result.Failure<AuthTokens>(UserError.BanUser);
+        }
 
         var userSalt = user.Salt.Value;
         var password = _hasherPassword.HashPasswordWithSalt(request.Password, userSalt);

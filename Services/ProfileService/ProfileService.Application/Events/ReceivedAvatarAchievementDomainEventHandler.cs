@@ -10,20 +10,15 @@ public class ReceivedAvatarAchievementDomainEventHandler
     : INotificationHandler<ReceivedAvatarAchievementDomainEvent>
 {
     private readonly IUserProfileRepository _profileRepository;
-    private readonly IUnitOfWork _unitOfWork;
 
     public ReceivedAvatarAchievementDomainEventHandler(
-        IUserProfileRepository profileRepository,
-        IUnitOfWork unitOfWork)
+        IUserProfileRepository profileRepository)
     {
         _profileRepository = profileRepository;
-        _unitOfWork = unitOfWork;
     }
     
     public async Task Handle(ReceivedAvatarAchievementDomainEvent notification, CancellationToken cancellationToken)
     {
-        await _unitOfWork.StartTransaction(cancellationToken);
-        
         var userProfile = await _profileRepository.FindUserByIdAsync(notification.UserId);
 
         if (userProfile is null)
@@ -36,6 +31,5 @@ public class ReceivedAvatarAchievementDomainEventHandler
         
         userProfile.AddAchievement(changeAvatarAchievement.Value);
         await _profileRepository.UpdateUserAsync(userProfile);
-        await _unitOfWork.SaveChangesAsync(cancellationToken);
     }
 }

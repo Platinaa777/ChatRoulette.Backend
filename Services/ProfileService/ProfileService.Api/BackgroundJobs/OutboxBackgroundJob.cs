@@ -1,8 +1,10 @@
 using Dapper;
 using DomainDriverDesignAbstractions;
 using MediatR;
+using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using Npgsql;
+using ProfileService.Infrastructure.Configuration;
 using ProfileService.Infrastructure.OutboxPattern;
 using ProfileService.Infrastructure.Repos.Interfaces;
 using Quartz;
@@ -14,23 +16,24 @@ namespace ProfileService.Api.BackgroundJobs;
 public class OutboxBackgroundJob : IJob
 {
     private readonly IPublisher _publisher;
-    private readonly IDbConnectionFactory<NpgsqlConnection> _connectionFactory;
     private readonly ILogger<OutboxBackgroundJob> _logger;
+    private readonly DatabaseOptions _connectionString;
     private string WorkerName = "ProfileService.OutboxBackgroundJob";
 
     public OutboxBackgroundJob(
         IPublisher publisher,
-        IDbConnectionFactory<NpgsqlConnection> connectionFactory,
-        ILogger<OutboxBackgroundJob> logger)
+        ILogger<OutboxBackgroundJob> logger,
+        IOptions<DatabaseOptions> connectionString)
     {
         _publisher = publisher;
-        _connectionFactory = connectionFactory;
         _logger = logger;
+        _connectionString = connectionString.Value;
     }
 
     public async Task Execute(IJobExecutionContext context)
     {
-        var connection = await _connectionFactory.CreateConnection(default);
+        var connection = new NpgsqlConnection(_connectionString.ConnectionString);
+        await connection.OpenAsync(context.CancellationToken);
 
         var outboxMessages = await connection
             .QueryAsync<OutboxMessage>(
@@ -42,6 +45,8 @@ public class OutboxBackgroundJob : IJob
         {
             try
             {
+                var transaction = await connection.BeginTransactionAsync(context.CancellationToken);
+                
                 IDomainEvent? domainEvent = JsonConvert.DeserializeObject<IDomainEvent>(message.Content,
                     new JsonSerializerSettings()
                     {
@@ -80,6 +85,8 @@ public class OutboxBackgroundJob : IJob
                 _logger.LogInformation("Outbox message {@BackgroundJobId} was handled by {@Worker}",
                     message.Id,
                     WorkerName);
+
+                await transaction.CommitAsync(context.CancellationToken);
             }
             catch (Exception e)
             {
@@ -88,5 +95,7 @@ public class OutboxBackgroundJob : IJob
                     e.Message);
             }
         }
+        
+        await connection.DisposeAsync();
     }
 }

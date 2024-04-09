@@ -36,7 +36,11 @@ public class ComplaintApprovedByAdminConsumer : IConsumer<ComplaintApprovedByAdm
 
         if (result.IsFailure)
         {
-            throw new ArgumentException("Message was unhandled");
+            _logger.LogInformation("{@Consumer} did not handle complaint {@Id} with Email: {@Email}",
+                nameof(ComplaintApprovedByAdminConsumer),
+                context.Message.Id,
+                context.Message.ViolatorEmail);
+            // throw new ArgumentException("Message was unhandled");
         }
         
         _logger.LogInformation("{@Consumer} was handled complaint {@Id}",
