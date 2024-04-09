@@ -11,7 +11,7 @@ using ProfileService.HttpModels.Requests;
 namespace ProfileService.Api.Controllers;
 
 [ApiController]
-[Route("[controller]")]
+[Route("profile")]
 public class UserProfileController : ControllerBase
 {
     private readonly IMediator _mediator;

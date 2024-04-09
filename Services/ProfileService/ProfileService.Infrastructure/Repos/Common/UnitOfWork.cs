@@ -53,7 +53,6 @@ public class UnitOfWork : IUnitOfWork
         
         var connection = await _factory.CreateConnection(token);
 
-        Console.WriteLine("count domain events "+ domainEvents.Count);
         foreach (var outboxMessage in domainEvents)
         {
             await connection.ExecuteAsync(@"

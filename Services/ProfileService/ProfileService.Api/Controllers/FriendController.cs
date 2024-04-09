@@ -9,7 +9,7 @@ using ProfileService.HttpModels.Requests;
 namespace ProfileService.Api.Controllers;
 
 [ApiController]
-[Route("[controller]")]
+[Route("friend")]
 public class FriendController : ControllerBase
 {
     private readonly IMediator _mediator;

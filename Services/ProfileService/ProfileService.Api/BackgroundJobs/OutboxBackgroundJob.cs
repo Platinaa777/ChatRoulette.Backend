@@ -83,7 +83,9 @@ public class OutboxBackgroundJob : IJob
             }
             catch (Exception e)
             {
-                _logger.LogError(@"Outbox message has failed {@Id}", message.Id);
+                _logger.LogError(@"Outbox message has failed {@Id} with error message {@ErrorMessage}",
+                    message.Id,
+                    e.Message);
             }
         }
     }

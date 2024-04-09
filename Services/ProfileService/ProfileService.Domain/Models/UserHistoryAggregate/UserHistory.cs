@@ -1,6 +1,7 @@
 using DomainDriverDesignAbstractions;
 using ProfileService.Domain.Models.Identity;
 using ProfileService.Domain.Models.UserHistoryAggregate.Errors;
+using ProfileService.Domain.Models.UserHistoryAggregate.Events;
 using ProfileService.Domain.Models.UserHistoryAggregate.Snapshots;
 
 namespace ProfileService.Domain.Models.UserHistoryAggregate;
@@ -30,6 +31,10 @@ public class UserHistory : AggregateRoot<Id>
     public void IncreaseAvatarPoints()
     {
         AvatarPoints++;
+        if (AvatarPoints >= 25)
+        {
+            RaiseDomainEvent(new ReceivedAvatarAchievementDomainEvent(UserId.Value.ToString()));
+        }
     }
     
     public UserHistorySnapshot Save()

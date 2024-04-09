@@ -35,9 +35,8 @@ public static class ProfileQuery
         ";
     
     public const string SqlGetAllUsers = $@"
-            SELECT id, nick_name as NickName, email Email, age Age, rating Rating, avatar Avatar, achievements AchievementSnapshots, fl.profile_id as ProfileId, fl.friend_id
+            SELECT id Id, nick_name as NickName, email Email, age Age, rating Rating, avatar Avatar, achievements AchievementSnapshots, fl.profile_id as ProfileId, fl.friend_id
             FROM 
                 user_profiles u LEFT JOIN friends_link fl ON u.id = fl.profile_id
-            FROM user_profiles;
          ";
 }

@@ -89,7 +89,7 @@ public class UserProfile : AggregateRoot<Id>
     public void ChangeAvatar(string newAvatar)
     {
         Avatar = Avatar.Create(newAvatar);
-        RaiseDomainEvent(new ChangeAvatarDomainEvent(Id.Value.ToString()));
+        RaiseDomainEvent(new ChangedAvatarDomainEvent(Id.Value.ToString()));
     }
 
     public void RefreshAvatar(string avatar)

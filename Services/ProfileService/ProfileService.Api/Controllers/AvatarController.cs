@@ -9,7 +9,7 @@ using S3.Client;
 namespace ProfileService.Api.Controllers;
 
 [ApiController]
-[Route("[controller]")]
+[Route("avatar")]
 public class AvatarController : ControllerBase
 {
     private readonly IS3Client _s3Client;

@@ -7,14 +7,14 @@ using ProfileService.Domain.Models.UserProfileAggregate.Events;
 
 namespace ProfileService.Application.Events;
 
-public class ChangeAvatarDomainEventHandler
-    : INotificationHandler<ChangeAvatarDomainEvent>
+public class ChangedAvatarDomainEventHandler
+    : INotificationHandler<ChangedAvatarDomainEvent>
 {
     private readonly IUserHistoryRepository _historyRepository;
     private readonly IUnitOfWork _unitOfWork;
 
 
-    public ChangeAvatarDomainEventHandler(
+    public ChangedAvatarDomainEventHandler(
         IUserHistoryRepository historyRepository,
         IUnitOfWork unitOfWork)
     {
@@ -22,7 +22,7 @@ public class ChangeAvatarDomainEventHandler
         _unitOfWork = unitOfWork;
     }
     
-    public async Task Handle(ChangeAvatarDomainEvent notification, CancellationToken cancellationToken)
+    public async Task Handle(ChangedAvatarDomainEvent notification, CancellationToken cancellationToken)
     {
         await _unitOfWork.StartTransaction(cancellationToken);
 
