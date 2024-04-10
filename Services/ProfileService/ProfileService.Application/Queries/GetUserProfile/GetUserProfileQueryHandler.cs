@@ -34,7 +34,8 @@ public class GetUserProfileQueryHandler
                 friendsInformation.Add(new FriendInformation()
                 {
                     Email = friend.Email.Value,
-                    Nickname = friend.NickName.Value
+                    Nickname = friend.NickName.Value,
+                    Rating = friend.Rating.Value
                 });
         }
         
