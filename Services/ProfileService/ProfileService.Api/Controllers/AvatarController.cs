@@ -30,7 +30,9 @@ public class AvatarController : ControllerBase
     [HttpPost("change-avatar")]
     public async Task<ActionResult<Result<AvatarInformation>>> ChangeAvatar(IFormFile formFile)
     {
-        var email = _credentialsChecker.GetEmailFromJwtHeader(Request.Cookies["access-token"]);
+        var email = _credentialsChecker.GetEmailFromJwtHeader(Request.Headers["Authorization"]
+            .FirstOrDefault()?
+            .Replace("Bearer ", string.Empty));
 
         if (email is null)
             return Unauthorized();
@@ -64,7 +66,9 @@ public class AvatarController : ControllerBase
     [HttpPost]
     public async Task<ActionResult> GenerateNewAvatarUrl()
     {
-        var email = _credentialsChecker.GetEmailFromJwtHeader(Request.Cookies["access-token"]);
+        var email = _credentialsChecker.GetEmailFromJwtHeader(Request.Headers["Authorization"]
+            .FirstOrDefault()?
+            .Replace("Bearer ", string.Empty));
 
         if (email is null)
             return Unauthorized();

@@ -27,7 +27,9 @@ public class FriendController : ControllerBase
     [HttpPost("add-friend")]
     public async Task<ActionResult<Result>> AddFriend([FromBody] FriendRequest request)
     {
-        var email = _credentialsChecker.GetEmailFromJwtHeader(Request.Cookies["access-token"]);
+        var email = _credentialsChecker.GetEmailFromJwtHeader(Request.Headers["Authorization"]
+            .FirstOrDefault()?
+            .Replace("Bearer ", string.Empty));
 
         if (email is null)
             return Unauthorized();
@@ -46,7 +48,9 @@ public class FriendController : ControllerBase
     [HttpPut("accept-invitation-to-friends")]
     public async Task<ActionResult<Result>> AcceptInvitationToFriends([FromBody] FriendRequest request)
     {
-        var email = _credentialsChecker.GetEmailFromJwtHeader(Request.Cookies["access-token"]);
+        var email = _credentialsChecker.GetEmailFromJwtHeader(Request.Headers["Authorization"]
+            .FirstOrDefault()?
+            .Replace("Bearer ", string.Empty));
 
         if (email is null)
             return Unauthorized();
@@ -65,7 +69,9 @@ public class FriendController : ControllerBase
     [HttpPut("reject-invitation-to-friends")]
     public async Task<ActionResult<Result>> RejectInvitationToFriends([FromBody] FriendRequest request)
     {
-        var email = _credentialsChecker.GetEmailFromJwtHeader(Request.Cookies["access-token"]);
+        var email = _credentialsChecker.GetEmailFromJwtHeader(Request.Headers["Authorization"]
+            .FirstOrDefault()?
+            .Replace("Bearer ", string.Empty));
 
         if (email is null)
             return Unauthorized();

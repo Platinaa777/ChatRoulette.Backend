@@ -1,4 +1,6 @@
 using Amazon.S3;
+using AuthService.Application.JwtConfig;
+using AuthService.Infrastructure.Extensions.Jwt;
 using AuthService.Infrastructure.JwtGenerator;
 using DomainDriverDesignAbstractions;
 using FluentValidation;
@@ -34,6 +36,8 @@ public static class ServicesRegistrator
         builder.Services.AddScoped<IUserHistoryRepository, UserHistoryRepository>();
         builder.Services.AddSingleton<CredentialsChecker>();
         builder.Services.AddSingleton<JwtTokenCreator>();
+        builder.Services.Configure<Jwt>(builder.Configuration.GetSection("Jwt"));
+        builder.AddJwtAuthentication(builder.Configuration.GetSection("Jwt:Key").Value!);   
         
         builder.Services.AddMediatR(cfg =>
             cfg.RegisterServicesFromAssemblyContaining<GetUserProfileQueryHandler>());

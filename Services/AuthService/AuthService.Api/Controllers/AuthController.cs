@@ -26,6 +26,7 @@ public class AuthController : ControllerBase
     [Authorize]
     public ActionResult<string> GetAnswer()
     {
+        var a = Request.Cookies;
         return Ok("hello world");
     }
 

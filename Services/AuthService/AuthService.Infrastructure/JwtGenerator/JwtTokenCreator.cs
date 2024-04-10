@@ -67,7 +67,8 @@ public class JwtTokenCreator : IJwtManager
             ValidateIssuerSigningKey = true,
             ValidateAudience = false,
             ValidateIssuer = false,
-            ValidateLifetime = false,
+            ValidateLifetime = true,
+            ClockSkew = TimeSpan.Zero,
             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwt.Key))
         };
 

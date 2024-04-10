@@ -29,7 +29,9 @@ public class UserProfileController : ControllerBase
     [HttpGet("get-user-info")]
     public async Task<ActionResult<ProfileResponse>> GetUser()
     {
-        var email = _credentialsChecker.GetEmailFromJwtHeader(Request.Cookies["access-token"]);
+        var email = _credentialsChecker.GetEmailFromJwtHeader(Request.Headers["Authorization"]
+            .FirstOrDefault()?
+            .Replace("Bearer ", string.Empty));
 
         if (email is null)
             return Unauthorized();
@@ -70,7 +72,9 @@ public class UserProfileController : ControllerBase
     [HttpPut("change-user-nickname")]
     public async Task<ActionResult<Result>> ChangeNickName([FromBody] ChangeNicknameRequest request)
     {
-        var email = _credentialsChecker.GetEmailFromJwtHeader(Request.Cookies["access-token"]);
+        var email = _credentialsChecker.GetEmailFromJwtHeader(Request.Headers["Authorization"]
+            .FirstOrDefault()?
+            .Replace("Bearer ", string.Empty));
 
         if (email is null)
             return Unauthorized();

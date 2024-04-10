@@ -32,9 +32,8 @@ public class UserRatingCalculatorConsumer : IConsumer<UserWasTalked>
         if (result.IsFailure)
         {
             _logger.LogInformation(
-                "System could not calculate user rating, user: {@Email}", 
+                "Consumer: {@Consumer} did not handle calculating point for user with email: {@Email}", 
                 context.Message.Email);
-            return;
         }
             
         _logger.LogInformation(
