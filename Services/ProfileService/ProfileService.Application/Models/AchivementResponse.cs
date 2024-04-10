@@ -1,4 +1,4 @@
-namespace ProfileService.Application.Queries.GetUserProfile;
+namespace ProfileService.Application.Models;
 
 public class AchivementResponse
 {

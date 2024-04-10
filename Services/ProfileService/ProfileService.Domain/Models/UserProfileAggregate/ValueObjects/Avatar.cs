@@ -25,4 +25,6 @@ public class Avatar : ValueObject
     {
         yield return Value;
     }
+    
+    private Avatar() {}
 }

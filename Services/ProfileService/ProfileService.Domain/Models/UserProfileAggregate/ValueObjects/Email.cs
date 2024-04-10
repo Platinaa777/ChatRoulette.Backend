@@ -34,4 +34,6 @@ public class Email : ValueObject
     {
         yield return Value;
     }
+    
+    private Email() {}
 }

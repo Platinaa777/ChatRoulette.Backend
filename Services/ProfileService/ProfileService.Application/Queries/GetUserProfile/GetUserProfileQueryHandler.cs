@@ -1,5 +1,7 @@
 using DomainDriverDesignAbstractions;
 using MediatR;
+using ProfileService.Application.Models;
+using ProfileService.Domain.Models.Identity;
 using ProfileService.Domain.Models.UserProfileAggregate.Enumerations;
 using ProfileService.Domain.Models.UserProfileAggregate.Errors;
 using ProfileService.Domain.Models.UserProfileAggregate.Repos;
@@ -16,12 +18,25 @@ public class GetUserProfileQueryHandler
         _userRepository = userRepository;
     }
     
-    public async Task<Result<ProfileResponse>> Handle(GetUserProfile.GetUserProfileQuery request, CancellationToken cancellationToken)
+    public async Task<Result<ProfileResponse>> Handle(GetUserProfileQuery request, CancellationToken cancellationToken)
     {
         var result = await _userRepository.FindUserByEmailAsync(request.Email);
 
         if (result == null)
             return Result.Failure<ProfileResponse>(UserProfileErrors.EmailNotFound);
+
+        List<FriendInformation> friendsInformation = new();
+        foreach (var friendId in result.Friends)
+        {
+            var friend = await _userRepository.FindUserByIdAsync(friendId.Value.ToString());
+            
+            if (friend is not null)
+                friendsInformation.Add(new FriendInformation()
+                {
+                    Email = friend.Email.Value,
+                    Nickname = friend.NickName.Value
+                });
+        }
         
         return new ProfileResponse()
         {
@@ -29,7 +44,7 @@ public class GetUserProfileQueryHandler
             Email = result.Email.Value,
             Age = result.Age.Value,
             Rating = result.Rating.Value,
-            FriendIds = result.Friends.Select(x => x.Value.ToString()).ToList(),
+            Friends = friendsInformation,
             Achivements = result.Achievements.Select(x => new AchivementResponse()
             {
                 Title = AchievementType.FromValue(x.Id)!.Name,

@@ -33,4 +33,6 @@ public class AchievementBody : ValueObject
         yield return Content;
         yield return Photo;
     }
+    
+    private AchievementBody() {}
 }

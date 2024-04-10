@@ -54,4 +54,6 @@ public class ProfileId
     {
         return HashCode.Combine(base.GetHashCode(), Value);
     }
+
+    private ProfileId() {}
 }

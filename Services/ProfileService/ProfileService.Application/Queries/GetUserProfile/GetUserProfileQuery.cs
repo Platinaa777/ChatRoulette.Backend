@@ -1,5 +1,6 @@
 using DomainDriverDesignAbstractions;
 using MediatR;
+using ProfileService.Application.Models;
 
 namespace ProfileService.Application.Queries.GetUserProfile;
 

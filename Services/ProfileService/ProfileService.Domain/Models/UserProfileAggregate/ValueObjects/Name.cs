@@ -28,4 +28,6 @@ public class Name : ValueObject
     {
         yield return Value;
     }
+    
+    private Name() {}
 }

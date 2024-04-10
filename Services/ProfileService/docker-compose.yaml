@@ -17,6 +17,16 @@ services:
     networks: [ chat-app ]
     volumes:
       - profile_data:/var/lib/postgresql/data
+  
+  redis_cache_profile:
+    image: redis
+    container_name: redis-cache-profile
+    ports:
+      - "6383:6379"
+    volumes:
+      - redis_data_profile:/data
+    networks: [ chat-app ]
 
 volumes:
   profile_data:
+  redis_data_profile:

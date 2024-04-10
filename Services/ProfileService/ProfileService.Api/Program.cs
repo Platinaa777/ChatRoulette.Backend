@@ -15,6 +15,7 @@ builder.AddMassTransit();
 builder.AddEventBusClient();
 builder.AddBackgroundJobs();
 builder.AddS3Storage();
+builder.AddRedisCache();
 
 var app = builder.Build();
 

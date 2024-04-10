@@ -7,7 +7,7 @@ public class AddUserProfileCommandValidator : AbstractValidator<AddUserProfile.A
     public AddUserProfileCommandValidator()
     {
         RuleFor(x => x.NickName).NotEmpty();
-        RuleFor(x => x.Age).GreaterThan(0).LessThan(101);
+        RuleFor(x => x.Age).GreaterThan(15).LessThan(101);
         RuleFor(x => x.Email).EmailAddress();
         RuleFor(x => x.Id).NotEmpty();
     }

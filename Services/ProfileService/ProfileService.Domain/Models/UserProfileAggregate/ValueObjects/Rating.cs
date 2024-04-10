@@ -35,4 +35,6 @@ public class Rating : ValueObject, IComparable<Rating>
         if (other.Value > Value) return -1;
         return 1;
     }
+    
+    private Rating(){}
 }

@@ -14,6 +14,7 @@ using ProfileService.Application.Queries.GetUserProfile;
 using ProfileService.Domain.Models.FriendInvitationAggregate.Repos;
 using ProfileService.Domain.Models.UserHistoryAggregate.Repos;
 using ProfileService.Domain.Models.UserProfileAggregate.Repos;
+using ProfileService.Infrastructure.Cache;
 using ProfileService.Infrastructure.Configuration;
 using ProfileService.Infrastructure.Repos.Common;
 using ProfileService.Infrastructure.Repos.Implementations.Friend;
@@ -31,9 +32,13 @@ public static class ServicesRegistrator
     public static WebApplicationBuilder AddApplicationServices(this WebApplicationBuilder builder)
     {
         builder.Services.AddControllers();
-        builder.Services.AddScoped<IUserProfileRepository, UserProfileRepository>();
+        
+        builder.Services.AddScoped<IUserProfileRepository, CacheUserProfileRepository>();
+        builder.Services.AddScoped<UserProfileRepository>();
+        
         builder.Services.AddScoped<IFriendInvitationRepository, FriendInvitationRepository>();
         builder.Services.AddScoped<IUserHistoryRepository, UserHistoryRepository>();
+        
         builder.Services.AddSingleton<CredentialsChecker>();
         builder.Services.AddSingleton<JwtTokenCreator>();
         builder.Services.Configure<Jwt>(builder.Configuration.GetSection("Jwt"));
@@ -90,6 +95,18 @@ public static class ServicesRegistrator
         builder.Host.UseSerilog((ctx, config) =>
         {
             config.ReadFrom.Configuration(ctx.Configuration);
+        });
+
+        return builder;
+    }
+
+    public static WebApplicationBuilder AddRedisCache(this WebApplicationBuilder builder)
+    {
+        var configuration = builder.Configuration;
+
+        builder.Services.AddStackExchangeRedisCache(setup =>
+        {
+            setup.Configuration = configuration["Redis:Host"];
         });
 
         return builder;
