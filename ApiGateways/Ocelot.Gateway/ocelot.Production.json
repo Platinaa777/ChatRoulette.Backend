@@ -89,6 +89,240 @@
       "DownstreamHostAndPorts": [
         { "Host": "chat_app", "Port": 80 }
       ]
+    },
+    {
+      "UpstreamHttpMethod": [ "GET" ],
+      "UpstreamPathTemplate": "/api/email/{code}",
+      "DownstreamPathTemplate": "/email/{code}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        { "Host": "email_app", "Port": 80 }
+      ]
+    },
+    {
+      "UpstreamHttpMethod": [ "POST" ],
+      "UpstreamPathTemplate": "/api/feedback/add",
+      "DownstreamPathTemplate": "/feedback/add",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        { "Host": "admin_app", "Port": 80 }
+      ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+      },
+      "RouteClaimsRequirement": {
+        "Role" : [ "Admin"  ]
+      }
+    },
+    {
+      "UpstreamHttpMethod": [ "GET" ],
+      "UpstreamPathTemplate": "/api/feedback/{count}",
+      "DownstreamPathTemplate": "/feedback/{count}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        { "Host": "admin_app", "Port": 80 }
+      ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+      },
+      "RouteClaimsRequirement": {
+        "Role" : [ "Admin" ]
+      }
+    },
+    {
+      "UpstreamHttpMethod": [ "GET" ],
+      "UpstreamPathTemplate": "/api/complaint/{count}",
+      "DownstreamPathTemplate": "/complaint/{count}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        { "Host": "admin_app", "Port": 80 }
+      ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+      },
+      "RouteClaimsRequirement": {
+        "Role" : [ "Admin" ]
+      }
+    },
+    {
+      "UpstreamHttpMethod": [ "POST" ],
+      "UpstreamPathTemplate": "/api/complaint/add-complaint",
+      "DownstreamPathTemplate": "/complaint/add-complaint",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        { "Host": "admin_app", "Port": 80 }
+      ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+      },
+      "RouteClaimsRequirement": {
+        "Role" : [ "Admin" ]
+      }
+    },
+    {
+      "UpstreamHttpMethod": [ "PUT" ],
+      "UpstreamPathTemplate": "/api/complaint/accept",
+      "DownstreamPathTemplate": "/complaint/accept",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        { "Host": "admin_app", "Port": 80 }
+      ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+      },
+      "RouteClaimsRequirement": {
+        "Role" : [ "Admin" ]
+      }
+    },
+    {
+      "UpstreamHttpMethod": [ "PUT" ],
+      "UpstreamPathTemplate": "/api/complaint/reject",
+      "DownstreamPathTemplate": "/complaint/reject",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        { "Host": "admin_app", "Port": 80 }
+      ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+      },
+      "RouteClaimsRequirement": {
+        "Role" : [ "Admin" ]
+      }
+    },
+    {
+      "UpstreamHttpMethod": [ "GET" ],
+      "UpstreamPathTemplate": "/api/profile/get-user-info",
+      "DownstreamPathTemplate": "/profile/get-user-info",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        { "Host": "profile_app", "Port": 80 }
+      ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+      },
+      "RouteClaimsRequirement": {
+        "Role" : [ "Admin", "ActivatedUser" ]
+      }
+    },
+    {
+      "UpstreamHttpMethod": [ "GET" ],
+      "UpstreamPathTemplate": "/api/profile/get-top-users/{count}",
+      "DownstreamPathTemplate": "/profile/get-top-users/{count:int}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        { "Host": "profile_app", "Port": 80 }
+      ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+      },
+      "RouteClaimsRequirement": {
+        "Role" : [ "Admin", "ActivatedUser" ]
+      }
+    },
+    {
+      "UpstreamHttpMethod": [ "PUT" ],
+      "UpstreamPathTemplate": "/api/profile/change-user-nickname",
+      "DownstreamPathTemplate": "/profile/change-user-nickname",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        { "Host": "profile_app", "Port": 80 }
+      ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+      },
+      "RouteClaimsRequirement": {
+        "Role" : [ "Admin", "ActivatedUser" ]
+      }
+    },
+    {
+      "UpstreamHttpMethod": [ "POST" ],
+        "UpstreamPathTemplate": "/api/friend/add-friend",
+      "DownstreamPathTemplate": "/friend/add-friend",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        { "Host": "profile_app", "Port": 80 }
+      ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+      },
+      "RouteClaimsRequirement": {
+        "Role" : [ "Admin", "ActivatedUser" ]
+      }
+    },
+    {
+      "UpstreamHttpMethod": [ "PUT" ],
+      "UpstreamPathTemplate": "/api/friend/accept-invitation-to-friends",
+      "DownstreamPathTemplate": "/friend/accept-invitation-to-friends",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        { "Host": "profile_app", "Port": 80 }
+      ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+      },
+      "RouteClaimsRequirement": {
+        "Role" : [ "Admin", "ActivatedUser" ]
+      }
+    },
+    {
+      "UpstreamHttpMethod": [ "PUT" ],
+      "UpstreamPathTemplate": "/api/friend/reject-invitation-to-friends",
+      "DownstreamPathTemplate": "/friend/reject-invitation-to-friends",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        { "Host": "profile_app", "Port": 80 }
+      ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+      },
+      "RouteClaimsRequirement": {
+        "Role" : [ "Admin", "ActivatedUser" ]
+      }
+    },
+    {
+      "UpstreamHttpMethod": [ "POST" ],
+      "UpstreamPathTemplate": "/api/avatar/change-avatar",
+      "DownstreamPathTemplate": "/avatar/change-avatar",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        { "Host": "profile_app", "Port": 80 }
+      ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+      },
+      "RouteClaimsRequirement": {
+        "Role" : [ "Admin", "ActivatedUser" ]
+      }
+    },
+    {
+      "UpstreamHttpMethod": [ "GET" ],
+      "UpstreamPathTemplate": "/api/avatar/get-buckets",
+      "DownstreamPathTemplate": "/avatar/get-buckets",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        { "Host": "profile_app", "Port": 80 }
+      ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+      },
+      "RouteClaimsRequirement": {
+        "Role" : [ "Admin" ]
+      }
+    },
+    {
+      "UpstreamHttpMethod": [ "POST" ],
+      "UpstreamPathTemplate": "/api/avatar/refresh-avatar",
+      "DownstreamPathTemplate": "/avatar/refresh-avatar",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        { "Host": "profile_app", "Port": 80 }
+      ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+      },
+      "RouteClaimsRequirement": {
+        "Role" : [ "Admin", "ActivatedUser" ]
+      }
     }
   ],
   "GlobalConfiguration": {

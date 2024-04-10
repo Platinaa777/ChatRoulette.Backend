@@ -22,7 +22,7 @@ public class ComplaintController : ControllerBase
         _mediator = mediator;
     }
 
-    [HttpGet("complaint/{count:int}")]
+    [HttpGet("{count:int}")]
     public async Task<ActionResult<Result<List<ComplaintInformation>>>> GetUnhandledComplaints(int count)
     {
         var response = await _mediator.Send(new GetUnhandledComplaintQuery(count));

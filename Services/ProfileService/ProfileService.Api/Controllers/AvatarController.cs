@@ -63,7 +63,7 @@ public class AvatarController : ControllerBase
         return Ok();
     }
 
-    [HttpPost]
+    [HttpPost("refresh-avatar")]
     public async Task<ActionResult> GenerateNewAvatarUrl()
     {
         var email = _credentialsChecker.GetEmailFromJwtHeader(Request.Headers["Authorization"]
