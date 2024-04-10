@@ -41,21 +41,25 @@ public class ChatHub : Hub
     {
         var findRoomCommand = new ConnectUserCommand() { ConnectionId = connectionId, Email = email };
 
-        UserJoinResponse response = await _mediator.Send(findRoomCommand);
+        var result = await _mediator.Send(findRoomCommand);
+        
+        if (result.IsFailure)
+            return;
+        
         // add client to special group
-        await Groups.AddToGroupAsync(Context.ConnectionId, response.RoomId!);
+        await Groups.AddToGroupAsync(Context.ConnectionId, result.Value.RoomId!);
         // Console.WriteLine($"Client {Context.ConnectionId} was joined in room {response?.RoomId}");
-        if (response!.CreateOffer)
+        if (result.Value!.CreateOffer)
         {
             await Clients.Client(Context.ConnectionId).SendAsync("PeerConnection",
-                response.RoomId,
+                result.Value.RoomId,
                 "",
                 "offer");
         }
         else
         {
             await Clients.Client(Context.ConnectionId).SendAsync("PeerConnection",
-                response.RoomId,
+                result.Value.RoomId,
                 "", // offer || answer
                 ""); // command
         }

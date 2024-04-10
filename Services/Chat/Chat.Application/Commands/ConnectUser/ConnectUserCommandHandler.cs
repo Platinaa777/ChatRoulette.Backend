@@ -1,11 +1,12 @@
 using Chat.Domain.Entities;
 using Chat.Domain.Repositories;
 using Chat.HttpModels.HttpResponses;
+using DomainDriverDesignAbstractions;
 using MediatR;
 
 namespace Chat.Application.Commands.ConnectUser;
 
-public class ConnectUserCommandHandler : IRequestHandler<ConnectUserCommand, UserJoinResponse>
+public class ConnectUserCommandHandler : IRequestHandler<ConnectUserCommand, Result<UserJoinResponse>>
 {
     private readonly IRoomRepository _roomRepository;
     private readonly IChatUserRepository _chatUserRepository;
@@ -15,7 +16,7 @@ public class ConnectUserCommandHandler : IRequestHandler<ConnectUserCommand, Use
         _chatUserRepository = chatUserRepository;
     }
     
-    public async Task<UserJoinResponse> Handle(ConnectUserCommand request, CancellationToken cancellationToken)
+    public async Task<Result<UserJoinResponse>> Handle(ConnectUserCommand request, CancellationToken cancellationToken)
     {
         var chatUser = await _chatUserRepository.FindByEmail(request.Email);
 

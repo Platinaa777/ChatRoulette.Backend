@@ -1,4 +1,5 @@
 using System.Collections.Concurrent;
+using System.Data;
 using Chat.DataContext.Database;
 using Chat.Domain.Entities;
 using Chat.Domain.Repositories;
@@ -18,17 +19,22 @@ public class RoomRepository : IRoomRepository
     
     public async Task<TwoSeatsRoom?> TryToConnectRoom(ChatUser chatUser)
     {
+        await using var transaction = await _dbContext.Database.BeginTransactionAsync(IsolationLevel.Serializable);
+
         var rooms = await _dbContext.Rooms
             .Where(x => x.ClosedAt == null)
+            .Take(ChatUser.MaxLenUserHistory + 5)
             .ToListAsync();
-        
+
         foreach (var room in rooms)
         {
-            if (room.PeerLinks.Count == 1 && !chatUser.CheckInHistory(room.PeerLinks[0].Email))
+            if (room is { PeerLinks.Count: 1 } && !chatUser.CheckInHistory(room.PeerLinks[0].Email))
             {
                 room.AddPeer(chatUser);
                 _dbContext.Rooms.Update(room);
                 await _dbContext.SaveChangesAsync();
+            
+                await transaction.CommitAsync();
                 return room;
             }    
         }

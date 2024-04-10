@@ -21,6 +21,7 @@ public class TwoSeatsRoom : AggregateRoot<string>
     {
         DateTime temp = DateTime.UtcNow;
         ClosedAt = temp;
+        Console.WriteLine($"total minutes {temp.Subtract(CreatedAt).Minutes}");
         return temp.Subtract(CreatedAt).Minutes;
     }
 

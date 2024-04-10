@@ -41,4 +41,5 @@ public class ChatUser : AggregateRoot<string>
         return PreviousParticipantEmails.Contains(peerEmail);
     }
     private ChatUser() { }
+    public const int MaxLenUserHistory = 3;
 }

@@ -22,6 +22,11 @@ public class UserRatingCalculatorConsumer : IConsumer<UserWasTalked>
     {
         using var scope = _scopeFactory.CreateScope();
         var mediator = scope.ServiceProvider.GetRequiredService<IMediator>();
+        
+        _logger.LogInformation("Consumer: {@Consumer} was received message for calculating rating for duration minutes for user {@Email}, total minutes: {@Minutes}",
+            nameof(UserRatingCalculatorConsumer),
+            context.Message.Email,
+            context.Message.Minites);
             
         var result = await mediator.Send(
             new CalculateUserRatingTimeCommand(
@@ -37,7 +42,7 @@ public class UserRatingCalculatorConsumer : IConsumer<UserWasTalked>
         }
             
         _logger.LogInformation(
-            "Successfully added rating to user: {@Email}", 
+            "Consumer: {@Consumer} handle calculating point for user with email: {@Email}", 
             context.Message.Email);
     }
 }

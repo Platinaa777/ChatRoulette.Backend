@@ -72,11 +72,14 @@ public class CloseRoomCommandHandler : IRequestHandler<CloseRoomCommand, Result<
             
         await _chatUserRepository.Update(chatUser1);
         await _chatUserRepository.Update(chatUser2);
-            
-        _busClient.PublishAsync(new UserWasTalked(chatUser1.Email, durationOfConversation),
-            cancellationToken);
-        _busClient.PublishAsync(new UserWasTalked(chatUser2.Email, durationOfConversation),
-            cancellationToken);
+
+        if (durationOfConversation > 0)
+        {
+            _busClient.PublishAsync(new UserWasTalked(chatUser1.Email, durationOfConversation),
+                cancellationToken);
+            _busClient.PublishAsync(new UserWasTalked(chatUser2.Email, durationOfConversation),
+                cancellationToken);    
+        }
 
         return new TwoSeatsRoomInformation
         {
