@@ -18,55 +18,30 @@ public class EmailController : ControllerBase
 {
     private readonly IDistributedCache _cache;
     private readonly IEventBusClient _bus;
-    private readonly SmtpClientConfig _smtpClient;
+    private readonly RedirectUrl _redirectUrl;
 
     public EmailController(
         IDistributedCache cache,
         IEventBusClient bus,
-        SmtpClientConfig smtpClient)
+        RedirectUrl redirectUrl)
     {
         _cache = cache;
         _bus = bus;
-        _smtpClient = smtpClient;
+        _redirectUrl = redirectUrl;
     }
 
-    [HttpGet("/confirm/{code}")]
-    public async Task<ActionResult<bool>> ActivateAccount([FromRoute] string code, CancellationToken token = default)
+    [HttpPost("/confirm/{code}")]
+    public async Task<ActionResult<bool>> ActivateAccount(
+        [FromRoute] string code,
+        CancellationToken token = default)
     {
-        var storedEmail = await _cache.GetStringAsync(code);
+        var storedEmail = await _cache.GetStringAsync(code, token);
 
         if (storedEmail == null)
             return NotFound();
 
         await _bus.PublishAsync(new UserSubmittedEmail(storedEmail), token);
         
-        return Redirect("http://localhost:3000");
-    }
-
-    [HttpGet]
-    public string Test()
-    {
-        var email = new MimeMessage();
-
-        email.From.Add(MailboxAddress.Parse("langskillup@gmail.com"));
-        email.To.Add(MailboxAddress.Parse("miroshnichenkodenis2004@gmail.com"));
-        email.Subject = "Confirmation Email";
-        
-        email.Body = new TextPart(MimeKit.Text.TextFormat.Html);
-
-        string code = Guid.NewGuid().ToString();
-        
-        email.Body = new TextPart(MimeKit.Text.TextFormat.Html)
-        {
-            Text = EmailTemplate.START + EmailApi.Url + code + EmailTemplate.END
-        };
-        
-        using var smtpClient = new SmtpClient();
-        smtpClient.Connect(_smtpClient.SmtpServer, _smtpClient.Port, SecureSocketOptions.StartTls);
-        smtpClient.Authenticate(_smtpClient.Email, _smtpClient.Password);
-        smtpClient.Send(email);
-        smtpClient.Disconnect(true);
-
-        return "yes";
+        return Redirect(_redirectUrl.Url);
     }
 }

@@ -139,6 +139,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Deploy", "Deploy", "{BA2D66
 		Deploy\frontend.yaml = Deploy\frontend.yaml
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Otlp.Configuration", "Infrastructure\Otlp.Configuration\Otlp.Configuration.csproj", "{9A40562A-4B44-492F-AC27-14966DDEFDF2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -289,6 +291,10 @@ Global
 		{C0C06558-562E-4FE6-931D-D739C3B61708}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C0C06558-562E-4FE6-931D-D739C3B61708}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C0C06558-562E-4FE6-931D-D739C3B61708}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9A40562A-4B44-492F-AC27-14966DDEFDF2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9A40562A-4B44-492F-AC27-14966DDEFDF2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9A40562A-4B44-492F-AC27-14966DDEFDF2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9A40562A-4B44-492F-AC27-14966DDEFDF2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{38ACED50-1C63-4340-A28A-0D90C04628BB} = {015FC6CF-628C-4696-BDBA-8B838535BCE7}
@@ -335,5 +341,6 @@ Global
 		{2248AD5E-6023-43F7-9D43-6D41F39EFA39} = {61F9CE89-6FE9-41E6-A47E-9C9EB2FBB141}
 		{5AB37330-8A9B-4C78-8BE2-D0930B212A59} = {2248AD5E-6023-43F7-9D43-6D41F39EFA39}
 		{C0C06558-562E-4FE6-931D-D739C3B61708} = {2248AD5E-6023-43F7-9D43-6D41F39EFA39}
+		{9A40562A-4B44-492F-AC27-14966DDEFDF2} = {61F9CE89-6FE9-41E6-A47E-9C9EB2FBB141}
 	EndGlobalSection
 EndGlobal

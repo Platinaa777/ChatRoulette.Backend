@@ -1,7 +1,7 @@
 {
   "Routes": [
     {
-      "UpstreamPathTemplate": "/auth/info/{email}/{password}",
+      "UpstreamPathTemplate": "/api/auth/info/{email}/{password}",
       "UpstreamHttpMethod": [ "GET" ],
       "DownstreamPathTemplate": "/auth/info/{email}/{password}",
       "DownstreamScheme": "http",
@@ -19,7 +19,7 @@
       }
     },
     {
-      "UpstreamPathTemplate": "/auth/register",
+      "UpstreamPathTemplate": "/api/auth/register",
       "UpstreamHttpMethod": [ "POST" ],
       "DownstreamPathTemplate": "/auth/register",
       "DownstreamScheme": "http",
@@ -31,7 +31,7 @@
       ]
     },
     {
-      "UpstreamPathTemplate": "/auth/refresh-token",
+      "UpstreamPathTemplate": "/api/auth/refresh-token",
       "UpstreamHttpMethod": [ "POST" ],
       "DownstreamPathTemplate": "/auth/refresh-token",
       "DownstreamScheme": "http",
@@ -40,16 +40,10 @@
           "Port": 80,
           "Host": "auth_app"
         }
-      ],
-      "AuthenticationOptions": {
-        "AuthenticationProviderKey": "Bearer"
-      },
-      "RouteClaimsRequirement": {
-        "Role" : [ "Admin", "ActivatedUser" ]
-      }
+      ]
     },
     {
-      "UpstreamPathTemplate": "/auth/login",
+      "UpstreamPathTemplate": "/api/auth/login",
       "UpstreamHttpMethod": [ "POST" ],
       "DownstreamPathTemplate": "/auth/login",
       "DownstreamScheme": "http",
@@ -61,8 +55,8 @@
       ]
     },
     {
-      "UpstreamPathTemplate": "/auth/logout",
-      "UpstreamHttpMethod": [ "POST" ],
+      "UpstreamPathTemplate": "/api/auth/logout",
+      "UpstreamHttpMethod": [ "DELETE" ],
       "DownstreamPathTemplate": "/auth/logout",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
@@ -70,7 +64,13 @@
           "Port": 80,
           "Host": "auth_app"
         }
-      ]
+      ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+      },
+      "RouteClaimsRequirement": {
+        "Role" : [ "Admin" , "ActivatedUser" ]
+      }
     },
     {
       "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE", "OPTIONS" ],
@@ -91,9 +91,9 @@
       ]
     },
     {
-      "UpstreamHttpMethod": [ "GET" ],
-      "UpstreamPathTemplate": "/api/email/{code}",
-      "DownstreamPathTemplate": "/email/{code}",
+      "UpstreamHttpMethod": [ "POST" ],
+      "UpstreamPathTemplate": "/api/email/confirm/{code}",
+      "DownstreamPathTemplate": "/email/confirm/{code}",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         { "Host": "email_app", "Port": 80 }
@@ -111,7 +111,7 @@
         "AuthenticationProviderKey": "Bearer"
       },
       "RouteClaimsRequirement": {
-        "Role" : [ "Admin"  ]
+        "Role" : [ "Admin" , "ActivatedUser" ]
       }
     },
     {
@@ -156,7 +156,7 @@
         "AuthenticationProviderKey": "Bearer"
       },
       "RouteClaimsRequirement": {
-        "Role" : [ "Admin" ]
+        "Role" : [ "Admin", "ActivatedUser" ]
       }
     },
     {
@@ -207,7 +207,7 @@
     {
       "UpstreamHttpMethod": [ "GET" ],
       "UpstreamPathTemplate": "/api/profile/get-top-users/{count}",
-      "DownstreamPathTemplate": "/profile/get-top-users/{count:int}",
+      "DownstreamPathTemplate": "/profile/get-top-users/{count}",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         { "Host": "profile_app", "Port": 80 }
@@ -280,7 +280,7 @@
       }
     },
     {
-      "UpstreamHttpMethod": [ "POST" ],
+      "UpstreamHttpMethod": [ "PUT" ],
       "UpstreamPathTemplate": "/api/avatar/change-avatar",
       "DownstreamPathTemplate": "/avatar/change-avatar",
       "DownstreamScheme": "http",
@@ -310,7 +310,7 @@
       }
     },
     {
-      "UpstreamHttpMethod": [ "POST" ],
+      "UpstreamHttpMethod": [ "PUT" ],
       "UpstreamPathTemplate": "/api/avatar/refresh-avatar",
       "DownstreamPathTemplate": "/avatar/refresh-avatar",
       "DownstreamScheme": "http",

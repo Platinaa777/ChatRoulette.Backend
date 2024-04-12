@@ -1,6 +1,7 @@
 using Chat.Api.Infrastructure;
 using Chat.Api.WebSockets;
 using MassTransit.Client.Extensions;
+using Otlp.Configuration.Extensions;
 using Serilog;
 using SwaggerConfigurations.Extensions;
 
@@ -14,6 +15,8 @@ builder.AddSwagger();
 builder.AddEventBusClient();
 builder.AddMassTransit();
 builder.AddApplicationServices();
+builder.AddMetricsAndTracing();
+builder.AddScheduleJob();
 
 var app = builder.Build();
 

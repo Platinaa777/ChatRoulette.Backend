@@ -1,3 +1,4 @@
+using System.Reflection;
 using AdminService.Api.BackgroundJob;
 using AdminService.Application.Assembly;
 using AdminService.Application.Behaviors;
@@ -10,6 +11,7 @@ using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using Quartz;
 using Serilog;
+using Serilog.Core;
 
 namespace AdminService.Api.Extensions;
 

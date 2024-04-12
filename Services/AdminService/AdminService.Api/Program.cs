@@ -1,5 +1,6 @@
 using AdminService.Api.Extensions;
 using MassTransit.Client.Extensions;
+using Otlp.Configuration.Extensions;
 using Serilog;
 using SwaggerConfigurations.Extensions;
 
@@ -12,6 +13,7 @@ builder.AddLoggingWithSerilog();
 builder.AddEventBusClient();
 builder.AddMassTransit();
 builder.AddBackgroundJobs();
+builder.AddMetricsAndTracing();
 
 var app = builder.Build();
 

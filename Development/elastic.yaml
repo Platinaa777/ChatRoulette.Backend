@@ -1,8 +1,6 @@
 version: '3.9'
 
 volumes:
-  certs:
-    driver: local
   esdata01:
     driver: local
   kibanadata:
@@ -20,7 +18,6 @@ services:
       - node.name=es01
       - cluster.name=${CLUSTER_NAME}
       - discovery.type=single-node
-      - ELASTIC_PASSWORD=changeme # Этот пароль не используется, но может потребоваться
       - xpack.security.enabled=false
     networks:
       - chat-app

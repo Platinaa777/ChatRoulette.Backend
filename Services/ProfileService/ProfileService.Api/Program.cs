@@ -1,5 +1,6 @@
 using dotenv.net;
 using MassTransit.Client.Extensions;
+using Otlp.Configuration.Extensions;
 using ProfileService.Api.Extensions;
 using Serilog;
 using SwaggerConfigurations.Extensions;
@@ -16,6 +17,7 @@ builder.AddEventBusClient();
 builder.AddBackgroundJobs();
 builder.AddS3Storage();
 builder.AddRedisCache();
+builder.AddMetricsAndTracing();
 
 var app = builder.Build();
 

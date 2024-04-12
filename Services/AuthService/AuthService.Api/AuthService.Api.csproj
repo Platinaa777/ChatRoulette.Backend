@@ -24,6 +24,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\..\..\Infrastructure\Otlp.Configuration\Otlp.Configuration.csproj" />
       <ProjectReference Include="..\..\..\Infrastructure\SwaggerConfigurations\SwaggerConfigurations.csproj" />
       <ProjectReference Include="..\AuthService.DataContext\AuthService.DataContext.csproj" />
       <ProjectReference Include="..\AuthService.HttpModels\AuthService.HttpModels.csproj" />

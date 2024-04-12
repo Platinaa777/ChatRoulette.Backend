@@ -1,7 +1,7 @@
 using Chat.Domain.ValueObjects;
 using DomainDriverDesignAbstractions;
 
-namespace Chat.Domain.Entities;
+namespace Chat.Domain.Aggregates.Room;
 
 public class TwoSeatsRoom : AggregateRoot<string>
 {
@@ -34,6 +34,9 @@ public class TwoSeatsRoom : AggregateRoot<string>
             PeerLinks.Add(userLink);    
         }
     }
+
+    public bool IsFullRoom() => PeerLinks.Count == 2;
+    
 
     public List<UserLink> PeerLinks { get; private set; } 
     public DateTime CreatedAt { get; private set; }

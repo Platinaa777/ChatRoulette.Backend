@@ -1,4 +1,5 @@
-using Chat.Domain.Entities;
+using Chat.Domain.Aggregates;
+using Chat.Domain.Aggregates.Room;
 using Chat.Domain.Repositories;
 using MediatR;
 

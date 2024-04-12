@@ -1,4 +1,5 @@
-using Chat.Domain.Entities;
+using Chat.Domain.Aggregates;
+using Chat.Domain.Aggregates.Room;
 using Chat.Domain.Repositories;
 using Chat.HttpModels.HttpResponses;
 using DomainDriverDesignAbstractions;
@@ -26,6 +27,7 @@ public class ConnectUserCommandHandler : IRequestHandler<ConnectUserCommand, Res
                 id: Guid.NewGuid().ToString(),
                 request.Email,
                 request.ConnectionId,
+                points: 0,
                 new());
 
             await _chatUserRepository.Add(chatUser);

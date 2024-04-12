@@ -1,7 +1,8 @@
 using System.Collections.Concurrent;
 using System.Data;
 using Chat.DataContext.Database;
-using Chat.Domain.Entities;
+using Chat.Domain.Aggregates;
+using Chat.Domain.Aggregates.Room;
 using Chat.Domain.Repositories;
 using Chat.Domain.ValueObjects;
 using Microsoft.EntityFrameworkCore;

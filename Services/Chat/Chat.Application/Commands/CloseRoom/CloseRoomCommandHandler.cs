@@ -1,5 +1,6 @@
 using Chat.Application.Models;
-using Chat.Domain.Entities;
+using Chat.Domain.Aggregates;
+using Chat.Domain.Aggregates.Room;
 using Chat.Domain.Errors;
 using Chat.Domain.Repositories;
 using DomainDriverDesignAbstractions;

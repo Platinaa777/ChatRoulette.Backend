@@ -30,6 +30,10 @@ public static class EmailExtension
         builder.Services.AddSingleton<RedirectUrl>(sp =>
             sp.GetRequiredService<IOptions<RedirectUrl>>().Value);
         
+        builder.Services.Configure<ApiUrl>(configuration.GetSection("ApiUrl"));
+        builder.Services.AddSingleton<ApiUrl>(sp =>
+            sp.GetRequiredService<IOptions<ApiUrl>>().Value);
+        
         return builder;
     }    
 }

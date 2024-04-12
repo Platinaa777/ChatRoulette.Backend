@@ -22,7 +22,75 @@ namespace Chat.DataContext.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("Chat.Domain.Entities.ChatUser", b =>
+            modelBuilder.Entity("Chat.Domain.Aggregates.Game.Round", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
+
+                    b.Property<string>("CorrectWord")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("correct_word");
+
+                    b.Property<string>("FirstPlayerAnswer")
+                        .HasColumnType("text")
+                        .HasColumnName("player1_answer");
+
+                    b.Property<DateTime?>("FirstPlayerAnswerTime")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("player1_answer_time");
+
+                    b.Property<string>("FirstPlayerEmail")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("player1_email");
+
+                    b.Property<string>("SecondPlayerAnswer")
+                        .HasColumnType("text")
+                        .HasColumnName("player2_answer");
+
+                    b.Property<DateTime?>("SecondPlayerAnswerTime")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("player2_answer_time");
+
+                    b.Property<string>("SecondPlayerEmail")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("player2_email");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("rounds", (string)null);
+                });
+
+            modelBuilder.Entity("Chat.Domain.Aggregates.Game.TranslationGame", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
+
+                    b.Property<string>("ChooseList")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("options");
+
+                    b.Property<string>("CorrectTranslation")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("correct_word");
+
+                    b.Property<string>("WordToTranslate")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("word");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("translation_games", (string)null);
+                });
+
+            modelBuilder.Entity("Chat.Domain.Aggregates.Room.ChatUser", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("text")
@@ -38,6 +106,10 @@ namespace Chat.DataContext.Migrations
                         .HasColumnType("text")
                         .HasColumnName("email");
 
+                    b.Property<int>("Points")
+                        .HasColumnType("integer")
+                        .HasColumnName("points");
+
                     b.Property<string>("PreviousParticipantEmails")
                         .IsRequired()
                         .HasColumnType("text")
@@ -51,7 +123,7 @@ namespace Chat.DataContext.Migrations
                     b.ToTable("chat_users", (string)null);
                 });
 
-            modelBuilder.Entity("Chat.Domain.Entities.TwoSeatsRoom", b =>
+            modelBuilder.Entity("Chat.Domain.Aggregates.Room.TwoSeatsRoom", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("text")

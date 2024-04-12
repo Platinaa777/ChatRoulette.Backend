@@ -1,6 +1,7 @@
 using System.Collections.Concurrent;
 using Chat.DataContext.Database;
-using Chat.Domain.Entities;
+using Chat.Domain.Aggregates;
+using Chat.Domain.Aggregates.Room;
 using Chat.Domain.Repositories;
 using Microsoft.EntityFrameworkCore;
 
@@ -32,7 +33,8 @@ public class ChatUserRepository : IChatUserRepository
         await _dbContext.ChatUsers.Where(u => u.Email == chatUser.Email)
             .ExecuteUpdateAsync(entity => entity
                 .SetProperty(email => email.PreviousParticipantEmails, chatUser.PreviousParticipantEmails)
-                .SetProperty(r => r.ConnectionId, chatUser.ConnectionId));
+                .SetProperty(r => r.ConnectionId, chatUser.ConnectionId)
+                .SetProperty(r => r.Points, chatUser.Points));
         await _dbContext.SaveChangesAsync();
     }
 }

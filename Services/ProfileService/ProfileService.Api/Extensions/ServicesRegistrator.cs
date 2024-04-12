@@ -115,14 +115,13 @@ public static class ServicesRegistrator
     public static WebApplicationBuilder AddS3Storage(this WebApplicationBuilder builder)
     {
         builder.Services.AddScoped<IS3Client, S3Client>();
+        var serviceUrl = Environment.GetEnvironmentVariable("AWS_SERVICE_URL");
+        var region = Environment.GetEnvironmentVariable("AWS_REGION");
+        var accessKey = Environment.GetEnvironmentVariable("AWS_ACCESS_KEY");
+        var secretKey = Environment.GetEnvironmentVariable("AWS_SECRET_KEY");
         
         builder.Services.AddSingleton<IAmazonS3>(x =>
         {
-            var serviceUrl = Environment.GetEnvironmentVariable("AWS_SERVICE_URL");
-            var region = Environment.GetEnvironmentVariable("AWS_REGION");
-            var accessKey = Environment.GetEnvironmentVariable("AWS_ACCESS_KEY");
-            var secretKey = Environment.GetEnvironmentVariable("AWS_SECRET_KEY");
-            
             var cfg = new AmazonS3Config
             {
                 ServiceURL = serviceUrl,

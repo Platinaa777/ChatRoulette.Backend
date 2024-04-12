@@ -1,6 +1,7 @@
 using dotenv.net;
 using EmailingService.Api.Infrastructure;
 using MassTransit.Client.Extensions;
+using Otlp.Configuration.Extensions;
 using Serilog;
 using SwaggerConfigurations.Extensions;
 
@@ -15,6 +16,7 @@ builder.AddEventBusClient();
 builder.AddEmailConfig();
 builder.AddMassTransit();
 builder.AddCacheRedis();
+builder.AddMetricsAndTracing();
 
 var app = builder.Build();
 

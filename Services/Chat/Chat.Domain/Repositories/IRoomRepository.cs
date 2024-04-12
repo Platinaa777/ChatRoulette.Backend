@@ -1,6 +1,7 @@
 
 
-using Chat.Domain.Entities;
+using Chat.Domain.Aggregates;
+using Chat.Domain.Aggregates.Room;
 
 namespace Chat.Domain.Repositories;
 

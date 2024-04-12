@@ -15,15 +15,18 @@ public class RegisterUserConsumer : IConsumer<UserRegistered>
     private readonly SmtpClientConfig _emailConfiguration;
     private readonly ILogger<RegisterUserConsumer> _logger;
     private readonly IDistributedCache _cache;
+    private readonly RedirectUrl _redirectUrl;
 
     public RegisterUserConsumer(
         SmtpClientConfig emailConfiguration,
         ILogger<RegisterUserConsumer> logger,
-        IDistributedCache cache)
+        IDistributedCache cache,
+        RedirectUrl redirectUrl)
     {
         _emailConfiguration = emailConfiguration;
         _logger = logger;
         _cache = cache;
+        _redirectUrl = redirectUrl;
     }
     
     public async Task Consume(ConsumeContext<UserRegistered> context)
@@ -43,7 +46,11 @@ public class RegisterUserConsumer : IConsumer<UserRegistered>
         
         email.Body = new TextPart(MimeKit.Text.TextFormat.Html)
         {
-            Text = EmailTemplate.START + EmailApi.Url + code + EmailTemplate.END
+            Text = EmailTemplate.START + 
+                   _redirectUrl.Url + 
+                   "/email/confirm/" + 
+                   code +
+                   EmailTemplate.END
         };
         await _cache.SetStringAsync(code,
             context.Message.Email,
@@ -54,9 +61,9 @@ public class RegisterUserConsumer : IConsumer<UserRegistered>
             context.CancellationToken);
 
         using var smtpClient = new SmtpClient();
-        smtpClient.Connect(_emailConfiguration.SmtpServer, _emailConfiguration.Port, SecureSocketOptions.StartTls);
-        smtpClient.Authenticate(_emailConfiguration.Email, _emailConfiguration.Password);
-        smtpClient.Send(email);
-        smtpClient.Disconnect(true);
+        await smtpClient.ConnectAsync(_emailConfiguration.SmtpServer, _emailConfiguration.Port, SecureSocketOptions.StartTls);
+        await smtpClient.AuthenticateAsync(_emailConfiguration.Email, _emailConfiguration.Password);
+        await smtpClient.SendAsync(email);
+        await smtpClient.DisconnectAsync(true);
     }
 }

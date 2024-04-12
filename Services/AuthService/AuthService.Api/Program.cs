@@ -1,6 +1,7 @@
 using AuthService.Api.Infrastructure;
 using AuthService.Infrastructure.Extensions.UsersSeed;
 using MassTransit.Client.Extensions;
+using Otlp.Configuration.Extensions;
 using Serilog;
 using SwaggerConfigurations.Extensions;
 
@@ -17,6 +18,7 @@ builder.AddMassTransit();
 builder.AddCacheUserConfirmation();
 builder.AddLoggingWithSerilog();
 builder.AddBackgroundJobs();
+builder.AddMetricsAndTracing();
         
 var app = builder.Build();
 

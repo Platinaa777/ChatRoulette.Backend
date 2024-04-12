@@ -1,4 +1,5 @@
-using Chat.Domain.Entities;
+using Chat.Domain.Aggregates;
+using Chat.Domain.Aggregates.Room;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Newtonsoft.Json;
@@ -19,6 +20,9 @@ public class ChatUserConfiguration : IEntityTypeConfiguration<ChatUser>
 
         builder.Property(u => u.ConnectionId)
             .HasColumnName("connection_id");
+        
+        builder.Property(n => n.Points)
+            .HasColumnName("points");
     
         // for name
         builder.Property(n => n.Email)
@@ -34,5 +38,6 @@ public class ChatUserConfiguration : IEntityTypeConfiguration<ChatUser>
                     JsonConvert.SerializeObject(val, Formatting.Indented),
                 val =>
                     JsonConvert.DeserializeObject<HashSet<string>>(val) ?? new HashSet<string>());
+        
     }
 }

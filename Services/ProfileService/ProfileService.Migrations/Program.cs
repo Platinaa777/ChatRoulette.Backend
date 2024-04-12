@@ -1,7 +1,4 @@
-﻿
-
-
-using System.Reflection;
+﻿using dotenv.net;
 using FluentMigrator.Runner;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -14,13 +11,20 @@ public class Program
     {
         Console.WriteLine(Directory.GetCurrentDirectory());
 
+        string env = "Development";
+        if (args.Contains("production"))
+        {
+            env = "Production";
+        }
+
         var configuration = new ConfigurationBuilder()
             .SetBasePath(Directory.GetCurrentDirectory())
-            .AddJsonFile("appsettings.json")
+            .AddJsonFile($"appsettings.{env}.json")
             .AddEnvironmentVariables()
             .Build();
 
         var connectionString = configuration.GetSection("DatabaseOptions:ConnectionString").Value;
+        Console.WriteLine(connectionString);
 
         var services = new ServiceCollection()
             .AddFluentMigratorCore()

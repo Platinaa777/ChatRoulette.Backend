@@ -5,6 +5,7 @@ using Chat.DataContext.Database;
 using Chat.Domain.Repositories;
 using Chat.Infrastructure.Repositories;
 using FluentValidation;
+using Hangfire;
 using MassTransit;
 using MassTransit.Client.Configuration;
 using Microsoft.EntityFrameworkCore;
@@ -42,6 +43,8 @@ public static class ServicesRegistrator
         builder.Services.AddControllers();
         builder.Services.AddScoped<IRoomRepository, RoomRepository>();
         builder.Services.AddScoped<IChatUserRepository, ChatUserRepository>();
+        builder.Services.AddScoped<IGameRepository, GameRepository>();
+        builder.Services.AddScoped<IRoundRepository, RoundRepository>();
 
         builder.Services.AddMediatR(cfg =>
         {
@@ -113,6 +116,13 @@ public static class ServicesRegistrator
             });
         });
 
+        return builder;
+    }
+
+    public static WebApplicationBuilder AddScheduleJob(this WebApplicationBuilder builder)
+    {
+        builder.Services.AddHangfire((provider, configuration) => { });
+        builder.Services.AddHangfireServer();
         return builder;
     }
 }

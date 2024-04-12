@@ -27,7 +27,7 @@ public class AvatarController : ControllerBase
         _credentialsChecker = credentialsChecker;
     }
 
-    [HttpPost("change-avatar")]
+    [HttpPut("change-avatar")]
     public async Task<ActionResult<Result<AvatarInformation>>> ChangeAvatar(IFormFile formFile)
     {
         var email = _credentialsChecker.GetEmailFromJwtHeader(Request.Headers["Authorization"]
@@ -63,7 +63,7 @@ public class AvatarController : ControllerBase
         return Ok();
     }
 
-    [HttpPost("refresh-avatar")]
+    [HttpPut("refresh-avatar")]
     public async Task<ActionResult> GenerateNewAvatarUrl()
     {
         var email = _credentialsChecker.GetEmailFromJwtHeader(Request.Headers["Authorization"]

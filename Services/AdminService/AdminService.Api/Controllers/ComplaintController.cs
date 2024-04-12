@@ -34,7 +34,7 @@ public class ComplaintController : ControllerBase
     }
     
     [HttpPost("add-complaint")]
-    public async Task<ActionResult<Result>> AddComplaintForTests([FromBody] ComplaintAdd request)
+    public async Task<ActionResult<Result>> AddComplaint([FromBody] ComplaintAdd request)
     {
         var response = await _mediator.Send(new AddComplaintCommand(
             Guid.NewGuid().ToString(),

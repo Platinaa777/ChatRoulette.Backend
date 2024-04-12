@@ -1,10 +1,10 @@
+using Chat.Application.Commands.ChooseAnswer;
 using Chat.Application.Commands.CloseRoom;
 using Chat.Application.Commands.ConnectUser;
-using Chat.Application.Queries.GetAllRooms;
+using Chat.Application.Commands.StartRound;
 using Chat.Application.Queries.GetRoom;
-using Chat.Domain.Entities;
-using Chat.Domain.ValueObjects;
-using Chat.HttpModels.HttpResponses;
+using Chat.Application.Queries.GetWinner;
+using Hangfire;
 using MediatR;
 using Microsoft.AspNetCore.SignalR;
 
@@ -47,9 +47,9 @@ public class ChatHub : Hub
             return;
         
         // add client to special group
-        await Groups.AddToGroupAsync(Context.ConnectionId, result.Value.RoomId!);
+        await Groups.AddToGroupAsync(Context.ConnectionId, result.Value.RoomId);
         // Console.WriteLine($"Client {Context.ConnectionId} was joined in room {response?.RoomId}");
-        if (result.Value!.CreateOffer)
+        if (result.Value.CreateOffer)
         {
             await Clients.Client(Context.ConnectionId).SendAsync("PeerConnection",
                 result.Value.RoomId,
@@ -179,4 +179,63 @@ public class ChatHub : Hub
                 result.Value.RoomId);    
         }
     }
+
+    public async Task StartGame(string roomId)
+    {
+        var room = await _mediator.Send(new GetRoomQuery()
+        {
+            RoomId = roomId
+        });
+        
+        if (room is null || !room.IsFullRoom())
+            return;
+        
+        var result = await _mediator.Send(new StartRoundCommand()
+        {
+            FirstEmail = room.PeerLinks[0].Email,
+            SecondEmail = room.PeerLinks[1].Email
+        });
+        
+        if (result.IsFailure)
+            return;
+
+        await Clients.Group(roomId).SendAsync(
+            "onStartGame", 
+            result.Value.Word, 
+            result.Value.ListTranslates,
+            result.Value.RoundId);
+
+        var scheduleDateTime = DateTime.UtcNow.AddSeconds(10);
+        var offset = new DateTimeOffset(scheduleDateTime);
+
+        BackgroundJob.Schedule(() => DefineWinner(roomId, result.Value.RoundId), offset);
+    }
+
+    public async Task SelectItemInGame(string roomId, string email, string selectedWord, string roundId)
+    {
+        var result = await _mediator.Send(new ChooseAnswerCommand()
+        {
+            PlayerEmail = email,
+            RoundId = roundId,
+            Answer = selectedWord
+        });
+    }
+
+    public async Task DefineWinner(string roomId, string roundId)
+    {
+        var winnerResult = await _mediator.Send(new DefineWinnerQuery()
+        {
+            RoundId = roundId
+        });
+        
+        if (winnerResult.IsFailure)
+            return;
+
+        var room = await _mediator.Send(new GetRoomQuery() { RoomId = roomId });
+        
+        if (room is null || !room.IsFullRoom())
+            return;
+
+        await Clients.Groups(roomId).SendAsync("onWinRound", winnerResult);
+    } 
 }

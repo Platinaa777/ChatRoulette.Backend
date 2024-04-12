@@ -113,7 +113,7 @@ public class AuthController : ControllerBase
         return BadRequest(result);
     }
 
-    [HttpPost("logout")]
+    [HttpDelete("logout")]
     public async Task<ActionResult<string>> Logout()
     {
         if (!HttpContext.Request.Cookies.TryGetValue("refresh-token", out string? refreshToken))
