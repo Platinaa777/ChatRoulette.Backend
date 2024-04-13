@@ -10,16 +10,17 @@ public class Program
     public static void Main(string[] args)
     {
         Console.WriteLine(Directory.GetCurrentDirectory());
-
-        string env = "Development";
+        
+        string env = ".Development.";
         if (args.Contains("production"))
         {
-            env = "Production";
+            env = ".";
+            Console.WriteLine($"Is Production: PROD");
         }
 
         var configuration = new ConfigurationBuilder()
             .SetBasePath(Directory.GetCurrentDirectory())
-            .AddJsonFile($"appsettings.{env}.json")
+            .AddJsonFile($"appsettings{env}json")
             .AddEnvironmentVariables()
             .Build();
 

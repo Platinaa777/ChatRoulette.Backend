@@ -61,7 +61,7 @@ RUN dotnet restore "ChatRoulette.sln"
 
 COPY . .
 
-WORKDIR /src/Services/ProfileService/ProfileService.Api
+WORKDIR /src/Services/AdminService/AdminService.Api
 
 RUN dotnet publish -c Release -o /app
 
@@ -72,8 +72,4 @@ EXPOSE 80
 EXPOSE 443
 
 COPY --from=build /app .
-#COPY "Services/ProfileService/entrypoint.sh" "./entrypoint.sh"
-
-#RUN #chmod +x entrypoint.sh
-#RUN #/bin/sh -c ./entrypoint.sh
-ENTRYPOINT ["dotnet", "ProfileService.Api.dll"]
+ENTRYPOINT ["dotnet", "AdminService.Api.dll"]

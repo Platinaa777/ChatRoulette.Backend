@@ -1,3 +1,4 @@
+using Chat.Api.BackgroundJobs;
 using Chat.Application.Commands.ChooseAnswer;
 using Chat.Application.Commands.CloseRoom;
 using Chat.Application.Commands.ConnectUser;
@@ -7,6 +8,8 @@ using Chat.Application.Queries.GetWinner;
 using Hangfire;
 using MediatR;
 using Microsoft.AspNetCore.SignalR;
+using Quartz;
+using Quartz.Impl;
 
 namespace Chat.Api.WebSockets;
 
@@ -205,10 +208,25 @@ public class ChatHub : Hub
             result.Value.ListTranslates,
             result.Value.RoundId);
 
-        var scheduleDateTime = DateTime.UtcNow.AddSeconds(10);
-        var offset = new DateTimeOffset(scheduleDateTime);
+        ISchedulerFactory schedulerFactory = new StdSchedulerFactory();
+        IScheduler scheduler = await schedulerFactory.GetScheduler();
 
-        BackgroundJob.Schedule(() => DefineWinner(roomId, result.Value.RoundId), offset);
+        // Start the scheduler
+        await scheduler.Start();
+
+        // Define the job
+        IJobDetail job = JobBuilder.Create<DefineWinnerJob>()
+            .UsingJobData("roomId", roomId)
+            .UsingJobData("roundId", result.Value.RoundId)
+            .Build();
+
+        // Define the trigger to run after 10 seconds
+        ITrigger trigger = TriggerBuilder.Create()
+            .StartAt(DateTime.UtcNow.AddSeconds(10))
+            .Build();
+
+        // Schedule the job with the trigger
+        await scheduler.ScheduleJob(job, trigger);
     }
 
     public async Task SelectItemInGame(string roomId, string email, string selectedWord, string roundId)

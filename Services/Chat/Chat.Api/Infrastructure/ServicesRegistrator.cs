@@ -9,6 +9,7 @@ using Hangfire;
 using MassTransit;
 using MassTransit.Client.Configuration;
 using Microsoft.EntityFrameworkCore;
+using Quartz;
 using Serilog;
 
 namespace Chat.Api.Infrastructure;
@@ -90,6 +91,7 @@ public static class ServicesRegistrator
         var db = builder.Configuration["ChatDbConnection:CHAT_DB"];
         var dbPort = builder.Configuration["ChatDbConnection:CHAT_DB_PORT"];
         string connectionString = $"User ID={dbUser};password={dbPassword};port={dbPort};host={dbHost};database={db}";
+        Console.WriteLine(connectionString);
         
         builder.Services.AddDbContext<ChatDbContext>(options =>
         {
@@ -123,6 +125,14 @@ public static class ServicesRegistrator
     {
         builder.Services.AddHangfire((provider, configuration) => { });
         builder.Services.AddHangfireServer();
+        return builder;
+    }
+    
+    public static WebApplicationBuilder AddBackgroundJobs(this WebApplicationBuilder builder)
+    {
+        builder.Services.AddQuartz();
+        builder.Services.AddQuartzHostedService();
+
         return builder;
     }
 }

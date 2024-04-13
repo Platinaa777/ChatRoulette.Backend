@@ -23,6 +23,8 @@
         <PrivateAssets>all</PrivateAssets>
         <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       </PackageReference>
+      <PackageReference Include="Quartz" Version="3.8.1" />
+      <PackageReference Include="Quartz.Extensions.Hosting" Version="3.8.1" />
       <PackageReference Include="Serilog.AspNetCore" Version="8.0.2-dev-00336" />
       <PackageReference Include="Serilog.Sinks.Elasticsearch" Version="10.0.0" />
     </ItemGroup>

@@ -12,6 +12,7 @@ services:
       AuthDbConnection__AUTH_DB_PORT: ${AUTH_DB_PORT}
       MessageBroker__UserName: ${MESSAGE_BROKER_USER}
       MessageBroker__Password: ${MESSAGE_BROKER_PASSWORD}
+      OtlpExporter__Uri: ${OPEN_TELEMETRY_EXPORTER}
     networks: [ chat-net ]
   
   db_auth_server:
@@ -22,12 +23,20 @@ services:
     networks: [ chat-net ]
     volumes:
       - auth_db_data:/var/lib/postgresql/data
+    deploy:
+      placement:
+        constraints:
+          - "node.hostname==worker01"
 
   redis_cache_auth:
     image: redis
     volumes:
       - redis_data:/data
     networks: [ chat-net ]
+    deploy:
+      placement:
+        constraints:
+          - "node.hostname==worker01"
 
 volumes:
   auth_db_data:
@@ -36,5 +45,3 @@ volumes:
 networks:
   chat-net:
     external: true
-
-  

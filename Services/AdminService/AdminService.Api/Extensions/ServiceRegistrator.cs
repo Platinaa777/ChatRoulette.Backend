@@ -40,6 +40,8 @@ public static class ServiceRegistrator
 
     public static WebApplicationBuilder AddDataLayer(this WebApplicationBuilder builder)
     {
+
+        Console.WriteLine(builder.Configuration.GetConnectionString("PostgresSQL"));
         builder.Services.AddDbContext<DataContext.Database.DataContext>(options =>
         {
             options.UseNpgsql(

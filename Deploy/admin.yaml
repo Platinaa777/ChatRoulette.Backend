@@ -1,0 +1,35 @@
+version: '3.9'
+
+services:
+  auth_app:
+    image: platinaa777/chat-roulette:admin01
+    environment:
+      Jwt__Key: ${AUTH_JWT_KEY}
+      ConnectionStrings__PostgresSQL: ${ADMIN_CONN_STRING}
+      MessageBroker__UserName: ${MESSAGE_BROKER_USER}
+      MessageBroker__Password: ${MESSAGE_BROKER_PASSWORD}
+      OtlpExporter__Uri: ${OPEN_TELEMETRY_EXPORTER}
+    networks: [ chat-net ]
+  
+  db_admin:
+    image: postgres
+    environment:
+      POSTGRES_USER: ${ADMIN_DB_USER}
+      POSTGRES_PASSWORD: ${ADMIN_DB_PASS}
+      POSTGRES_DB: ${ADMIN_DB}
+    networks: [ chat-net ]
+    volumes:
+      - admin_db_data:/var/lib/postgresql/data
+    deploy:
+      placement:
+        constraints:
+          - "node.hostname==worker02"
+
+volumes:
+  admin_db_data:
+
+networks:
+  chat-net:
+    external: true
+
+  

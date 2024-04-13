@@ -11,6 +11,7 @@ services:
       ChatDbConnection__CHAT_DB_PORT: 5432
       MessageBroker__UserName: ${MESSAGE_BROKER_USER}
       MessageBroker__Password: ${MESSAGE_BROKER_PASSWORD}
+      OtlpExporter__Uri: ${OPEN_TELEMETRY_EXPORTER}
     networks: [ chat-net ]
   
   db_chat_server:
@@ -21,6 +22,10 @@ services:
     networks: [ chat-net ]
     volumes:
       - chat_db_data:/var/lib/postgresql/data
+    deploy:
+      placement:
+        constraints:
+          - "node.hostname==worker01"
 
 volumes:
   chat_db_data:

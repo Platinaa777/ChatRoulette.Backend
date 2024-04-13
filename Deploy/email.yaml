@@ -6,6 +6,9 @@ services:
     environment:
       MessageBroker__UserName: ${MESSAGE_BROKER_USER}
       MessageBroker__Password: ${MESSAGE_BROKER_PASSWORD}
+      OtlpExporter__Uri: ${OPEN_TELEMETRY_EXPORTER}
+      SmtpClientConfig__Password: ${EMAIL_PASSWORD}
+      ApiUrl__Url: ${EMAIL_API_URL}
     networks: [ chat-net ]
 
   redis_cache_email:
@@ -13,6 +16,10 @@ services:
     volumes:
       - redis_data_email:/data
     networks: [ chat-net ]
+    deploy:
+      placement:
+        constraints:
+          - "node.hostname==worker02"
 
 volumes:
   redis_data_email:

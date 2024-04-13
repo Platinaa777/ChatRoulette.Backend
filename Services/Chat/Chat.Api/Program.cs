@@ -16,7 +16,7 @@ builder.AddEventBusClient();
 builder.AddMassTransit();
 builder.AddApplicationServices();
 builder.AddMetricsAndTracing();
-builder.AddScheduleJob();
+builder.AddBackgroundJobs();
 
 var app = builder.Build();
 
@@ -28,12 +28,10 @@ app.UseCors(x => x
     .SetIsOriginAllowed(_ => true)
     .AllowCredentials());
 
-#pragma warning disable ASP0014
 app.UseEndpoints(routes =>
 {
     routes.MapHub<ChatHub>("/my-chat");
 });
-#pragma warning restore ASP0014
 
 app.MapControllers();
 

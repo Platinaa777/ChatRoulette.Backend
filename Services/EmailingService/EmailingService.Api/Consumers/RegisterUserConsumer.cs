@@ -15,18 +15,18 @@ public class RegisterUserConsumer : IConsumer<UserRegistered>
     private readonly SmtpClientConfig _emailConfiguration;
     private readonly ILogger<RegisterUserConsumer> _logger;
     private readonly IDistributedCache _cache;
-    private readonly RedirectUrl _redirectUrl;
+    private readonly ApiUrl _apiUrl;
 
     public RegisterUserConsumer(
         SmtpClientConfig emailConfiguration,
         ILogger<RegisterUserConsumer> logger,
         IDistributedCache cache,
-        RedirectUrl redirectUrl)
+        ApiUrl apiUrl)
     {
         _emailConfiguration = emailConfiguration;
         _logger = logger;
         _cache = cache;
-        _redirectUrl = redirectUrl;
+        _apiUrl = apiUrl;
     }
     
     public async Task Consume(ConsumeContext<UserRegistered> context)
@@ -47,7 +47,7 @@ public class RegisterUserConsumer : IConsumer<UserRegistered>
         email.Body = new TextPart(MimeKit.Text.TextFormat.Html)
         {
             Text = EmailTemplate.START + 
-                   _redirectUrl.Url + 
+                   _apiUrl.Url + 
                    "/email/confirm/" + 
                    code +
                    EmailTemplate.END

@@ -12,6 +12,7 @@ COPY "Infrastructure/MessageBroker/MassTransit.Client/MassTransit.Client.csproj"
 COPY "Infrastructure/MessageBroker/MassTransit.Contracts/MassTransit.Contracts.csproj"  "Infrastructure/MessageBroker/MassTransit.Contracts/MassTransit.Contracts.csproj"
 
 COPY "Infrastructure/SwaggerConfigurations/SwaggerConfigurations.csproj"  "Infrastructure/SwaggerConfigurations/SwaggerConfigurations.csproj"
+COPY "Infrastructure/Otlp.Configuration/Otlp.Configuration.csproj" "Infrastructure/Otlp.Configuration/Otlp.Configuration.csproj"
 
 # ADMIN
 COPY "Services/AdminService/AdminService.Api/AdminService.Api.csproj"                       "Services/AdminService/AdminService.Api/AdminService.Api.csproj"

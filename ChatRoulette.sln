@@ -137,6 +137,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Deploy", "Deploy", "{BA2D66
 		Deploy\email.yaml = Deploy\email.yaml
 		Deploy\admin.yaml = Deploy\admin.yaml
 		Deploy\frontend.yaml = Deploy\frontend.yaml
+		Deploy\elasticsearch.yaml = Deploy\elasticsearch.yaml
+		Deploy\jaeger.yaml = Deploy\jaeger.yaml
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Otlp.Configuration", "Infrastructure\Otlp.Configuration\Otlp.Configuration.csproj", "{9A40562A-4B44-492F-AC27-14966DDEFDF2}"
