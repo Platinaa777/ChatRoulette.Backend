@@ -1,5 +1,5 @@
 using AuthService.Application.Models;
-using AuthService.Domain.Errors.TokenErrors;
+using AuthService.Domain.Errors;
 using AuthService.Domain.Errors.UserErrors;
 using AuthService.Domain.Models.TokenAggregate.Repos;
 using AuthService.Domain.Models.TokenAggregate.ValueObjects;

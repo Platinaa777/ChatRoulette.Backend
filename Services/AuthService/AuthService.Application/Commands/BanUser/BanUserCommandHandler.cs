@@ -37,7 +37,7 @@ public class BanUserCommandHandler
 
         if (history is null)
         {
-            return Result.Failure(HistoryError.InvalidHistoryId);
+            return Result.Failure(HistoryError.HistoryNotFound);
         }
         
         history.BanUser(request.MinutesToBan);

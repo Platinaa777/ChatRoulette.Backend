@@ -1,4 +1,4 @@
-using AuthService.Domain.Errors.TokenErrors;
+using AuthService.Domain.Errors;
 using AuthService.Domain.Models.Shared;
 using AuthService.Domain.Models.TokenAggregate.ValueObjects;
 using AuthService.Domain.Models.UserAggregate.ValueObjects;
@@ -47,7 +47,7 @@ public class RefreshToken : AggregateRoot<Id>
         if (userIdResult.IsFailure)
             return Result.Failure<RefreshToken>(userIdResult.Error);
 
-        if (expiredAt < DateTime.Now)
+        if (expiredAt < DateTime.UtcNow)
             return Result.Failure<RefreshToken>(TokenError.InvalidExpiredTime);
 
         return new RefreshToken(

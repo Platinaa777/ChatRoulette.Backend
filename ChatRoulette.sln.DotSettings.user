@@ -3,9 +3,15 @@
   &lt;Assembly Path="/usr/lib/dotnet/packs/Microsoft.AspNetCore.App.Ref/7.0.15/ref/net7.0/Microsoft.AspNetCore.SignalR.dll" /&gt;
 &lt;/AssemblyExplorer&gt;</s:String>
 	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=5d11f47a_002D3d55_002D40fd_002D9c70_002De34f7a61554e/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="HandleAddToFriendsList_WhenTwoFriendsEqual_ShouldBeOneFriend" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
-  &lt;TestAncestor&gt;
-    &lt;TestId&gt;xUnit::C220B12F-5EDC-4D4C-A117-E36660CD232D::net7.0::Domain.Tests.UserProfileTests.HandleAddToFriendsList_WhenTwoFriendsEqual_ShouldBeOneFriend&lt;/TestId&gt;
-  &lt;/TestAncestor&gt;
+  &lt;Or&gt;
+    &lt;TestAncestor&gt;
+      &lt;TestId&gt;xUnit::AF845C39-578B-4938-A8F0-0A2F3B809718::net7.0::Domain.Tests.UserTests&lt;/TestId&gt;
+      &lt;TestId&gt;xUnit::AF845C39-578B-4938-A8F0-0A2F3B809718::net7.0::Domain.Tests.TokenTests&lt;/TestId&gt;
+      &lt;TestId&gt;xUnit::AF845C39-578B-4938-A8F0-0A2F3B809718::net7.0::Domain.Tests.HistoryTests&lt;/TestId&gt;
+      &lt;TestId&gt;xUnit::16B07BBB-6C1A-40FA-AC14-3B077AADC997::net7.0::Application.Tests.CommandTests.HandleBanUser_WhenInvalidEmail_ShouldBeRejected&lt;/TestId&gt;
+    &lt;/TestAncestor&gt;
+    &lt;Project Location="/home/denis/RiderProjects/ChatRoulette.Backend/Tests/Auth.Tests/Application.Tests" Presentation="&amp;lt;Tests&amp;gt;\&amp;lt;Auth.Tests&amp;gt;\&amp;lt;Application.Tests&amp;gt;" /&gt;
+  &lt;/Or&gt;
 &lt;/SessionState&gt;</s:String>
 	
 	

@@ -1,6 +1,6 @@
 using DomainDriverDesignAbstractions;
 
-namespace AuthService.Domain.Errors.TokenErrors;
+namespace AuthService.Domain.Errors;
 
 public class TokenError : Error
 {

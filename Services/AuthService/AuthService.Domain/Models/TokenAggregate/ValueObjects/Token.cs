@@ -1,4 +1,4 @@
-using AuthService.Domain.Errors.TokenErrors;
+using AuthService.Domain.Errors;
 using DomainDriverDesignAbstractions;
 
 namespace AuthService.Domain.Models.TokenAggregate.ValueObjects;
