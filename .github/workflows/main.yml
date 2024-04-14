@@ -24,6 +24,9 @@ jobs:
       - name: Build solution 👊
         run: dotnet build ./ChatRoulette.sln --configuration Release --no-restore
 
+      - name: Run Tests 💣
+        run: dotnet test ./ChatRoulette.sln --configuration Release --no-restore
+
       - name: Publish app 💨
         run: dotnet publish ./ChatRoulette.sln --configuration Release --no-build
     
