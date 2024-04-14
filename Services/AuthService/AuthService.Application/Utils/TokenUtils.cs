@@ -19,7 +19,7 @@ public static class TokenUtils
         Result<RefreshToken> refreshTokenResult = RefreshToken.Create(
             id: Guid.NewGuid().ToString(),
             token: refreshTokenValue,
-            expiredAt: DateTime.Now.AddDays(3),
+            expiredAt: DateTime.UtcNow.AddDays(3),
             isUsed: false,
             userId: user.Id.Value);
 

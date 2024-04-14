@@ -2,36 +2,9 @@
 	<s:String x:Key="/Default/Environment/AssemblyExplorer/XmlDocument/@EntryValue">&lt;AssemblyExplorer&gt;
   &lt;Assembly Path="/usr/lib/dotnet/packs/Microsoft.AspNetCore.App.Ref/7.0.15/ref/net7.0/Microsoft.AspNetCore.SignalR.dll" /&gt;
 &lt;/AssemblyExplorer&gt;</s:String>
+	<s:String x:Key="/Default/Environment/Highlighting/HighlightingSourceSnapshotLocation/@EntryValue">/home/denis/.cache/JetBrains/Rider2024.1/resharper-host/temp/Rider/vAny/CoverageData/_ChatRoulette.155202921/Snapshot/snapshot.utdcvr</s:String>
 	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=5d11f47a_002D3d55_002D40fd_002D9c70_002De34f7a61554e/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="HandleAddToFriendsList_WhenTwoFriendsEqual_ShouldBeOneFriend" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
-  &lt;Or&gt;
-    &lt;TestAncestor&gt;
-      &lt;TestId&gt;xUnit::AF845C39-578B-4938-A8F0-0A2F3B809718::net7.0::Domain.Tests.UserTests&lt;/TestId&gt;
-      &lt;TestId&gt;xUnit::AF845C39-578B-4938-A8F0-0A2F3B809718::net7.0::Domain.Tests.TokenTests&lt;/TestId&gt;
-      &lt;TestId&gt;xUnit::AF845C39-578B-4938-A8F0-0A2F3B809718::net7.0::Domain.Tests.HistoryTests&lt;/TestId&gt;
-      &lt;TestId&gt;xUnit::16B07BBB-6C1A-40FA-AC14-3B077AADC997::net7.0::Application.Tests.CommandTests.HandleBanUser_WhenInvalidEmail_ShouldBeRejected&lt;/TestId&gt;
-      &lt;TestId&gt;xUnit::45789BE9-C36F-474A-A134-A52A51192FE5::net7.0::Domain.Tests.FeedbackTests&lt;/TestId&gt;
-      &lt;TestId&gt;xUnit::F5466E52-270A-4065-A24C-88CD71280143::net7.0::Application.Tests.AcceptComplaintCommandTests&lt;/TestId&gt;
-      &lt;TestId&gt;xUnit::F5466E52-270A-4065-A24C-88CD71280143::net7.0::Application.Tests.AddComplaintCommandTests.HandleAcceptComplaint_WhenComplaintIsNotHandle_ShouldReturnSuccess&lt;/TestId&gt;
-      &lt;TestId&gt;xUnit::F5466E52-270A-4065-A24C-88CD71280143::net7.0::Application.Tests.AddFeedbackCommandTests&lt;/TestId&gt;
-      &lt;TestId&gt;xUnit::F5466E52-270A-4065-A24C-88CD71280143::net7.0::Application.Tests.RejectComplaintCommandTests.HandleRejectComplaint_WhenComplaintAlreadyHandled_ShouldReturnAlreadyHandledResult&lt;/TestId&gt;
-      &lt;TestId&gt;xUnit::F5466E52-270A-4065-A24C-88CD71280143::net7.0::Application.Tests.RejectComplaintCommandTests.HandleRejectComplaint_WhenComplaintIsNotHandled_ShouldReturnSuccess&lt;/TestId&gt;
-      &lt;TestId&gt;xUnit::5B45756E-74D3-4154-A9AC-B0CEEF46DB58::net7.0::Domain.Tests.UnitTest1.HandleChatUserHistory_WhenTwoEqualUserAddToHistory_ShouldBeOneUserInHistory&lt;/TestId&gt;
-      &lt;TestId&gt;xUnit::5B45756E-74D3-4154-A9AC-B0CEEF46DB58::net7.0::Domain.Tests.UnitTest1.HandleChatUserHistory_WhenAdd4NewPeers_TheFirstPeerShouldBeDeleted&lt;/TestId&gt;
-      &lt;TestId&gt;xUnit::5B45756E-74D3-4154-A9AC-B0CEEF46DB58::net7.0::Domain.Tests.TwoSeatsRoomTests.HandleChatRoom_WhenTwoEqualUserAddToChat_ShouldBeOneUserInChat&lt;/TestId&gt;
-      &lt;TestId&gt;xUnit::5B45756E-74D3-4154-A9AC-B0CEEF46DB58::net7.0::Domain.Tests.TwoSeatsRoomTests.HandleChatRoom_WhenOneUserJoinTwice_ShouldBeTwoUserInChat&lt;/TestId&gt;
-      &lt;TestId&gt;xUnit::5B45756E-74D3-4154-A9AC-B0CEEF46DB58::net7.0::Domain.Tests.TwoSeatsRoomTests.HandleChatRoom_WhenThirdUserJoinRoom_ShouldBeRejectToJoin&lt;/TestId&gt;
-      &lt;TestId&gt;xUnit::5B45756E-74D3-4154-A9AC-B0CEEF46DB58::net7.0::Domain.Tests.RoundTests.HandleChatRoom_WhenThirdUserJoinRoom_ShouldBeRejectToJoin&lt;/TestId&gt;
-      &lt;TestId&gt;xUnit::5B45756E-74D3-4154-A9AC-B0CEEF46DB58::net7.0::Domain.Tests.RoundTests.HandleRound_WhenFirstChooseCorrectWordTranslation_ShouldReturnFirstPlayerEmail&lt;/TestId&gt;
-      &lt;TestId&gt;xUnit::5B45756E-74D3-4154-A9AC-B0CEEF46DB58::net7.0::Domain.Tests.RoundTests.HandleRound_WhenZeroAnswers_ShouldReturnNullEmail&lt;/TestId&gt;
-      &lt;TestId&gt;xUnit::5B45756E-74D3-4154-A9AC-B0CEEF46DB58::net7.0::Domain.Tests.RoundTests.HandleRound_WhenBothChooseCorrectButFirstPlayerWasEarlier_ShouldReturnFirstPlayerEmail&lt;/TestId&gt;
-      &lt;TestId&gt;xUnit::5B45756E-74D3-4154-A9AC-B0CEEF46DB58::net7.0::Domain.Tests.RoundTests.HandleRound_WhenOnePlayerChooseCorrectAndSecondNotChooseAnyAnswers_ShouldReturnFirstPlayerEmail&lt;/TestId&gt;
-      &lt;TestId&gt;xUnit::5B45756E-74D3-4154-A9AC-B0CEEF46DB58::net7.0::Domain.Tests.RoundTests.HandleRound_WhenSecondPlayerChooseCorrectAndFirstNotChooseAnyAnswers_ShouldReturnSecondPlayerEmail&lt;/TestId&gt;
-      &lt;TestId&gt;xUnit::5B45756E-74D3-4154-A9AC-B0CEEF46DB58::net7.0::Domain.Tests.RoundTests.HandleRound_WhenSecondChooseCorrectWordTranslation_ShouldReturnSecondPlayerEmail&lt;/TestId&gt;
-      &lt;TestId&gt;xUnit::6B2EE687-E85E-4236-B4A6-0FA3BAFFA051::net7.0::Application.Tests.CloseRoomCommandTests.Handle_WhenRoomNotFoundByParticipant_ReturnsFailure&lt;/TestId&gt;
-      &lt;TestId&gt;xUnit::6B2EE687-E85E-4236-B4A6-0FA3BAFFA051::net7.0::Application.Tests.CloseRoomCommandTests.Handle_WhenNotFullRoomClosed_ReturnsFailure&lt;/TestId&gt;
-    &lt;/TestAncestor&gt;
-    &lt;Project Location="/home/denis/RiderProjects/ChatRoulette.Backend/Tests/Auth.Tests/Application.Tests" Presentation="&amp;lt;Tests&amp;gt;\&amp;lt;Auth.Tests&amp;gt;\&amp;lt;Application.Tests&amp;gt;" /&gt;
-  &lt;/Or&gt;
+  &lt;Project Location="/home/denis/RiderProjects/ChatRoulette.Backend" Presentation="&amp;lt;Tests&amp;gt;" /&gt;
 &lt;/SessionState&gt;</s:String>
 	
 	
