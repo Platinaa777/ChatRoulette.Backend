@@ -1,0 +1,29 @@
+name: Initial CI pipeline ✨
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check repository 🔥
+        uses: actions/checkout@v3
+
+      - name: Install .NET environment 🌌
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '7.0.x'
+
+      - name: Restore dependencies 💥
+        run: dotnet restore ./ChatRoulette.sln
+
+      - name: Build solution 👊
+        run: dotnet build ./ChatRoulette.sln --configuration Release --no-restore
+
+      - name: Publish app 💨
+        run: dotnet publish ./ChatRoulette.sln --configuration Release --no-build
+    
