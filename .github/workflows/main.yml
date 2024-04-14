@@ -7,7 +7,7 @@ on:
       - master
 
 jobs:
-  build:
+  check:
     runs-on: ubuntu-latest
     steps:
       - name: Check repository 🔥

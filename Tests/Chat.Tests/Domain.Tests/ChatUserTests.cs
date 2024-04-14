@@ -16,8 +16,7 @@ public class ChatUserTests
         ChatUser peerUser2 =
             new ChatUser(Guid.NewGuid().ToString(), "test@.ru", "9999999", 0, new HashSet<string>());
         
-        // Assert.False(chatUser.CheckInHistory(peerUser.Email));
-        Assert.True(chatUser.CheckInHistory(peerUser.Email));
+        Assert.False(chatUser.CheckInHistory(peerUser.Email));
         
         chatUser.AddPeerToHistory(peerUser);
         Assert.True(chatUser.CheckInHistory(peerUser.Email));
