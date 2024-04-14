@@ -30,12 +30,12 @@ public class RefreshToken : AggregateRoot<Id>
         IsUsed = true;
     }
 
-    public bool IsExpired() => ExpiredAt > DateTime.Now;
+    public bool IsExpired() => ExpiredAt < DateTime.UtcNow;
     public bool WasUsed() => IsUsed;
     
     public static Result<RefreshToken> Create(string id, string token, DateTime expiredAt, bool isUsed, string userId)
     {
-        var idResult = Shared.Id.CreateId(id);
+        var idResult = Id.CreateId(id);
         if (idResult.IsFailure)
             return Result.Failure<RefreshToken>(idResult.Error);
         
@@ -47,7 +47,7 @@ public class RefreshToken : AggregateRoot<Id>
         if (userIdResult.IsFailure)
             return Result.Failure<RefreshToken>(userIdResult.Error);
 
-        if (expiredAt < DateTime.UtcNow)
+        if (expiredAt.ToUniversalTime() < DateTime.UtcNow)
             return Result.Failure<RefreshToken>(TokenError.InvalidExpiredTime);
 
         return new RefreshToken(
