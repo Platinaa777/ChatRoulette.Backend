@@ -125,19 +125,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Development", "Development"
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Deploy", "Deploy", "{BA2D66F8-3390-4A30-B59B-64B64CD2561F}"
-	ProjectSection(SolutionItems) = preProject
-		Deploy\chat.yaml = Deploy\chat.yaml
-		Deploy\auth.yaml = Deploy\auth.yaml
-		Deploy\gateway.yaml = Deploy\gateway.yaml
-		Deploy\broker.yaml = Deploy\broker.yaml
-		Deploy\.env = Deploy\.env
-		Deploy\profile.yaml = Deploy\profile.yaml
-		Deploy\email.yaml = Deploy\email.yaml
-		Deploy\admin.yaml = Deploy\admin.yaml
-		Deploy\frontend.yaml = Deploy\frontend.yaml
-		Deploy\elasticsearch.yaml = Deploy\elasticsearch.yaml
-		Deploy\jaeger.yaml = Deploy\jaeger.yaml
-	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Otlp.Configuration", "Infrastructure\Otlp.Configuration\Otlp.Configuration.csproj", "{9A40562A-4B44-492F-AC27-14966DDEFDF2}"
 EndProject
@@ -162,6 +149,33 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain.Tests", "Tests\Profile.Tests\Domain.Tests\Domain.Tests.csproj", "{E766557A-7CC6-4A2A-973C-5705F4A1D77B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application.Tests", "Tests\Profile.Tests\Application.Tests\Application.Tests.csproj", "{1A09CE02-89D8-4862-A799-BC2CD2029292}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docker-swarm", "docker-swarm", "{16382629-C770-431B-8124-301C7D663884}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "jenkins", "jenkins", "{AD12A2B5-816E-4F25-89F6-7EE9829D372B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "app", "app", "{ED5DF6A9-425C-46F9-8596-F5A3E5549A06}"
+	ProjectSection(SolutionItems) = preProject
+		Deploy\docker-swarm\app\admin.yaml = Deploy\docker-swarm\app\admin.yaml
+		Deploy\docker-swarm\app\auth.yaml = Deploy\docker-swarm\app\auth.yaml
+		Deploy\docker-swarm\app\chat.yaml = Deploy\docker-swarm\app\chat.yaml
+		Deploy\docker-swarm\app\email.yaml = Deploy\docker-swarm\app\email.yaml
+		Deploy\docker-swarm\app\gateway.yaml = Deploy\docker-swarm\app\gateway.yaml
+		Deploy\docker-swarm\app\profile-migrations.yaml = Deploy\docker-swarm\app\profile-migrations.yaml
+		Deploy\docker-swarm\app\profile.yaml = Deploy\docker-swarm\app\profile.yaml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "infrastructure", "infrastructure", "{F68027D7-EB70-4BFE-AC60-726B31F200DE}"
+	ProjectSection(SolutionItems) = preProject
+		Deploy\docker-swarm\infrastructure\elasticsearch.yaml = Deploy\docker-swarm\infrastructure\elasticsearch.yaml
+		Deploy\docker-swarm\infrastructure\jaeger.yaml = Deploy\docker-swarm\infrastructure\jaeger.yaml
+		Deploy\docker-swarm\infrastructure\broker.yaml = Deploy\docker-swarm\infrastructure\broker.yaml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "site", "site", "{E130E502-A78C-46C2-8724-F7EC2F1F3377}"
+	ProjectSection(SolutionItems) = preProject
+		Deploy\docker-swarm\site\frontend.yaml = Deploy\docker-swarm\site\frontend.yaml
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -402,5 +416,10 @@ Global
 		{6B2EE687-E85E-4236-B4A6-0FA3BAFFA051} = {2E16B802-8168-4762-B75F-6C06E87A4AE3}
 		{E766557A-7CC6-4A2A-973C-5705F4A1D77B} = {52DAAEE8-610C-413C-B450-D0AB2CA680F0}
 		{1A09CE02-89D8-4862-A799-BC2CD2029292} = {52DAAEE8-610C-413C-B450-D0AB2CA680F0}
+		{16382629-C770-431B-8124-301C7D663884} = {BA2D66F8-3390-4A30-B59B-64B64CD2561F}
+		{AD12A2B5-816E-4F25-89F6-7EE9829D372B} = {BA2D66F8-3390-4A30-B59B-64B64CD2561F}
+		{ED5DF6A9-425C-46F9-8596-F5A3E5549A06} = {16382629-C770-431B-8124-301C7D663884}
+		{F68027D7-EB70-4BFE-AC60-726B31F200DE} = {16382629-C770-431B-8124-301C7D663884}
+		{E130E502-A78C-46C2-8724-F7EC2F1F3377} = {16382629-C770-431B-8124-301C7D663884}
 	EndGlobalSection
 EndGlobal
