@@ -1,0 +1,25 @@
+node {
+    stage("Git Clone") {
+        git 'https://github.com/Platinaa777/ChatRoulette.Backend.git'
+    }
+    
+    stage("Check Files") {
+        sh 'ls -la'
+    }
+    
+    stage("Restore Dependencies") {
+        dotnetRestore project: 'ChatRoulette.sln', sdk: '.NET SDK 7'
+    }
+    
+    stage("Build App") {
+        dotnetBuild noRestore: true, project: 'ChatRoulette.sln', sdk: '.NET SDK 7'
+    }
+    
+    stage("Run Tests") {
+        dotnetTest listTests: true, noBuild: true, noRestore: true, project: 'ChatRoulette.sln', sdk: '.NET SDK 7'
+    }
+    
+    stage("Publish App") {
+        dotnetPublish noBuild: true, project: 'ChatRoulette.sln', sdk: '.NET SDK 7', selfContained: false
+    }
+}

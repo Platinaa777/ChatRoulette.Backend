@@ -55,7 +55,19 @@ COPY "Services/ProfileService/ProfileService.Migrations/ProfileService.Migration
 # DDD
 COPY "SharedAbstractions/DomainDriverDesignAbstractions/DomainDriverDesignAbstractions.csproj" "SharedAbstractions/DomainDriverDesignAbstractions/DomainDriverDesignAbstractions.csproj"
 
-COPY "Tests/Domain.Tests/Domain.Tests.csproj" "Tests/Domain.Tests/Domain.Tests.csproj"
+# TESTS
+COPY "Tests/Admin.Tests/Application.Tests/Application.Tests.csproj"   "Tests/Admin.Tests/Application.Tests/Application.Tests.csproj"
+COPY "Tests/Admin.Tests/Domain.Tests/Domain.Tests.csproj"             "Tests/Admin.Tests/Domain.Tests/Domain.Tests.csproj"
+
+COPY "Tests/Auth.Tests/Application.Tests/Application.Tests.csproj"    "Tests/Auth.Tests/Application.Tests/Application.Tests.csproj"
+COPY "Tests/Auth.Tests/Domain.Tests/Domain.Tests.csproj"              "Tests/Auth.Tests/Domain.Tests/Domain.Tests.csproj"
+
+COPY "Tests/Chat.Tests/Application.Tests/Application.Tests.csproj"    "Tests/Chat.Tests/Application.Tests/Application.Tests.csproj"
+COPY "Tests/Chat.Tests/Domain.Tests/Domain.Tests.csproj"              "Tests/Chat.Tests/Domain.Tests/Domain.Tests.csproj"
+
+COPY "Tests/Profile.Tests/Application.Tests/Application.Tests.csproj" "Tests/Profile.Tests/Application.Tests/Application.Tests.csproj"
+COPY "Tests/Profile.Tests/Domain.Tests/Domain.Tests.csproj"           "Tests/Profile.Tests/Domain.Tests/Domain.Tests.csproj"
+
 
 RUN dotnet restore "ChatRoulette.sln"
 

@@ -153,6 +153,9 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docker-swarm", "docker-swarm", "{16382629-C770-431B-8124-301C7D663884}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "jenkins", "jenkins", "{AD12A2B5-816E-4F25-89F6-7EE9829D372B}"
+	ProjectSection(SolutionItems) = preProject
+		Deploy\jenkins\jenkins-email = Deploy\jenkins\jenkins-email
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "app", "app", "{ED5DF6A9-425C-46F9-8596-F5A3E5549A06}"
 	ProjectSection(SolutionItems) = preProject
@@ -176,8 +179,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "site", "site", "{E130E502-A
 	ProjectSection(SolutionItems) = preProject
 		Deploy\docker-swarm\site\frontend.yaml = Deploy\docker-swarm\site\frontend.yaml
 	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "github", "github", "{31B11104-0E48-4773-959A-E726435DB619}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -423,6 +424,5 @@ Global
 		{ED5DF6A9-425C-46F9-8596-F5A3E5549A06} = {16382629-C770-431B-8124-301C7D663884}
 		{F68027D7-EB70-4BFE-AC60-726B31F200DE} = {16382629-C770-431B-8124-301C7D663884}
 		{E130E502-A78C-46C2-8724-F7EC2F1F3377} = {16382629-C770-431B-8124-301C7D663884}
-		{31B11104-0E48-4773-959A-E726435DB619} = {BA2D66F8-3390-4A30-B59B-64B64CD2561F}
 	EndGlobalSection
 EndGlobal
