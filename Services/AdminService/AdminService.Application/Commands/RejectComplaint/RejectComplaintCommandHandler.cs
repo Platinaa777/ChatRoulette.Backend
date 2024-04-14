@@ -7,7 +7,7 @@ using MediatR;
 namespace AdminService.Application.Commands.RejectComplaint;
 
 public class RejectComplaintCommandHandler
-    : IRequestHandler<RejectComplaint.RejectComplaintCommand, Result>
+    : IRequestHandler<RejectComplaintCommand, Result>
 {
     private readonly IComplaintRepository _complaintRepository;
     private readonly IUnitOfWork _unitOfWork;
@@ -20,7 +20,7 @@ public class RejectComplaintCommandHandler
         _unitOfWork = unitOfWork;
     }
     
-    public async Task<Result> Handle(RejectComplaint.RejectComplaintCommand request, CancellationToken cancellationToken)
+    public async Task<Result> Handle(RejectComplaintCommand request, CancellationToken cancellationToken)
     {
         var idResult = Id.Create(request.ComplaintId);
         if (idResult.IsFailure)

@@ -30,11 +30,12 @@ public class Round : AggregateRoot<Guid>
         {
             FirstPlayerAnswer = answer;
             FirstPlayerAnswerTime = DateTime.UtcNow;
-            return;
+        } 
+        if (SecondPlayerEmail == email)
+        {
+            SecondPlayerAnswer = answer;
+            SecondPlayerAnswerTime = DateTime.UtcNow;    
         }
-
-        SecondPlayerAnswer = answer;
-        SecondPlayerAnswerTime = DateTime.UtcNow;
     }
 
     public string? GetWinnerEmail()

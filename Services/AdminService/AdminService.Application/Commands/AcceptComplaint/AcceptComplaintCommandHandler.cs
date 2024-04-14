@@ -7,7 +7,7 @@ using MediatR;
 namespace AdminService.Application.Commands.AcceptComplaint;
 
 public class AcceptComplaintCommandHandler
-    : IRequestHandler<AcceptComplaint.AcceptComplaintCommand, Result>
+    : IRequestHandler<AcceptComplaintCommand, Result>
 {
     private readonly IComplaintRepository _complaintRepository;
     private readonly IUnitOfWork _unitOfWork;

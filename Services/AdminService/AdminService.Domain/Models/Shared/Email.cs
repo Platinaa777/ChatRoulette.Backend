@@ -2,7 +2,7 @@ using System.Text.RegularExpressions;
 using AdminService.Domain.Errors;
 using DomainDriverDesignAbstractions;
 
-namespace AdminService.Domain.Models.ComplaintAggregate.ValueObjects;
+namespace AdminService.Domain.Models.Shared;
 
 public class Email : ValueObject
 {

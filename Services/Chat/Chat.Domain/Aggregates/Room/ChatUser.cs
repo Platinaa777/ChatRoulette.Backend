@@ -35,7 +35,7 @@ public class ChatUser : AggregateRoot<string>
 
     public void AddPeerToHistory(ChatUser chatUser)
     {
-        if (PreviousParticipantEmails.Count >= 3)
+        if (PreviousParticipantEmails.Count >= MaxLenUserHistory)
         {
             var lastPeer = PreviousParticipantEmails.First();
             PreviousParticipantEmails.Remove(lastPeer);

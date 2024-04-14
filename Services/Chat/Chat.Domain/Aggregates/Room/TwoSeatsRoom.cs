@@ -21,7 +21,6 @@ public class TwoSeatsRoom : AggregateRoot<string>
     {
         DateTime temp = DateTime.UtcNow;
         ClosedAt = temp;
-        Console.WriteLine($"total minutes {temp.Subtract(CreatedAt).Minutes}");
         return temp.Subtract(CreatedAt).Minutes;
     }
 
@@ -29,10 +28,21 @@ public class TwoSeatsRoom : AggregateRoot<string>
     {
         var userLink = peer.ToUserLink();
 
-        if (!PeerLinks.Contains(userLink))
+        if (!PeerLinks.Contains(userLink) && !IsFullRoom())
         {
             PeerLinks.Add(userLink);    
         }
+    }
+
+    public bool ContainsPeerConnectionId(string connectionId)
+    {
+        foreach (var userLink in PeerLinks)
+        {
+            if (userLink.ConnectionId == connectionId)
+                return true;
+        }
+
+        return false;
     }
 
     public bool IsFullRoom() => PeerLinks.Count == 2;

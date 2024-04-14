@@ -19,7 +19,7 @@ public class AddComplaintCommandHandler :
         _unitOfWork = unitOfWork;
     }
     
-    public async Task<Result> Handle(AddComplaint.AddComplaintCommand request, CancellationToken cancellationToken)
+    public async Task<Result> Handle(AddComplaintCommand request, CancellationToken cancellationToken)
     {
         var complaintResult = Complaint.Create(
             request.Id,

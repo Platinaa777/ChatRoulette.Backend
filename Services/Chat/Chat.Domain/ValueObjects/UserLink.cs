@@ -17,7 +17,6 @@ public class UserLink : ValueObject
     protected override IEnumerable<object> GetEqualityComponents()
     {
         yield return Email;
-        yield return ConnectionId;
     }
 }
 

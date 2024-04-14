@@ -29,30 +29,22 @@ public class CloseRoomCommandHandler : IRequestHandler<CloseRoomCommand, Result<
     public async Task<Result<TwoSeatsRoomInformation>> Handle(CloseRoomCommand request, CancellationToken cancellationToken)
     {
         var rooms = await _roomRepository.GetAllRooms();
-        TwoSeatsRoom? storedRoom = null;
+        TwoSeatsRoom? room = null;
         
         foreach (var dbRoom in rooms)
         {
-            foreach (var userLink in dbRoom.PeerLinks)
+            if (dbRoom.ContainsPeerConnectionId(request.ConnectionId))
             {
-                if (userLink.ConnectionId == request.ConnectionId)
-                {
-                    storedRoom = dbRoom;
-                    break;
-                }            
+                room = dbRoom;
+                break;
             }
         }
         
-        if (storedRoom is null)
+        if (room is null)
             return Result.Failure<TwoSeatsRoomInformation>(RoomErrors.RoomNotFoundByParticipant);
         
-        var room = await _roomRepository.FindRoomById(storedRoom.Id);
-
-        if (room is null)
-            return Result.Failure<TwoSeatsRoomInformation>(RoomErrors.RoomNotFoundById);
-        
         // delete our room from database
-        var closeRoomResponse = await _roomRepository.CloseRoom(storedRoom.Id);
+        var closeRoomResponse = await _roomRepository.CloseRoom(room.Id);
 
         if (!closeRoomResponse)
             return Result.Failure<TwoSeatsRoomInformation>(RoomErrors.RoomCantClose);
@@ -84,7 +76,7 @@ public class CloseRoomCommandHandler : IRequestHandler<CloseRoomCommand, Result<
 
         return new TwoSeatsRoomInformation
         {
-            RoomId = storedRoom.Id,
+            RoomId = room.Id,
             FirstUser = new ChatUserInformation()
             {
                 ConnectionId = chatUser1.ConnectionId,

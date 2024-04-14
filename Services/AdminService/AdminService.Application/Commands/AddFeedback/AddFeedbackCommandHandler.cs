@@ -21,8 +21,6 @@ public class AddFeedbackCommandHandler
     
     public async Task<Result> Handle(AddFeedbackCommand request, CancellationToken cancellationToken)
     {
-        await _unitOfWork.StartTransaction(cancellationToken);
-
         var feedbackResult = Feedback.Create(
             id: Guid.NewGuid().ToString(),
             request.EmailFrom,
@@ -32,8 +30,7 @@ public class AddFeedbackCommandHandler
         if (feedbackResult.IsFailure)
             return Result.Failure(feedbackResult.Error);
 
-        var response = await _feedbackRepository.AddFeedback(feedbackResult.Value);
-
+        await _feedbackRepository.AddFeedback(feedbackResult.Value);
         await _unitOfWork.SaveChangesAsync(cancellationToken);
 
         return Result.Success();
