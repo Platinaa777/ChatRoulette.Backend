@@ -29,8 +29,7 @@ public static class SeedExtensions
             Guid.NewGuid().ToString(),
             "denis",
             "m@edu.hse.ru",
-            "platina777",
-            19,
+            new DateTime(2003, 4, 15),
             hashedPassword1.Value,
             salt1.Value,
             RoleType.Admin.Name).Value;

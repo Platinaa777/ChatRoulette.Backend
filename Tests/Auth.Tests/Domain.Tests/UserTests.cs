@@ -14,15 +14,14 @@ public class UserTests
         var userResult = User.Create(GuidId,
             "TestName",
             "test@mail.ru",
-            "TestNick",
-            15,
+            new DateTime(2020, 4, 15),
             "123456",
             "TestSalt",
             RoleType.UnactivatedUser.Name);
         // Assert
         
         Assert.True(userResult.IsFailure);
-        Assert.Equal(UserError.InvalidAge, userResult.Error);
+        Assert.Equal(UserError.YoungUser, userResult.Error);
     }
     
     [Fact]
@@ -32,8 +31,7 @@ public class UserTests
         var userResult = User.Create(GuidId,
             "TestName",
             "test@mail.ru",
-            "TestNick",
-            16,
+            new DateTime(2003, 4, 15),
             "123456",
             "TestSalt",
             "error");
@@ -50,8 +48,7 @@ public class UserTests
         var userResult = User.Create(GuidId,
             "TestName",
             "tesdasdasdamail.ru",
-            "TestNick",
-            16,
+            new DateTime(2003, 4, 15),
             "123456",
             "TestSalt",
             RoleType.ActivatedUser.Name);

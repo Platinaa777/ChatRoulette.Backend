@@ -16,6 +16,8 @@ public class UserError : Error
     public static readonly Error CantUpdateUser = new("User.Error", "User cat be updated");
     public static readonly Error InvalidId = new("User.Error", "Invalid id");
     public static readonly Error BanUser = new("User.Error", "User was banned");
+    public static readonly Error YoungUser = new("User.Error", "User is not older than 16 years old");
+    public static readonly Error OldUser = new("User.Error", "User is older than 100 years old");
 
 
     public UserError(string code, string message) : base(code, message)

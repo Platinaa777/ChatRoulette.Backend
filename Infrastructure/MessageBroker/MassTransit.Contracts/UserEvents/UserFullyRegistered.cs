@@ -4,14 +4,14 @@ public class UserFullyRegistered
 {
     public string Id { get; set; }
     public string Email { get; set; }
-    public string NickName { get; set; }
-    public int Age { get; set; }
+    public string UserName { get; set; }
+    public DateTime BirthDateUtc { get; set; }
 
-    public UserFullyRegistered(string id, string email, string nickName, int age)
+    public UserFullyRegistered(string id, string email, string userName, DateTime birthDateUtc)
     {
         Id = id;
         Email = email;
-        NickName = nickName;
-        Age = age;
+        BirthDateUtc = birthDateUtc;
+        UserName = userName;
     }
 }

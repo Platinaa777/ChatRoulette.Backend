@@ -27,7 +27,7 @@ public class CreateUserCommandTests
         var command = new Fixture()
             .Build<CreateUserCommand>()
             .With(x => x.Email, "test@mail.ru")
-            .With(x => x.Age, 19)
+            .With(x => x.BirthDateUtc, new DateTime(2003, 4, 15))
             .Create();
 
         mockHasher.Setup(x => x.GenerateSalt())
@@ -70,7 +70,7 @@ public class CreateUserCommandTests
         var command = new Fixture()
             .Build<CreateUserCommand>()
             .With(x => x.Email, "test@mail.ru")
-            .With(x => x.Age, 19)
+            .With(x => x.BirthDateUtc, new DateTime(2003, 4, 15))
             .Create();
 
         mockHasher.Setup(x => x.GenerateSalt())

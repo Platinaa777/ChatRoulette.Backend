@@ -6,7 +6,7 @@ namespace AuthService.Application.BusMapper;
 public static class UserBusMapper
 {
     public static UserRegistered ToBusMessage(this User user)
-        => new UserRegistered()
+        => new()
         {
             Id = user.Id.Value,
             Email = user.Email.Value,

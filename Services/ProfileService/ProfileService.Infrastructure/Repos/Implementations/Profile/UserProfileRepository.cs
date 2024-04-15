@@ -1,4 +1,3 @@
-using System.Collections;
 using Dapper;
 using Npgsql;
 using ProfileService.Domain.Models.Identity;
@@ -46,7 +45,7 @@ public class UserProfileRepository : IUserProfileRepository
             var userProfile = x.First();
             userProfile.FriendIds = x.SelectMany(usp =>
             {
-                return usp.FriendIds
+                return usp.FriendIds!
                     .Where(friendId => !string.IsNullOrWhiteSpace(friendId))
                     .Select(friendId => friendId);
             }).ToList();
@@ -76,7 +75,7 @@ public class UserProfileRepository : IUserProfileRepository
                 {
                     if (fl.profileId is not null)
                     {
-                        profile.FriendIds.Add(fl.friendId!);
+                        profile.FriendIds?.Add(fl.friendId!);
                     }
                     return profile;
                 },
@@ -88,7 +87,7 @@ public class UserProfileRepository : IUserProfileRepository
             var userProfile = x.First();
             userProfile.FriendIds = x.SelectMany(usp =>
             {
-                return usp.FriendIds
+                return usp.FriendIds!
                     .Where(friendId => !string.IsNullOrWhiteSpace(friendId))
                     .Select(friendId => friendId);
             }).ToList();
@@ -180,7 +179,7 @@ public class UserProfileRepository : IUserProfileRepository
                 {
                     if (fl.profileId is not null)
                     {
-                        profile.FriendIds.Add(fl.friendId!);
+                        profile.FriendIds?.Add(fl.friendId!);
                     }
 
                     return profile;
@@ -193,7 +192,7 @@ public class UserProfileRepository : IUserProfileRepository
             var userProfile = x.First();
             userProfile.FriendIds = x.SelectMany(usp =>
             {
-                return usp.FriendIds
+                return usp.FriendIds!
                     .Where(friendId => !string.IsNullOrWhiteSpace(friendId))
                     .Select(friendId => friendId);
             }).ToList();

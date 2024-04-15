@@ -12,8 +12,7 @@ public class User : AggregateRoot<Id>
         Id id,
         Name userName,
         Email email,
-        Name nickName,
-        Age age,
+        BirthDateUtc birthDateUtc,
         Password passwordHash,
         Salt salt,
         RoleType role) : base(id)
@@ -21,8 +20,7 @@ public class User : AggregateRoot<Id>
         UserName = userName;
         Email = email;
         PasswordHash = passwordHash;
-        NickName = nickName;
-        Age = age;
+        BirthDateUtc = birthDateUtc;
         Salt = salt;
         Role = role;
     }
@@ -32,9 +30,7 @@ public class User : AggregateRoot<Id>
     public Email Email { get; private set; }
     public bool IsSubmittedEmail { get; private set; }
     
-    public Name NickName { get; private set; }
-    
-    public Age Age { get; private set; }
+    public BirthDateUtc BirthDateUtc { get; private set; }
     
     public Password PasswordHash { get; private set; }
     
@@ -47,16 +43,15 @@ public class User : AggregateRoot<Id>
         IsSubmittedEmail = true;
     }
 
-    public void AddUserExtraInformation(Name nickname, Age age)
+    public void Register(BirthDateUtc birthDateUtc)
     {
         RaiseDomainEvent(new CreateUserDomainEvent(Id.Value));
-        NickName = nickname;
-        Age = age;
+        BirthDateUtc = birthDateUtc;
     }
     
     public static Result<User> Create(
         string id, string userName,
-        string email, string nickName, int age,
+        string email, DateTime birthDateUtc,
         string password, string salt, string? role)
     {
         Salt saltResult = new Salt(salt);
@@ -74,13 +69,9 @@ public class User : AggregateRoot<Id>
         if (emailResult.IsFailure)
             return Result.Failure<User>(emailResult.Error);
 
-        var nickNameResult = Name.Create(nickName);
-        if (nickNameResult.IsFailure)
-            return Result.Failure<User>(nickNameResult.Error);
-        
-        var ageResult = Age.Create(age);
-        if (ageResult.IsFailure)
-            return Result.Failure<User>(ageResult.Error);
+        var birthDateUtcResult = BirthDateUtc.Create(birthDateUtc);
+        if (birthDateUtcResult.IsFailure)
+            return Result.Failure<User>(birthDateUtcResult.Error);
         
         var passwordResult = Password.Create(password);
         if (passwordResult.IsFailure)
@@ -89,8 +80,7 @@ public class User : AggregateRoot<Id>
             idResult.Value,
             userNameResult.Value,
             emailResult.Value,
-            nickNameResult.Value,
-            ageResult.Value,
+            birthDateUtcResult.Value,
             passwordResult.Value,
             saltResult,
             roleType);

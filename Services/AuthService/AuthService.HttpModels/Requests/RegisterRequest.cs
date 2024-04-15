@@ -7,9 +7,7 @@ public class RegisterRequest
     [Required]
     public string UserName { get; set; }
     [Required]
-    public string NickName { get; set; }
-    [Required]
-    public int? Age { get; set; }
+    public DateTime BirthDateUtc { get; set; }
     [Required]
     public string Email { get; set; }
     [Required]

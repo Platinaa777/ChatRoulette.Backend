@@ -61,9 +61,9 @@ public class UserProfileController : ControllerBase
         var result = await _mediator.Send(new AddUserProfileCommand()
         {
             Id = Guid.NewGuid().ToString(),
-            Age = request.Age,
+            BirthDateUtc = request.BirthDate,
             Email = request.Email,
-            NickName = request.NickName
+            UserName = request.UserName
         });
         
         return Ok(result);
@@ -82,7 +82,7 @@ public class UserProfileController : ControllerBase
         var result = await _mediator.Send(new ChangeNickNameProfileCommand()
         {
             Email = email,
-            NickName = request.NickName
+            NickName = request.UserName
         });
         
         return Ok(result);

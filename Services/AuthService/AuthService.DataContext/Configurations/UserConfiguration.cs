@@ -49,8 +49,7 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
         builder.HasIndex(u => u.Email)
             .IsUnique();
 
-        builder.Ignore(u => u.Age);
-        builder.Ignore(u => u.NickName);
+        builder.Ignore(u => u.BirthDateUtc);
         
         builder.Property(n => n.PasswordHash)
             .HasColumnName("password")

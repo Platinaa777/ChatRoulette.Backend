@@ -20,6 +20,8 @@ public class UserProfileErrors : Error
     public static readonly Error CantRemoveUserFromFriends = new("UserProfile.Error.Rating", "Cant remove user from friends list");
     public static readonly Error AvatarUploadError = new("UserProfile.Error.Avatar", "Cant upload avatar in the system");
     public static readonly Error AvatarDoesNotExists = new("UserProfile.Error.Avatar", "Avatar cant be update because does not exist");
+    public static readonly Error YoungUser = new("UserProfile.Error.Age", "User is too young");
+    public static readonly Error OldUser = new("UserProfile.Error.Age", "User is older than 100 years old");
 
 
     public UserProfileErrors(string code, string message) : base(code, message)

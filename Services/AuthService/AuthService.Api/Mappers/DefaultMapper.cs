@@ -13,8 +13,7 @@ public static class DefaultMapper
         return new CreateUserCommand()
         {
             UserName = request.UserName,
-            NickName = request.NickName,
-            Age = request.Age ?? -1,
+            BirthDateUtc = request.BirthDateUtc,
             Email = request.Email,
             Password = request.Password,
         };

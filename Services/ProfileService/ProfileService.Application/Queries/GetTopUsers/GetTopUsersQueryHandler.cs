@@ -24,7 +24,7 @@ public class GetTopUsersQueryHandler
         foreach (var profile in result)
         {
             profiles.Add(new UserProfileInformation() { 
-                NickName = profile.NickName.Value,
+                UserName = profile.UserName.Value,
                 Rating = profile.Rating.Value
             });
         }

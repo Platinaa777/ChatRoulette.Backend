@@ -44,14 +44,14 @@ public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, Resul
         
         var response = await _userRepository.AddUserAsync(userResult.Value);
         
-        user.AddUserExtraInformation(user.NickName, user.Age);
+        user.Register(user.BirthDateUtc);
 
         if (!response)
             return Result.Failure(UserError.UserAlreadyExist);
         
-        // push to event bus
+        // Publish message to event bus 
         await _eventBusClient.PublishAsync(user.ToBusMessage(), cancellationToken);
-        // cache 
+        // cache information 
         await _cache.SetAsync(
             key: user.Id.Value, 
             value: JsonConvert.SerializeObject(user.ToCache()), 

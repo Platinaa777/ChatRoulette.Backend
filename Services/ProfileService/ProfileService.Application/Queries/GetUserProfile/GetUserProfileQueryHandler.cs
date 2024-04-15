@@ -34,16 +34,16 @@ public class GetUserProfileQueryHandler
                 friendsInformation.Add(new FriendInformation()
                 {
                     Email = friend.Email.Value,
-                    Nickname = friend.NickName.Value,
+                    Nickname = friend.UserName.Value,
                     Rating = friend.Rating.Value
                 });
         }
         
         return new ProfileResponse()
         {
-            NickName = result.NickName.Value,
+            UserName = result.UserName.Value,
             Email = result.Email.Value,
-            Age = result.Age.Value,
+            BirthDateUtc = result.BirthDateUtc.Value,
             Rating = result.Rating.Value,
             Friends = friendsInformation,
             Achivements = result.Achievements.Select(x => new AchivementResponse()

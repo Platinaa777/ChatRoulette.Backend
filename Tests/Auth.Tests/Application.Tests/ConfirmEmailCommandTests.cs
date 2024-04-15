@@ -74,8 +74,7 @@ public class ConfirmEmailCommandTests
         var userTest = User.Create(Guid.NewGuid().ToString(),
             "testname",
             "test@mail.ru",
-            "nickname",
-            19,
+            new DateTime(2003, 4, 15),
             "123456789",
             "1231231",
             RoleType.UnactivatedUser.Name).Value;

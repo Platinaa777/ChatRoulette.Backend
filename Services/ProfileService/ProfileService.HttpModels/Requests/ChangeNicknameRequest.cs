@@ -2,5 +2,5 @@ namespace ProfileService.HttpModels.Requests;
 
 public class ChangeNicknameRequest
 {
-    public string NickName { get; set; }
+    public string UserName { get; set; } = string.Empty;
 }

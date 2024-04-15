@@ -13,18 +13,18 @@ public class UserProfile : AggregateRoot<Id>
 {
     private UserProfile(
         Id id,
-        Name nickName,
+        Name userName,
         Email email,
-        Age age,
+        BirthDateUtc birthDateUtc,
         Rating rating,
         HashSet<Id> friends,
         HashSet<Achievement> achievements,
         Avatar avatar)
     {
         Id = id;
-        NickName = nickName;
+        UserName = userName;
         Email = email;
-        Age = age;
+        BirthDateUtc = birthDateUtc;
         Rating = rating;
         Avatar = avatar;
         _friends = friends;
@@ -82,7 +82,7 @@ public class UserProfile : AggregateRoot<Id>
         if (newName.IsFailure)
             return Result.Failure(newName.Error);
 
-        NickName = newName.Value;
+        UserName = newName.Value;
         return Result.Success();
     }
 
@@ -102,9 +102,9 @@ public class UserProfile : AggregateRoot<Id>
         return new UserProfileSnapshot()
         {
             Id = Id.Value.ToString(),
-            NickName = NickName.Value,
+            UserName = UserName.Value,
             Email = Email.Value,
-            Age = Age.Value,
+            BirthDateUtc = BirthDateUtc.Value,
             Rating = Rating.Value,
             Avatar = Avatar.Value,
             FriendIds = _friends.Select(x => x.Value.ToString()).ToList(),
@@ -120,9 +120,9 @@ public class UserProfile : AggregateRoot<Id>
     {
         var result = Create(
             snapshot.Id,
-            snapshot.NickName,
+            snapshot.UserName,
             snapshot.Email,
-            snapshot.Age,
+            snapshot.BirthDateUtc,
             snapshot.Rating,
             snapshot.FriendIds ?? new List<string>(),
             snapshot.AchievementSnapshots ?? string.Empty,
@@ -135,19 +135,19 @@ public class UserProfile : AggregateRoot<Id>
 
     private readonly HashSet<Achievement> _achievements = new();
     private readonly HashSet<Id> _friends = new();
-    public Name NickName { get; private set; }
+    public Name UserName { get; private set; }
     public Email Email { get; private set; }
-    public Age Age { get; private set; }
+    public BirthDateUtc BirthDateUtc { get; private set; }
     public IReadOnlyList<Id> Friends => _friends.ToList();
     public IReadOnlyList<Achievement> Achievements => _achievements.ToList();
     public Rating Rating { get; private set; }
-    public Avatar Avatar { get; set; }
+    public Avatar Avatar { get; private set; }
 
     public static Result<UserProfile> Create(
         string id,
         string nickName,
         string email,
-        int age,
+        DateTime birthDateUtc,
         int rating,
         List<string> friends,
         string jsonAchievements,
@@ -165,9 +165,9 @@ public class UserProfile : AggregateRoot<Id>
         if (emailResult.IsFailure)
             return Result.Failure<UserProfile>(emailResult.Error);
         
-        var ageResult = Age.Create(age);
-        if (ageResult.IsFailure)
-            return Result.Failure<UserProfile>(ageResult.Error);
+        var birthDateUtcResult = BirthDateUtc.Create(birthDateUtc);
+        if (birthDateUtcResult.IsFailure)
+            return Result.Failure<UserProfile>(birthDateUtcResult.Error);
         
         var ratingResult = Rating.Create(rating);
         if (ratingResult.IsFailure)
@@ -204,7 +204,7 @@ public class UserProfile : AggregateRoot<Id>
             idResult.Value,
             nickNameResult.Value,
             emailResult.Value,
-            ageResult.Value,
+            birthDateUtcResult.Value,
             ratingResult.Value,
             friendsIds,
             domainAchievements,

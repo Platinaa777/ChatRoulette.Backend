@@ -20,8 +20,7 @@ public class BanCommandTests
         Guid.NewGuid().ToString(),
         "testname",
         "email@mail.ru",
-        "nickname",
-        18,
+        new DateTime(2003, 4, 15),
         "password123",
         "123456",
         RoleType.ActivatedUser.Name).Value;

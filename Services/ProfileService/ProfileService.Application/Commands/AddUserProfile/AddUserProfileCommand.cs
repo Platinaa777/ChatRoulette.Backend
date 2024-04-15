@@ -7,10 +7,10 @@ namespace ProfileService.Application.Commands.AddUserProfile;
 
 public class AddUserProfileCommand : IRequest<Result>
 {
-    public string Id { get; set; }
-    public string NickName { get; set; }
-    public string Email { get; set; }
-    public int Age { get; set; }
+    public string Id { get; set; } = string.Empty;
+    public string UserName { get; set; } = string.Empty;
+    public string Email { get; set; } = string.Empty;
+    public DateTime BirthDateUtc { get; set; }
 }
 
 public static class AddUserProfileCommandToDomain
@@ -19,9 +19,9 @@ public static class AddUserProfileCommandToDomain
     {
         return UserProfile.Create(
             id: command.Id,
-            command.NickName,
+            command.UserName,
             command.Email,
-            command.Age,
+            command.BirthDateUtc,
             // new account
             rating: 0,  //  0 rating
             friends: new List<string>(), // no friends
@@ -30,11 +30,11 @@ public static class AddUserProfileCommandToDomain
     }
 
     public static AddUserProfileCommand ToCommandFromMessage(this UserFullyRegistered req)
-        => new AddUserProfileCommand()
+        => new()
         {
             Id = req.Id,
             Email = req.Email,
-            NickName = req.NickName,
-            Age = req.Age,
+            UserName = req.UserName,
+            BirthDateUtc = req.BirthDateUtc,
         };
 }

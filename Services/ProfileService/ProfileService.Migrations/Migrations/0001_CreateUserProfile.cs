@@ -11,9 +11,9 @@ public class CreateUserProfile : Migration
         Execute.Sql(@"
             CREATE TABLE if not exists user_profiles (
                 id text PRIMARY KEY,
-                nick_name TEXT NOT NULL,
+                user_name TEXT NOT NULL,
                 email TEXT NOT NULL,
-                age int,
+                birthdate TIMESTAMP WITHOUT TIME ZONE,
                 rating int,
                 avatar text,
                 achievements text,
