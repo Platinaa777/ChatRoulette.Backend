@@ -52,6 +52,11 @@ public class RegisterUserConsumer : IConsumer<UserRegistered>
                    code +
                    EmailTemplate.END
         };
+        
+        _logger.LogInformation("Cached value: Code {@Code}, Email: {@Email}",
+            code,
+            context.Message.Email);
+        
         await _cache.SetStringAsync(code,
             context.Message.Email,
             new DistributedCacheEntryOptions()

@@ -13,34 +13,43 @@ using MimeKit;
 namespace EmailingService.Api.Controllers;
 
 [ApiController]
-[Route("[controller]")]
+[Route("email")]
 public class EmailController : ControllerBase
 {
     private readonly IDistributedCache _cache;
     private readonly IEventBusClient _bus;
     private readonly RedirectUrl _redirectUrl;
+    private readonly ILogger<EmailController> _logger;
 
     public EmailController(
         IDistributedCache cache,
         IEventBusClient bus,
-        RedirectUrl redirectUrl)
+        RedirectUrl redirectUrl,
+        ILogger<EmailController> logger)
     {
         _cache = cache;
         _bus = bus;
         _redirectUrl = redirectUrl;
+        _logger = logger;
     }
 
-    [HttpPost("/confirm/{code}")]
+    [HttpGet("confirm/{code}")]
     public async Task<ActionResult<bool>> ActivateAccount(
         [FromRoute] string code,
         CancellationToken token = default)
     {
         var storedEmail = await _cache.GetStringAsync(code, token);
-
+        
+        _logger.LogInformation("Get stored email {@Email} by code: {@Code}", 
+            storedEmail, code);
+        
         if (storedEmail == null)
             return NotFound();
 
         await _bus.PublishAsync(new UserSubmittedEmail(storedEmail), token);
+        
+        _logger.LogInformation("Redirect url {@Url}", 
+            _redirectUrl.Url);
         
         return Redirect(_redirectUrl.Url);
     }

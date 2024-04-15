@@ -1,12 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ApiGateways", "ApiGateways", "{BE6EF6D1-3AAA-4DA4-A8AC-E16E8AEE1D79}"
-	ProjectSection(SolutionItems) = preProject
-		ApiGateways\endpoints\chat-endpoints.json = ApiGateways\endpoints\chat-endpoints.json
-		ApiGateways\endpoints\profile-endpoints.json = ApiGateways\endpoints\profile-endpoints.json
-		ApiGateways\endpoints\auth-endpoints.json = ApiGateways\endpoints\auth-endpoints.json
-		ApiGateways\endpoints\email-endpoints.json = ApiGateways\endpoints\email-endpoints.json
-	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{015FC6CF-628C-4696-BDBA-8B838535BCE7}"
 EndProject
@@ -178,7 +172,18 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "site", "site", "{E130E502-A78C-46C2-8724-F7EC2F1F3377}"
 	ProjectSection(SolutionItems) = preProject
 		Deploy\docker-swarm\site\frontend.yaml = Deploy\docker-swarm\site\frontend.yaml
+		Deploy\docker-swarm\site\Dockerfile.nginx = Deploy\docker-swarm\site\Dockerfile.nginx
 	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "endpoints-obsolete", "endpoints-obsolete", "{F1505A57-3B88-407B-90CE-E89AF9CCDE79}"
+	ProjectSection(SolutionItems) = preProject
+		ApiGateways\endpoints\auth-endpoints.json = ApiGateways\endpoints\auth-endpoints.json
+		ApiGateways\endpoints\chat-endpoints.json = ApiGateways\endpoints\chat-endpoints.json
+		ApiGateways\endpoints\email-endpoints.json = ApiGateways\endpoints\email-endpoints.json
+		ApiGateways\endpoints\profile-endpoints.json = ApiGateways\endpoints\profile-endpoints.json
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yarp.Proxy", "ApiGateways\Yarp.Proxy\Yarp.Proxy.csproj", "{858E70FA-2BB2-4F23-8883-4572A8531A4C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -362,6 +367,10 @@ Global
 		{1A09CE02-89D8-4862-A799-BC2CD2029292}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1A09CE02-89D8-4862-A799-BC2CD2029292}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1A09CE02-89D8-4862-A799-BC2CD2029292}.Release|Any CPU.Build.0 = Release|Any CPU
+		{858E70FA-2BB2-4F23-8883-4572A8531A4C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{858E70FA-2BB2-4F23-8883-4572A8531A4C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{858E70FA-2BB2-4F23-8883-4572A8531A4C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{858E70FA-2BB2-4F23-8883-4572A8531A4C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{38ACED50-1C63-4340-A28A-0D90C04628BB} = {015FC6CF-628C-4696-BDBA-8B838535BCE7}
@@ -424,5 +433,7 @@ Global
 		{ED5DF6A9-425C-46F9-8596-F5A3E5549A06} = {16382629-C770-431B-8124-301C7D663884}
 		{F68027D7-EB70-4BFE-AC60-726B31F200DE} = {16382629-C770-431B-8124-301C7D663884}
 		{E130E502-A78C-46C2-8724-F7EC2F1F3377} = {16382629-C770-431B-8124-301C7D663884}
+		{F1505A57-3B88-407B-90CE-E89AF9CCDE79} = {BE6EF6D1-3AAA-4DA4-A8AC-E16E8AEE1D79}
+		{858E70FA-2BB2-4F23-8883-4572A8531A4C} = {BE6EF6D1-3AAA-4DA4-A8AC-E16E8AEE1D79}
 	EndGlobalSection
 EndGlobal

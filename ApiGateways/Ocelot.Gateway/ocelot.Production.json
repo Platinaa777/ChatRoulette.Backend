@@ -1,9 +1,9 @@
 {
   "Routes": [
     {
-      "UpstreamPathTemplate": "/api/auth/info/{email}/{password}",
+      "UpstreamPathTemplate": "/auth/info/{email}/{password}/",
       "UpstreamHttpMethod": [ "GET" ],
-      "DownstreamPathTemplate": "/auth/info/{email}/{password}",
+      "DownstreamPathTemplate": "/auth/info/{email}/{password}/",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
@@ -19,9 +19,9 @@
       }
     },
     {
-      "UpstreamPathTemplate": "/api/auth/register",
+      "UpstreamPathTemplate": "/auth/register/",
       "UpstreamHttpMethod": [ "POST" ],
-      "DownstreamPathTemplate": "/auth/register",
+      "DownstreamPathTemplate": "/auth/register/",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
@@ -31,9 +31,9 @@
       ]
     },
     {
-      "UpstreamPathTemplate": "/api/auth/refresh-token",
+      "UpstreamPathTemplate": "/auth/refresh-token/",
       "UpstreamHttpMethod": [ "POST" ],
-      "DownstreamPathTemplate": "/auth/refresh-token",
+      "DownstreamPathTemplate": "/auth/refresh-token/",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
@@ -43,9 +43,9 @@
       ]
     },
     {
-      "UpstreamPathTemplate": "/api/auth/login",
+      "UpstreamPathTemplate": "/auth/login/",
       "UpstreamHttpMethod": [ "POST" ],
-      "DownstreamPathTemplate": "/auth/login",
+      "DownstreamPathTemplate": "/auth/login/",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
@@ -55,9 +55,9 @@
       ]
     },
     {
-      "UpstreamPathTemplate": "/api/auth/logout",
+      "UpstreamPathTemplate": "/auth/logout/",
       "UpstreamHttpMethod": [ "DELETE" ],
-      "DownstreamPathTemplate": "/auth/logout",
+      "DownstreamPathTemplate": "/auth/logout/",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
@@ -74,8 +74,8 @@
     },
     {
       "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE", "OPTIONS" ],
-      "UpstreamPathTemplate": "/api/chat/negotiate",
-      "DownstreamPathTemplate": "/my-chat/negotiate",
+      "UpstreamPathTemplate": "/chat/negotiate/",
+      "DownstreamPathTemplate": "/my-chat/negotiate/",
       "DownstreamScheme": "ws",
       "DownstreamHostAndPorts": [
         { "Host": "chat_app", "Port": 80 }
@@ -83,17 +83,17 @@
     },
     {
       "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE", "OPTIONS" ],
-      "UpstreamPathTemplate": "/api/chat",
-      "DownstreamPathTemplate": "/my-chat",
+      "UpstreamPathTemplate": "/chat/",
+      "DownstreamPathTemplate": "/my-chat/",
       "DownstreamScheme": "ws",
       "DownstreamHostAndPorts": [
         { "Host": "chat_app", "Port": 80 }
       ]
     },
     {
-      "UpstreamHttpMethod": [ "POST" ],
-      "UpstreamPathTemplate": "/api/email/confirm/{code}",
-      "DownstreamPathTemplate": "/email/confirm/{code}",
+      "UpstreamHttpMethod": [ "GET" ],
+      "UpstreamPathTemplate": "/email/confirm/{code}/",
+      "DownstreamPathTemplate": "/email/confirm/{code}/",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         { "Host": "email_app", "Port": 80 }
@@ -101,8 +101,8 @@
     },
     {
       "UpstreamHttpMethod": [ "POST" ],
-      "UpstreamPathTemplate": "/api/feedback/add",
-      "DownstreamPathTemplate": "/feedback/add",
+      "UpstreamPathTemplate": "/feedback/add/",
+      "DownstreamPathTemplate": "/feedback/add/",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         { "Host": "admin_app", "Port": 80 }
@@ -116,8 +116,8 @@
     },
     {
       "UpstreamHttpMethod": [ "GET" ],
-      "UpstreamPathTemplate": "/api/feedback/{count}",
-      "DownstreamPathTemplate": "/feedback/{count}",
+      "UpstreamPathTemplate": "/feedback/{count}/",
+      "DownstreamPathTemplate": "/feedback/{count}/",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         { "Host": "admin_app", "Port": 80 }
@@ -131,8 +131,8 @@
     },
     {
       "UpstreamHttpMethod": [ "GET" ],
-      "UpstreamPathTemplate": "/api/complaint/{count}",
-      "DownstreamPathTemplate": "/complaint/{count}",
+      "UpstreamPathTemplate": "/complaint/{count}/",
+      "DownstreamPathTemplate": "/complaint/{count}/",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         { "Host": "admin_app", "Port": 80 }
@@ -146,8 +146,8 @@
     },
     {
       "UpstreamHttpMethod": [ "POST" ],
-      "UpstreamPathTemplate": "/api/complaint/add-complaint",
-      "DownstreamPathTemplate": "/complaint/add-complaint",
+      "UpstreamPathTemplate": "/complaint/add-complaint/",
+      "DownstreamPathTemplate": "/complaint/add-complaint/",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         { "Host": "admin_app", "Port": 80 }
@@ -161,8 +161,8 @@
     },
     {
       "UpstreamHttpMethod": [ "PUT" ],
-      "UpstreamPathTemplate": "/api/complaint/accept",
-      "DownstreamPathTemplate": "/complaint/accept",
+      "UpstreamPathTemplate": "/complaint/accept/",
+      "DownstreamPathTemplate": "/complaint/accept/",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         { "Host": "admin_app", "Port": 80 }
@@ -176,8 +176,8 @@
     },
     {
       "UpstreamHttpMethod": [ "PUT" ],
-      "UpstreamPathTemplate": "/api/complaint/reject",
-      "DownstreamPathTemplate": "/complaint/reject",
+      "UpstreamPathTemplate": "/complaint/reject/",
+      "DownstreamPathTemplate": "/complaint/reject/",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         { "Host": "admin_app", "Port": 80 }
@@ -191,8 +191,8 @@
     },
     {
       "UpstreamHttpMethod": [ "GET" ],
-      "UpstreamPathTemplate": "/api/profile/get-user-info",
-      "DownstreamPathTemplate": "/profile/get-user-info",
+      "UpstreamPathTemplate": "/profile/get-user-info/",
+      "DownstreamPathTemplate": "/profile/get-user-info/",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         { "Host": "profile_app", "Port": 80 }
@@ -206,8 +206,8 @@
     },
     {
       "UpstreamHttpMethod": [ "GET" ],
-      "UpstreamPathTemplate": "/api/profile/get-top-users/{count}",
-      "DownstreamPathTemplate": "/profile/get-top-users/{count}",
+      "UpstreamPathTemplate": "/profile/get-top-users/{count}/",
+      "DownstreamPathTemplate": "/profile/get-top-users/{count}/",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         { "Host": "profile_app", "Port": 80 }
@@ -221,8 +221,8 @@
     },
     {
       "UpstreamHttpMethod": [ "PUT" ],
-      "UpstreamPathTemplate": "/api/profile/change-user-nickname",
-      "DownstreamPathTemplate": "/profile/change-user-nickname",
+      "UpstreamPathTemplate": "/profile/change-user-nickname/",
+      "DownstreamPathTemplate": "/profile/change-user-nickname/",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         { "Host": "profile_app", "Port": 80 }
@@ -236,8 +236,8 @@
     },
     {
       "UpstreamHttpMethod": [ "POST" ],
-        "UpstreamPathTemplate": "/api/friend/add-friend",
-      "DownstreamPathTemplate": "/friend/add-friend",
+        "UpstreamPathTemplate": "/friend/add-friend/",
+      "DownstreamPathTemplate": "/friend/add-friend/",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         { "Host": "profile_app", "Port": 80 }
@@ -251,8 +251,8 @@
     },
     {
       "UpstreamHttpMethod": [ "PUT" ],
-      "UpstreamPathTemplate": "/api/friend/accept-invitation-to-friends",
-      "DownstreamPathTemplate": "/friend/accept-invitation-to-friends",
+      "UpstreamPathTemplate": "/friend/accept-invitation-to-friends/",
+      "DownstreamPathTemplate": "/friend/accept-invitation-to-friends/",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         { "Host": "profile_app", "Port": 80 }
@@ -266,8 +266,8 @@
     },
     {
       "UpstreamHttpMethod": [ "PUT" ],
-      "UpstreamPathTemplate": "/api/friend/reject-invitation-to-friends",
-      "DownstreamPathTemplate": "/friend/reject-invitation-to-friends",
+      "UpstreamPathTemplate": "/friend/reject-invitation-to-friends/",
+      "DownstreamPathTemplate": "/friend/reject-invitation-to-friends/",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         { "Host": "profile_app", "Port": 80 }
@@ -281,8 +281,8 @@
     },
     {
       "UpstreamHttpMethod": [ "PUT" ],
-      "UpstreamPathTemplate": "/api/avatar/change-avatar",
-      "DownstreamPathTemplate": "/avatar/change-avatar",
+      "UpstreamPathTemplate": "/avatar/change-avatar/",
+      "DownstreamPathTemplate": "/avatar/change-avatar/",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         { "Host": "profile_app", "Port": 80 }
@@ -296,8 +296,8 @@
     },
     {
       "UpstreamHttpMethod": [ "GET" ],
-      "UpstreamPathTemplate": "/api/avatar/get-buckets",
-      "DownstreamPathTemplate": "/avatar/get-buckets",
+      "UpstreamPathTemplate": "/avatar/get-buckets/",
+      "DownstreamPathTemplate": "/avatar/get-buckets/",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         { "Host": "profile_app", "Port": 80 }
@@ -311,8 +311,8 @@
     },
     {
       "UpstreamHttpMethod": [ "PUT" ],
-      "UpstreamPathTemplate": "/api/avatar/refresh-avatar",
-      "DownstreamPathTemplate": "/avatar/refresh-avatar",
+      "UpstreamPathTemplate": "/avatar/refresh-avatar/",
+      "DownstreamPathTemplate": "/avatar/refresh-avatar/",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         { "Host": "profile_app", "Port": 80 }
@@ -326,6 +326,6 @@
     }
   ],
   "GlobalConfiguration": {
-    "BaseUrl": "http://localhost:8009"
+    "BaseUrl": "http://gateway:80"
   }
 }

@@ -9,17 +9,17 @@ public static class EmailExtension
     public static WebApplicationBuilder AddEmailConfig(this WebApplicationBuilder builder)
     {
         var configuration = builder.Configuration;
-        var password = Environment.GetEnvironmentVariable("EMAIL_PASSWORD");
 
         builder.Services.Configure<SmtpClientConfig>(configuration.GetSection("SmtpClientConfig"));
         builder.Services.AddSingleton<SmtpClientConfig>(sp =>
         {
             var smtpClientConfig = sp.GetRequiredService<IOptions<SmtpClientConfig>>().Value;
-            
+
+            Console.WriteLine(smtpClientConfig.Password[0]);
             return new SmtpClientConfig()
             {
                 Email = smtpClientConfig.Email,
-                Password = password!,
+                Password = smtpClientConfig.Password,
                 Port = smtpClientConfig.Port,
                 SmtpServer = smtpClientConfig.SmtpServer,
                 UserName = smtpClientConfig.UserName

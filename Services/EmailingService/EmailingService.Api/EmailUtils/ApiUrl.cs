@@ -2,5 +2,5 @@ namespace EmailingService.Api.EmailUtils;
 
 public class ApiUrl
 {
-    public string Url { get; set; }
+    public string Url { get; set; } = string.Empty;
 }               

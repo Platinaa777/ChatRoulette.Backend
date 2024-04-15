@@ -5,5 +5,5 @@ namespace ProfileService.Application.Commands.AddDoomSlayerPoint;
 
 public class AddDoomSlayerPointCommand : IRequest<Result>
 {
-    public string Email { get; set; }
+    public string Email { get; set; } = string.Empty;
 }

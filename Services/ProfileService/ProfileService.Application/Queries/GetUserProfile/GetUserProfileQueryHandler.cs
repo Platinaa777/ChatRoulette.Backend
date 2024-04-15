@@ -46,7 +46,7 @@ public class GetUserProfileQueryHandler
             BirthDateUtc = result.BirthDateUtc.Value,
             Rating = result.Rating.Value,
             Friends = friendsInformation,
-            Achivements = result.Achievements.Select(x => new AchivementResponse()
+            Achivements = result.Achievements.Select(x => new AchievementResponse()
             {
                 Title = AchievementType.FromValue(x.Id)!.Name,
                 Content = AchievementContent.FromValue(x.Id)!.Name

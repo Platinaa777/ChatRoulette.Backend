@@ -4,6 +4,7 @@ WORKDIR /src
 COPY "ChatRoulette.sln" "ChatRoulette.sln"
 
 COPY "ApiGateways/Ocelot.Gateway/Ocelot.Gateway.csproj" "ApiGateways/Ocelot.Gateway/Ocelot.Gateway.csproj"
+COPY "ApiGateways/Yarp.Proxy/Yarp.Proxy.csproj" "ApiGateways/Yarp.Proxy/Yarp.Proxy.csproj"
 
 COPY "Infrastructure/AmazonS3/S3.Client/S3.Client.csproj"        "Infrastructure/AmazonS3/S3.Client/S3.Client.csproj"
 COPY "Infrastructure/AmazonS3/S3.Contracts/S3.Contracts.csproj"  "Infrastructure/AmazonS3/S3.Contracts/S3.Contracts.csproj"
@@ -72,7 +73,7 @@ RUN dotnet restore "ChatRoulette.sln"
 
 COPY . .
 
-WORKDIR /src/Services/AuthService/AuthService.Api
+WORKDIR /src/ApiGateways/Yarp.Proxy
 
 RUN dotnet publish -c Release -o /app
 
@@ -83,4 +84,4 @@ EXPOSE 80
 EXPOSE 443
 
 COPY --from=build /app .
-ENTRYPOINT ["dotnet", "AuthService.Api.dll"]
+ENTRYPOINT ["dotnet", "Yarp.Proxy.dll"]

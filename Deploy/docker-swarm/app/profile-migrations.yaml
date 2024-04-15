@@ -2,7 +2,7 @@ version: '3.9'
 
 services:
   profile_migrations:
-    image: platinaa777/chat-roulette:profile-migrations01
+    image: platinaa777/chat-roulette:profile-migrations02
     environment:
       Jwt__Key: ${AUTH_JWT_KEY}
       DatabaseOptions__ConnectionString: ${PROFILE_CONN_STRING}

@@ -10,7 +10,7 @@
     <ItemGroup>
         <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="7.0.15"/>
         <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="7.0.17" />
-        <PackageReference Include="Ocelot" Version="22.0.1" />
+        <PackageReference Include="Ocelot" Version="19.0.2" />
         <PackageReference Include="Serilog.AspNetCore" Version="8.0.2-dev-00336" />
         <PackageReference Include="Serilog.Extensions.Autofac.DependencyInjection" Version="5.0.0" />
     </ItemGroup>

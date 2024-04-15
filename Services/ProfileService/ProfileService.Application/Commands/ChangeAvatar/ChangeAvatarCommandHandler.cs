@@ -40,7 +40,7 @@ public class ChangeAvatarCommandHandler
         }
 
         var url =await _s3Client.UploadFileAsync(
-            request.Avatar,
+            request.Avatar!,
             bucket: "bucket-chat-roulette",
             profile.Id.Value.ToString(),
             request.ContentType);

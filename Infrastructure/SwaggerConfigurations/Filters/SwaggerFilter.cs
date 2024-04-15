@@ -18,10 +18,10 @@ public class SwaggerFilter : IStartupFilter
     {
         return app =>
         {
-            app.UseHttpPathInfo();
-            app.UseVersion();
             if (_env.IsDevelopment())
             {
+                app.UseHttpPathInfo();
+                app.UseVersion();
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }

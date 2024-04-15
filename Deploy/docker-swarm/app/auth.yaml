@@ -2,7 +2,7 @@ version: '3.9'
 
 services:
   auth_app:
-    image: platinaa777/chat-roulette:auth01
+    image: platinaa777/chat-roulette:auth03
     environment:
       Jwt__Key: ${AUTH_JWT_KEY}
       AuthDbConnection__AUTH_DB_USER: ${AUTH_DB_USER}

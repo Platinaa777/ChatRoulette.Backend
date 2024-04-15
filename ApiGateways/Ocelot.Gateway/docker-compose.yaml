@@ -1,0 +1,22 @@
+version: '3.9'
+
+services:
+  gateway:
+    image: platinaa777/chat-roulette:gateway06
+    environment:
+      Jwt__Key: ${AUTH_JWT_KEY}
+      AuthDbConnection__AUTH_DB_USER: ${AUTH_DB_USER}
+      AuthDbConnection__AUTH_DB_PASSWORD: ${AUTH_DB_PASS}
+      AuthDbConnection__AUTH_DB_HOST: ${AUTH_DB_HOST}
+      AuthDbConnection__AUTH_DB: ${AUTH_DB}
+      AuthDbConnection__AUTH_DB_PORT: ${AUTH_DB_PORT}
+      MessageBroker__UserName: ${MESSAGE_BROKER_USER}
+      MessageBroker__Password: ${MESSAGE_BROKER_PASSWORD}
+      OtlpExporter__Uri: ${OPEN_TELEMETRY_EXPORTER}
+    networks: [ chat-net ]
+    ports:
+      - "8009:80"
+
+networks:
+  chat-net:
+    external: true

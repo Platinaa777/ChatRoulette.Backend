@@ -5,7 +5,8 @@ using ProfileService.Domain.Models.UserProfileAggregate.Repos;
 
 namespace ProfileService.Application.Commands.AddUserProfile;
 
-public class AddUserProfileCommandHandler : IRequestHandler<AddUserProfile.AddUserProfileCommand, Result>
+public class AddUserProfileCommandHandler
+    : IRequestHandler<AddUserProfileCommand, Result>
 {
     private readonly IUserProfileRepository _userProfileRepository;
     private readonly IUnitOfWork _unitOfWork;

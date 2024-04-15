@@ -9,7 +9,7 @@ var builder = WebApplication.CreateBuilder(args);
 var env = builder.Configuration.GetSection("ENV").Value;
 Console.WriteLine(env);
 
-builder.Configuration.SetBasePath(builder.Environment.ContentRootPath)
+var cfg = builder.Configuration.SetBasePath(builder.Environment.ContentRootPath)
     .AddJsonFile($"ocelot.{env}.json")
     .AddEnvironmentVariables()
     .Build();
@@ -30,7 +30,7 @@ builder.Host.UseSerilog((ctx, config) =>
 });
 
 builder.AddJwtAuthentication(builder.Configuration.GetSection("Jwt:Key").Value!);
-builder.Services.AddOcelot(builder.Configuration);
+builder.Services.AddOcelot(cfg);
 builder.Services.AddSignalR();
 builder.Services.AddSingleton<LoggingRequestMiddleware>();
 
@@ -53,9 +53,9 @@ var configuration = new OcelotPipelineConfiguration
     }
 };
 
+app.UseAuthentication();
+app.MapControllers();
 app.UseWebSockets();
 await app.UseOcelot(configuration);
-
-app.UseAuthentication();
 
 app.Run();
