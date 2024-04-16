@@ -25,7 +25,8 @@ public class GetTopUsersQueryHandler
         {
             profiles.Add(new UserProfileInformation() { 
                 UserName = profile.UserName.Value,
-                Rating = profile.Rating.Value
+                Rating = profile.Rating.Value,
+                Avatar = profile.Avatar.Value
             });
         }
 

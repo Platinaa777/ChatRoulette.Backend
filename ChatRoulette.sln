@@ -37,6 +37,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ProfileService", "ProfileService", "{9BC76B2B-69B8-42AC-A6BF-4649677731A0}"
 	ProjectSection(SolutionItems) = preProject
 		Services\ProfileService\docker-compose.yaml = Services\ProfileService\docker-compose.yaml
+		Services\ProfileService\Dockerfile = Services\ProfileService\Dockerfile
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProfileService.Domain", "Services\ProfileService\ProfileService.Domain\ProfileService.Domain.csproj", "{99D22321-68F9-4BB7-BE07-1A0EC901418B}"

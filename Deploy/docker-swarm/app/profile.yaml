@@ -2,7 +2,7 @@ version: '3.9'
 
 services:
   profile_app:
-    image: platinaa777/chat-roulette:profile02
+    image: platinaa777/chat-roulette:profile04
     environment:
       Jwt__Key: ${AUTH_JWT_KEY}
       DatabaseOptions__ConnectionString: ${PROFILE_CONN_STRING}

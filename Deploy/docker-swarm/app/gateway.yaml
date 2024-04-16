@@ -6,7 +6,7 @@ networks:
 
 services:
   gateway:
-    image: platinaa777/chat-roulette:gateway03
+    image: platinaa777/chat-roulette:gateway08
     networks: [ chat-net ]
     environment:
       - Jwt__Key=${AUTH_JWT_KEY}
