@@ -1,0 +1,7 @@
+version: '3.9'
+
+services:
+  nginx-test:
+    image: nginx
+    ports:
+      - "84:80"
