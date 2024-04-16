@@ -2,7 +2,7 @@ using System.Collections.Concurrent;
 using DomainDriverDesignAbstractions;
 using ProfileService.Domain.Models.Identity;
 
-namespace ProfileService.Infrastructure.Repos.Interfaces;
+namespace ProfileService.Infrastructure.PersistenceAbstractions;
 
 public interface IChangeTracker
 {

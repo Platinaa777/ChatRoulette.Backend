@@ -14,6 +14,7 @@ public class InvitationErrors : Error
     public static readonly Error AlreadyFriends = new("Invitation.Error", "Already friends with this user");
     public static readonly Error InvalidOperation = new("Invitation.Error", "Cant update invitation status because is already handled");
     public static readonly Error DeletingError = new("Invitation.Error", "Cant close request about request invitation");
+    public static readonly Error NoInvitations = new("Invitation.Error", "This user does not have any invitations to friend list");
 
     
     public InvitationErrors(string code, string message) : base(code, message)

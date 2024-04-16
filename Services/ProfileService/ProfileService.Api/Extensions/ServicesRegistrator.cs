@@ -11,16 +11,18 @@ using ProfileService.Api.Utils;
 using ProfileService.Application.Assembly;
 using ProfileService.Application.Behaviors;
 using ProfileService.Application.Queries.GetUserProfile;
+using ProfileService.Application.QueryReposAbstractions;
 using ProfileService.Domain.Models.FriendInvitationAggregate.Repos;
 using ProfileService.Domain.Models.UserHistoryAggregate.Repos;
 using ProfileService.Domain.Models.UserProfileAggregate.Repos;
 using ProfileService.Infrastructure.Cache;
 using ProfileService.Infrastructure.Configuration;
+using ProfileService.Infrastructure.PersistenceAbstractions;
+using ProfileService.Infrastructure.QueryRepos;
 using ProfileService.Infrastructure.Repos.Common;
 using ProfileService.Infrastructure.Repos.Implementations.Friend;
 using ProfileService.Infrastructure.Repos.Implementations.History;
 using ProfileService.Infrastructure.Repos.Implementations.Profile;
-using ProfileService.Infrastructure.Repos.Interfaces;
 using Quartz;
 using S3.Client;
 using Serilog;
@@ -38,6 +40,8 @@ public static class ServicesRegistrator
         
         builder.Services.AddScoped<IFriendInvitationRepository, FriendInvitationRepository>();
         builder.Services.AddScoped<IUserHistoryRepository, UserHistoryRepository>();
+
+        builder.Services.AddScoped<IUserQueryRepository, UserQueryRepository>();
         
         builder.Services.AddSingleton<CredentialsChecker>();
         builder.Services.AddSingleton<JwtTokenCreator>();

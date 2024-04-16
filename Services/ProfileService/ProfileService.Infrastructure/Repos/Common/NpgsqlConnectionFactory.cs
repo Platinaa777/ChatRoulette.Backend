@@ -1,7 +1,7 @@
 using Microsoft.Extensions.Options;
 using Npgsql;
 using ProfileService.Infrastructure.Configuration;
-using ProfileService.Infrastructure.Repos.Interfaces;
+using ProfileService.Infrastructure.PersistenceAbstractions;
 
 namespace ProfileService.Infrastructure.Repos.Common;
 
@@ -13,9 +13,10 @@ public class NpgsqlConnectionFactory : IDbConnectionFactory<NpgsqlConnection>
     public NpgsqlConnectionFactory(IOptions<DatabaseOptions> connectionString)
     {
         _connectionString = connectionString.Value.ConnectionString;
+        Console.WriteLine(_connectionString);
     }
     
-    public async Task<NpgsqlConnection> CreateConnection(CancellationToken token)
+    public async Task<NpgsqlConnection> CreateConnectionAsync(CancellationToken token)
     {
         if (_connection != null) return _connection;
 

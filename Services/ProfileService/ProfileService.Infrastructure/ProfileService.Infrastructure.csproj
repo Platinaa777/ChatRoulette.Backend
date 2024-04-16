@@ -17,6 +17,7 @@
     <ItemGroup>
       <ProjectReference Include="..\..\..\Infrastructure\AmazonS3\S3.Client\S3.Client.csproj" />
       <ProjectReference Include="..\..\..\Infrastructure\AmazonS3\S3.Contracts\S3.Contracts.csproj" />
+      <ProjectReference Include="..\ProfileService.Application\ProfileService.Application.csproj" />
       <ProjectReference Include="..\ProfileService.Domain\ProfileService.Domain.csproj" />
     </ItemGroup>
 

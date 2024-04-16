@@ -80,6 +80,12 @@ public class CacheUserProfileRepository : IUserProfileRepository
             AbsoluteExpirationRelativeToNow = TimeSpan.FromHours(1)
         });
         
+        string key2 = $"profile-email-{user.Email.Value}";
+        await _cache.SetStringAsync(key2, JsonConvert.SerializeObject(user.Save()), new DistributedCacheEntryOptions()
+        {
+            AbsoluteExpirationRelativeToNow = TimeSpan.FromHours(1)
+        });
+        
         return await _profileRepository.AddUserAsync(user);
     }
 
@@ -88,6 +94,12 @@ public class CacheUserProfileRepository : IUserProfileRepository
         string key = $"profile-id-{user.Id.Value.ToString()}";
 
         await _cache.SetStringAsync(key, JsonConvert.SerializeObject(user.Save()), new DistributedCacheEntryOptions()
+        {
+            AbsoluteExpirationRelativeToNow = TimeSpan.FromHours(1)
+        });
+        
+        string key2 = $"profile-email-{user.Email.Value}";
+        await _cache.SetStringAsync(key2, JsonConvert.SerializeObject(user.Save()), new DistributedCacheEntryOptions()
         {
             AbsoluteExpirationRelativeToNow = TimeSpan.FromHours(1)
         });

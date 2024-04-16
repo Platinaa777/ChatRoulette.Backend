@@ -27,21 +27,22 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
             .HasConversion(
                 val => val.Value,
                 value => Id.CreateId(value).Value);
-
+        
         // for name
         builder.Property(n => n.UserName)
             .HasColumnName("username")
             .HasConversion(
                 name => name.Value, // to database
-                value => Name.Create(value).Value // from database
-            );
+                value => Name.Create(value).Value); // from database
+
+        builder.HasIndex(x => x.UserName)
+            .IsUnique();
 
         builder.Property(u => u.Email)
             .HasColumnName("email")
             .HasConversion(
                 email => email.Value, // to database
-                value => Email.Create(value).Value // from database
-            );;
+                value => Email.Create(value).Value); // from database
 
         builder.Property(u => u.IsSubmittedEmail)
             .HasColumnName("confirmation");

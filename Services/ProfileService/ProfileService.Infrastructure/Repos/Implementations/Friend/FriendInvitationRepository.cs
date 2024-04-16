@@ -4,7 +4,7 @@ using ProfileService.Domain.Models.FriendInvitationAggregate;
 using ProfileService.Domain.Models.FriendInvitationAggregate.Repos;
 using ProfileService.Domain.Models.FriendInvitationAggregate.Snapshot;
 using ProfileService.Domain.Models.Identity;
-using ProfileService.Infrastructure.Repos.Interfaces;
+using ProfileService.Infrastructure.PersistenceAbstractions;
 
 namespace ProfileService.Infrastructure.Repos.Implementations.Friend;
 
@@ -25,7 +25,7 @@ public class FriendInvitationRepository : IFriendInvitationRepository
     {
         var parameters = new { Id = id };
 
-        var connection = await _factory.CreateConnection(default);
+        var connection = await _factory.CreateConnectionAsync(default);
         
         IEnumerable<FriendInvitationSnapshot> result = await connection
             .QueryAsync<FriendInvitationSnapshot>(FriendInvitationQuery.SqlFindById, 
@@ -51,7 +51,7 @@ public class FriendInvitationRepository : IFriendInvitationRepository
             ReceiverId = receiverId.Value.ToString()
         };
 
-        var connection = await _factory.CreateConnection(default);
+        var connection = await _factory.CreateConnectionAsync(default);
         
         IEnumerable<FriendInvitationSnapshot> result = await connection
             .QueryAsync<FriendInvitationSnapshot>(FriendInvitationQuery.SqlFindByProfileIds, 
@@ -75,7 +75,7 @@ public class FriendInvitationRepository : IFriendInvitationRepository
 
         var command = new CommandDefinition(FriendInvitationQuery.SqlAddInvitation, snapshot);
 
-        var connection = await _factory.CreateConnection(default);
+        var connection = await _factory.CreateConnectionAsync(default);
         var result = await connection.ExecuteAsync(command);
 
         return result == 1;
@@ -87,7 +87,7 @@ public class FriendInvitationRepository : IFriendInvitationRepository
 
         var command = new CommandDefinition(FriendInvitationQuery.SqlUpdateInvitation, snapshot);
 
-        var connection = await _factory.CreateConnection(default);
+        var connection = await _factory.CreateConnectionAsync(default);
         var result = await connection.ExecuteAsync(command);
 
         return result == 1;
@@ -100,7 +100,7 @@ public class FriendInvitationRepository : IFriendInvitationRepository
             Id = invitationId.Value.ToString()
         };
 
-        var connection = await _factory.CreateConnection(default);
+        var connection = await _factory.CreateConnectionAsync(default);
         var command = new CommandDefinition(FriendInvitationQuery.SqlDeleteInvitation, parameters);
 
         var result = await connection.ExecuteAsync(command);

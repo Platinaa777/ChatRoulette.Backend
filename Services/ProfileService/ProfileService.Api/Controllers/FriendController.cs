@@ -5,6 +5,7 @@ using ProfileService.Api.Utils;
 using ProfileService.Application.Commands.AcceptFriendInvitation;
 using ProfileService.Application.Commands.RejectFriendInvitation;
 using ProfileService.Application.Commands.SendFriendInvitation;
+using ProfileService.Application.Queries.GetInvitations;
 using ProfileService.HttpModels.Requests;
 
 namespace ProfileService.Api.Controllers;
@@ -80,6 +81,24 @@ public class FriendController : ControllerBase
             new RejectFriendInvitationCommand(
                 invitationSenderEmail: email,
                 request.InvitationReceiverEmail));
+
+        if (response.IsFailure)
+            return BadRequest(response);
+
+        return Ok(response);
+    }
+
+    [HttpGet("get-invitations")]
+    public async Task<ActionResult<Result>> GetInvitationsList()
+    {
+        var email = _credentialsChecker.GetEmailFromJwtHeader(Request.Headers["Authorization"]
+            .FirstOrDefault()?
+            .Replace("Bearer ", string.Empty));
+
+        if (email is null)
+            return Unauthorized();
+
+        var response = await _mediator.Send(new GetInvitationsQuery(email));
 
         if (response.IsFailure)
             return BadRequest(response);

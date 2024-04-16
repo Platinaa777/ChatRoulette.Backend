@@ -4,6 +4,7 @@ WORKDIR /src
 COPY "ChatRoulette.sln" "ChatRoulette.sln"
 
 COPY "ApiGateways/Ocelot.Gateway/Ocelot.Gateway.csproj" "ApiGateways/Ocelot.Gateway/Ocelot.Gateway.csproj"
+COPY "ApiGateways/Yarp.Proxy/Yarp.Proxy.csproj" "ApiGateways/Yarp.Proxy/Yarp.Proxy.csproj"
 
 COPY "Infrastructure/AmazonS3/S3.Client/S3.Client.csproj"        "Infrastructure/AmazonS3/S3.Client/S3.Client.csproj"
 COPY "Infrastructure/AmazonS3/S3.Contracts/S3.Contracts.csproj"  "Infrastructure/AmazonS3/S3.Contracts/S3.Contracts.csproj"

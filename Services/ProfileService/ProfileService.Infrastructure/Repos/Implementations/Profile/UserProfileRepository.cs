@@ -4,7 +4,7 @@ using ProfileService.Domain.Models.Identity;
 using ProfileService.Domain.Models.UserProfileAggregate;
 using ProfileService.Domain.Models.UserProfileAggregate.Repos;
 using ProfileService.Domain.Models.UserProfileAggregate.Snapshot;
-using ProfileService.Infrastructure.Repos.Interfaces;
+using ProfileService.Infrastructure.PersistenceAbstractions;
 
 namespace ProfileService.Infrastructure.Repos.Implementations.Profile;
 
@@ -25,7 +25,7 @@ public class UserProfileRepository : IUserProfileRepository
     {
         var parameters = new { Id = id };
 
-        var connection = await _factory.CreateConnection(default);
+        var connection = await _factory.CreateConnectionAsync(default);
         
         IEnumerable<UserProfileSnapshot> result = await connection
             .QueryAsync<UserProfileSnapshot, (string? profileId, string? friendId), UserProfileSnapshot>(
@@ -67,7 +67,7 @@ public class UserProfileRepository : IUserProfileRepository
     {
         var parameters = new { Email = email };
 
-        var connection = await _factory.CreateConnection(default);
+        var connection = await _factory.CreateConnectionAsync(default);
 
         IEnumerable<UserProfileSnapshot> result = await connection
             .QueryAsync<UserProfileSnapshot, (string? profileId, string? friendId), UserProfileSnapshot>(
@@ -110,7 +110,7 @@ public class UserProfileRepository : IUserProfileRepository
 
         var command = new CommandDefinition(ProfileQuery.SqlAddUser, snapshot);
 
-        var connection = await _factory.CreateConnection(default);
+        var connection = await _factory.CreateConnectionAsync(default);
         var result = await connection.ExecuteAsync(command);
 
         return result == 1;
@@ -122,7 +122,7 @@ public class UserProfileRepository : IUserProfileRepository
 
         var command = new CommandDefinition(ProfileQuery.SqlUpdateUser, snapshot);
 
-        var connection = await _factory.CreateConnection(default);
+        var connection = await _factory.CreateConnectionAsync(default);
         var result = await connection.ExecuteAsync(command);
 
         var parameters = new { Id = user.Id.Value.ToString() };
@@ -166,7 +166,7 @@ public class UserProfileRepository : IUserProfileRepository
 
     public async Task<List<UserProfile>> GetAllUsers(int count)
     {
-        var connection = await _factory.CreateConnection(default);
+        var connection = await _factory.CreateConnectionAsync(default);
 
         var parameters = new
         {

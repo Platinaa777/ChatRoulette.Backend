@@ -49,11 +49,23 @@ public class AvatarController : ControllerBase
         
         return Ok(result);
     }
-
+    
     [HttpGet("get-buckets")]
     public async Task<List<string>> GetBuckets()
     {
         return await _s3Client.GetBuckets();
+    }
+
+    [HttpGet("get-objects/{id}")]
+    public async Task<ActionResult<List<string>>> GetPhoto(string id)
+    {
+        var s3Object = await _s3Client.FindFileAsync(bucket: "achievement-s3-objects",
+            filename: id + ".jpg");
+
+        if (s3Object is null)
+            return BadRequest();
+
+        return Ok(s3Object.Link);
     }
     
     [HttpGet("create-bucket")]

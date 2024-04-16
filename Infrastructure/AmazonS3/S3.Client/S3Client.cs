@@ -30,28 +30,37 @@ public class S3Client : IS3Client
 
     public async Task<S3ObjectDto?> FindFileAsync(string bucket, string filename)
     {
-        GetObjectRequest request = new GetObjectRequest
+        try
         {
-            BucketName = bucket,
-            Key = filename
-        };
+            GetObjectRequest request = new GetObjectRequest
+            {
+                BucketName = bucket,
+                Key = filename
+            };
         
-        GetObjectResponse response = await _amazonS3.GetObjectAsync(request);
+            GetObjectResponse response = await _amazonS3.GetObjectAsync(request);
 
-        var urlRequest = new GetPreSignedUrlRequest()
+            var urlRequest = new GetPreSignedUrlRequest()
+            {
+                BucketName = bucket,
+                Key = filename,
+                Expires = DateTime.Now.AddHours(180)
+            };
+
+            S3ObjectDto s3Object = new S3ObjectDto()
+            {
+                Name = response.Key,
+                Link = await _amazonS3.GetPreSignedURLAsync(urlRequest)
+            };
+            
+            return s3Object;
+        }
+        catch (Exception e)
         {
-            BucketName = bucket,
-            Key = filename,
-            Expires = DateTime.Now.AddHours(24)
-        };
+            Console.WriteLine($"bucket: {bucket}, filename: {filename} not found");
+        }
 
-        S3ObjectDto s3Object = new S3ObjectDto()
-        {
-            Name = response.Key,
-            Link = _amazonS3.GetPreSignedURL(urlRequest)
-        };
-
-        return s3Object;
+        return null;
     }
 
     public async Task<List<string>> GetBuckets()

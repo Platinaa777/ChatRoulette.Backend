@@ -3,7 +3,7 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using ProfileService.Api.Utils;
 using ProfileService.Application.Commands.AddUserProfile;
-using ProfileService.Application.Commands.ChangeNickNameProfile;
+using ProfileService.Application.Commands.ChangeUserNameProfile;
 using ProfileService.Application.Models;
 using ProfileService.Application.Queries.GetTopUsers;
 using ProfileService.Application.Queries.GetUserProfile;
@@ -65,12 +65,15 @@ public class UserProfileController : ControllerBase
             Email = request.Email,
             UserName = request.UserName
         });
+
+        if (result.IsFailure)
+            return BadRequest(result);
         
         return Ok(result);
     }
     
-    [HttpPut("change-user-nickname")]
-    public async Task<ActionResult<Result>> ChangeNickName([FromBody] ChangeNicknameRequest request)
+    [HttpPut("change-username")]
+    public async Task<ActionResult<Result>> ChangeUserName([FromBody] ChangeUserNameRequest request)
     {
         var email = _credentialsChecker.GetEmailFromJwtHeader(Request.Headers["Authorization"]
             .FirstOrDefault()?
@@ -79,11 +82,14 @@ public class UserProfileController : ControllerBase
         if (email is null)
             return Unauthorized();
         
-        var result = await _mediator.Send(new ChangeNickNameProfileCommand()
+        var result = await _mediator.Send(new ChangeUserNameProfileCommand()
         {
             Email = email,
-            NickName = request.UserName
+            UserName = request.UserName
         });
+
+        if (result.IsFailure)
+            return BadRequest(result);
         
         return Ok(result);
     }

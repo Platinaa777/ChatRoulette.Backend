@@ -4,10 +4,7 @@ using ProfileService.Domain.Models.Identity;
 using ProfileService.Domain.Models.UserHistoryAggregate;
 using ProfileService.Domain.Models.UserHistoryAggregate.Repos;
 using ProfileService.Domain.Models.UserHistoryAggregate.Snapshots;
-using ProfileService.Domain.Models.UserProfileAggregate;
-using ProfileService.Domain.Models.UserProfileAggregate.Snapshot;
-using ProfileService.Infrastructure.Repos.Implementations.Profile;
-using ProfileService.Infrastructure.Repos.Interfaces;
+using ProfileService.Infrastructure.PersistenceAbstractions;
 
 namespace ProfileService.Infrastructure.Repos.Implementations.History;
 
@@ -28,7 +25,7 @@ public class UserHistoryRepository : IUserHistoryRepository
     {
         var parameters = new { UserId = id.Value.ToString() };
 
-        var connection = await _factory.CreateConnection(default);
+        var connection = await _factory.CreateConnectionAsync(default);
         
         IEnumerable<UserHistorySnapshot> result = await connection
             .QueryAsync<UserHistorySnapshot>(
@@ -51,7 +48,7 @@ public class UserHistoryRepository : IUserHistoryRepository
     {
         var parameters = new { Id = id.Value.ToString() };
 
-        var connection = await _factory.CreateConnection(default);
+        var connection = await _factory.CreateConnectionAsync(default);
         
         IEnumerable<UserHistorySnapshot> result = await connection
             .QueryAsync<UserHistorySnapshot>(
@@ -76,7 +73,7 @@ public class UserHistoryRepository : IUserHistoryRepository
 
         var command = new CommandDefinition(HistoryQuery.SqlAddHistory, snapshot);
 
-        var connection = await _factory.CreateConnection(default);
+        var connection = await _factory.CreateConnectionAsync(default);
         var result = await connection.ExecuteAsync(command);
 
         return result == 1;
@@ -88,7 +85,7 @@ public class UserHistoryRepository : IUserHistoryRepository
 
         var command = new CommandDefinition(HistoryQuery.SqlUpdateUpdate, snapshot);
 
-        var connection = await _factory.CreateConnection(default);
+        var connection = await _factory.CreateConnectionAsync(default);
         var result = await connection.ExecuteAsync(command);
 
         return result == 1;

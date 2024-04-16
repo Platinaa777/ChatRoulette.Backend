@@ -76,7 +76,7 @@ public class UserProfile : AggregateRoot<Id>
         return Result.Success();
     }
 
-    public Result SetNickName(string name)
+    public Result UpdateUserName(string name)
     {
         var newName = Name.Create(name);
         if (newName.IsFailure)

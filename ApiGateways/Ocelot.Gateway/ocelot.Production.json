@@ -221,8 +221,8 @@
     },
     {
       "UpstreamHttpMethod": [ "PUT" ],
-      "UpstreamPathTemplate": "/profile/change-user-nickname/",
-      "DownstreamPathTemplate": "/profile/change-user-nickname/",
+      "UpstreamPathTemplate": "/profile/change-username/",
+      "DownstreamPathTemplate": "/profile/change-username/",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         { "Host": "profile_app", "Port": 80 }
@@ -268,6 +268,21 @@
       "UpstreamHttpMethod": [ "PUT" ],
       "UpstreamPathTemplate": "/friend/reject-invitation-to-friends/",
       "DownstreamPathTemplate": "/friend/reject-invitation-to-friends/",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        { "Host": "profile_app", "Port": 80 }
+      ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+      },
+      "RouteClaimsRequirement": {
+        "Role" : [ "Admin", "ActivatedUser" ]
+      }
+    },
+    {
+      "UpstreamHttpMethod": [ "GET" ],
+      "UpstreamPathTemplate": "/friend/get-invitations/",
+      "DownstreamPathTemplate": "/friend/get-invitations/",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         { "Host": "profile_app", "Port": 80 }

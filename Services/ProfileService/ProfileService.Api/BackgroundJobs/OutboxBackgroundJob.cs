@@ -6,7 +6,6 @@ using Newtonsoft.Json;
 using Npgsql;
 using ProfileService.Infrastructure.Configuration;
 using ProfileService.Infrastructure.OutboxPattern;
-using ProfileService.Infrastructure.Repos.Interfaces;
 using Quartz;
 using Serilog;
 

@@ -8,6 +8,7 @@ public class ProfileResponse
     public string Email { get; init; } = string.Empty;
     public DateTime BirthDateUtc { get; init; }
     public int Rating { get; init; }
+    public string Avatar { get; set; } = string.Empty;
     public List<FriendInformation> Friends { get; init; } = new();
-    public List<AchievementResponse> Achivements { get; set; } = new();
+    public List<AchievementResponse> Achievements { get; set; } = new();
 }

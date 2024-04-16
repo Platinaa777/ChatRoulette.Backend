@@ -1,7 +1,7 @@
 using System.Collections.Concurrent;
 using DomainDriverDesignAbstractions;
 using ProfileService.Domain.Models.Identity;
-using ProfileService.Infrastructure.Repos.Interfaces;
+using ProfileService.Infrastructure.PersistenceAbstractions;
 
 namespace ProfileService.Infrastructure.Repos.Common;
 

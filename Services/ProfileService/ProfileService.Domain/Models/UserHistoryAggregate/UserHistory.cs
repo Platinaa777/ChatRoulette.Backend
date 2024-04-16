@@ -31,7 +31,7 @@ public class UserHistory : AggregateRoot<Id>
     public void IncreaseAvatarPoints()
     {
         AvatarPoints++;
-        if (AvatarPoints >= 25)
+        if (AvatarPoints >= 5)
         {
             RaiseDomainEvent(new ReceivedAvatarAchievementDomainEvent(UserId.Value.ToString()));
         }

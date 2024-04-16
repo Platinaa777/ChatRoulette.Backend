@@ -1,11 +1,10 @@
 using System.Transactions;
 using Dapper;
 using DomainDriverDesignAbstractions;
-using MediatR;
 using Newtonsoft.Json;
 using Npgsql;
 using ProfileService.Infrastructure.OutboxPattern;
-using ProfileService.Infrastructure.Repos.Interfaces;
+using ProfileService.Infrastructure.PersistenceAbstractions;
 
 namespace ProfileService.Infrastructure.Repos.Common;
 
@@ -27,7 +26,7 @@ public class UnitOfWork : IUnitOfWork
     {
         if (_transaction != null) return;
         
-        var connection = await _factory.CreateConnection(token);
+        var connection = await _factory.CreateConnectionAsync(token);
         _transaction = await connection.BeginTransactionAsync(token);
     }
 
@@ -51,7 +50,7 @@ public class UnitOfWork : IUnitOfWork
                             new JsonSerializerSettings() { TypeNameHandling = TypeNameHandling.All })
                     })).ToList();
         
-        var connection = await _factory.CreateConnection(token);
+        var connection = await _factory.CreateConnectionAsync(token);
 
         foreach (var outboxMessage in domainEvents)
         {
