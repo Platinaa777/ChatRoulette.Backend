@@ -126,6 +126,14 @@ public static class ServicesRegistrator
         var region = Environment.GetEnvironmentVariable("AWS_REGION");
         var accessKey = Environment.GetEnvironmentVariable("AWS_ACCESS_KEY");
         var secretKey = Environment.GetEnvironmentVariable("AWS_SECRET_KEY");
+
+        if (builder.Configuration["ENV"] == "Production")
+        {
+            serviceUrl = builder.Configuration["AWS:AWS_SERVICE_URL"];
+            region = builder.Configuration["AWS:AWS_REGION"];
+            accessKey = builder.Configuration["AWS:AWS_ACCESS_KEY"];
+            secretKey = builder.Configuration["AWS:AWS_SECRET_KEY"];
+        }
         
         builder.Services.AddSingleton<IAmazonS3>(x =>
         {

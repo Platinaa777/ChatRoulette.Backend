@@ -1,14 +1,15 @@
 using System.Security.Claims;
+using AuthService.Application.Security;
 using AuthService.Infrastructure.JwtGenerator;
 
 namespace AuthService.Api.Utils;
 
 public class RoleIdentifier
 {
-    private readonly JwtTokenCreator _jwtManager;
+    private readonly IJwtManager _jwtManager;
 
     public RoleIdentifier(
-        JwtTokenCreator jwtManager)
+        IJwtManager jwtManager)
     {
         _jwtManager = jwtManager;
     }

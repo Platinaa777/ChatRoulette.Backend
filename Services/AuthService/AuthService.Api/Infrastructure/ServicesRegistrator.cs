@@ -89,7 +89,7 @@ public static class ServicesRegistrator
     {
         var configuration = builder.Configuration;
 
-        builder.Services.AddSingleton<RoleIdentifier>();
+        builder.Services.AddScoped<RoleIdentifier>();
         builder.Services.AddScoped<IJwtManager, JwtTokenCreator>();
         builder.Services.AddScoped<IHasherPassword, Hasher>();
         builder.Services.Configure<Jwt>(configuration.GetSection("Jwt"));

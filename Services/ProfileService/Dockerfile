@@ -39,6 +39,8 @@ COPY "Services/Chat/Chat.DataContext/Chat.DataContext.csproj"       "Services/Ch
 COPY "Services/Chat/Chat.Domain/Chat.Domain.csproj"                 "Services/Chat/Chat.Domain/Chat.Domain.csproj"
 COPY "Services/Chat/Chat.HttpModels/Chat.HttpModels.csproj"         "Services/Chat/Chat.HttpModels/Chat.HttpModels.csproj"
 COPY "Services/Chat/Chat.Infrastructure/Chat.Infrastructure.csproj" "Services/Chat/Chat.Infrastructure/Chat.Infrastructure.csproj"
+COPY "Services/Chat/Chat.Grpc/Chat.Grpc.csproj"                     "Services/Chat/Chat.Grpc/Chat.Grpc.csproj"
+COPY "Services/Chat/Chat.GrpcClient/Chat.GrpcClient.csproj"         "Services/Chat/Chat.GrpcClient/Chat.GrpcClient.csproj"
 
 # EMAIL
 COPY "Services/EmailingService/Emailing.HttpModels/Emailing.HttpModels.csproj" "Services/EmailingService/Emailing.HttpModels/Emailing.HttpModels.csproj"

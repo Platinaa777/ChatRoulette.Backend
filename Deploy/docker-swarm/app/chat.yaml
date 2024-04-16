@@ -2,7 +2,7 @@ version: '3.9'
 
 services:
   chat_app:
-    image: platinaa777/chat-roulette:chat01
+    image: platinaa777/chat-roulette:chat02
     environment:
       ChatDbConnection__CHAT_DB_USER: ${CHAT_DB_USER}
       ChatDbConnection__CHAT_DB_PASSWORD: ${CHAT_DB_PASS}

@@ -1,9 +1,9 @@
 {
   "Routes": [
     {
-      "UpstreamPathTemplate": "/auth/info/{email}/{password}/",
+      "UpstreamPathTemplate": "/auth/info/",
       "UpstreamHttpMethod": [ "GET" ],
-      "DownstreamPathTemplate": "/auth/info/{email}/{password}/",
+      "DownstreamPathTemplate": "/auth/info/",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {

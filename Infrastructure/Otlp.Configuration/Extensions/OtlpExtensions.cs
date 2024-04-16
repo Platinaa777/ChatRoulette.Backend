@@ -13,7 +13,9 @@ public static class OtlpExtensions
         builder.Services.AddOpenTelemetry()
             .WithTracing(b =>
             {
-                b.SetResourceBuilder(ResourceBuilder.CreateDefault().AddService(Assembly.GetExecutingAssembly().GetName().Name!));
+                b.SetResourceBuilder(ResourceBuilder.CreateDefault()
+                    .AddService(Assembly.GetExecutingAssembly().GetName().Name!));
+                
                 b.AddAspNetCoreInstrumentation();
                 b.AddEntityFrameworkCoreInstrumentation();
                 b.AddRedisInstrumentation();
