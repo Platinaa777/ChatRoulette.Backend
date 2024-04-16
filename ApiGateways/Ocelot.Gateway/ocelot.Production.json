@@ -235,6 +235,21 @@
       }
     },
     {
+      "UpstreamHttpMethod": [ "GET" ],
+      "UpstreamPathTemplate": "/profile/get-recent-users/",
+      "DownstreamPathTemplate": "/profile/get-recent-users/",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        { "Host": "profile_app", "Port": 80 }
+      ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+      },
+      "RouteClaimsRequirement": {
+        "Role" : [ "Admin", "ActivatedUser" ]
+      }
+    },
+    {
       "UpstreamHttpMethod": [ "POST" ],
         "UpstreamPathTemplate": "/friend/add-friend/",
       "DownstreamPathTemplate": "/friend/add-friend/",

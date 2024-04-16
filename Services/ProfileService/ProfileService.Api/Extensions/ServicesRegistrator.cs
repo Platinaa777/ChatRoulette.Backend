@@ -2,9 +2,12 @@ using Amazon.S3;
 using AuthService.Application.JwtConfig;
 using AuthService.Infrastructure.Extensions.Jwt;
 using AuthService.Infrastructure.JwtGenerator;
+using Chat.GrpcClient;
+using Chat.GrpcClient.Configuration;
 using DomainDriverDesignAbstractions;
 using FluentValidation;
 using MediatR;
+using Microsoft.Extensions.Options;
 using Npgsql;
 using ProfileService.Api.BackgroundJobs;
 using ProfileService.Api.Utils;
@@ -135,6 +138,19 @@ public static class ServicesRegistrator
 
             return new AmazonS3Client(accessKey, secretKey, cfg);
         });
+
+        return builder;
+    }
+
+    public static WebApplicationBuilder AddGrpcChatClient(this WebApplicationBuilder builder)
+    {
+        builder.Services.Configure<ChatApiConnectionString>(
+            builder.Configuration.GetSection("ChatApiConnectionString"));
+        builder.Services.AddSingleton<ChatApiConnectionString>(
+            sp => sp.GetRequiredService<IOptions<ChatApiConnectionString>>().Value);
+
+        builder.Services.AddScoped<IChatGrpcClient, ChatGrpcClient>();
+        builder.Services.AddGrpc();
 
         return builder;
     }

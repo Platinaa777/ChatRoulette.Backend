@@ -11,6 +11,7 @@
       <ProjectReference Include="..\..\..\Infrastructure\SwaggerConfigurations\SwaggerConfigurations.csproj" />
       <ProjectReference Include="..\Chat.Application\Chat.Application.csproj" />
       <ProjectReference Include="..\Chat.DataContext\Chat.DataContext.csproj" />
+      <ProjectReference Include="..\Chat.Grpc\Chat.Grpc.csproj" />
       <ProjectReference Include="..\Chat.Infrastructure\Chat.Infrastructure.csproj" />
     </ItemGroup>
 

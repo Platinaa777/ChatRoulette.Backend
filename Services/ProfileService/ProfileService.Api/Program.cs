@@ -18,6 +18,7 @@ builder.AddBackgroundJobs();
 builder.AddS3Storage();
 builder.AddRedisCache();
 builder.AddMetricsAndTracing();
+builder.AddGrpcChatClient();
 
 var app = builder.Build();
 

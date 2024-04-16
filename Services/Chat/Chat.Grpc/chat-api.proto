@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+option csharp_namespace = "Chat.Grpc";
+
+package ChatApi;
+
+service ChatApiGrpc {
+  rpc GetRecentUserPeers(GetRecentUserPeersRequest) returns (GetRecentUserPeersResponse);
+}
+
+message GetRecentUserPeersRequest {
+  string email = 1;
+}
+
+message GetRecentUserPeersResponse {
+  repeated string recent_peer_emails = 1;
+}

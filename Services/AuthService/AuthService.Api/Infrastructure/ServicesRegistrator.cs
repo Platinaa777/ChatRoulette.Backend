@@ -1,4 +1,5 @@
 using AuthService.Api.BackgroundJobs;
+using AuthService.Api.Utils;
 using AuthService.Application.Assembly;
 using AuthService.Application.Behaviors;
 using AuthService.Application.Cache;
@@ -87,7 +88,8 @@ public static class ServicesRegistrator
     public static WebApplicationBuilder AddSecurity(this WebApplicationBuilder builder)
     {
         var configuration = builder.Configuration;
-        
+
+        builder.Services.AddSingleton<RoleIdentifier>();
         builder.Services.AddScoped<IJwtManager, JwtTokenCreator>();
         builder.Services.AddScoped<IHasherPassword, Hasher>();
         builder.Services.Configure<Jwt>(configuration.GetSection("Jwt"));

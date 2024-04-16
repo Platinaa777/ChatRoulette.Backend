@@ -32,11 +32,32 @@ public class UserQueryRepository : IUserQueryRepository
                 @"
                     SELECT email as Email, user_name as UserName, avatar as Avatar
                     FROM user_profiles LEFT JOIN invitations ON user_profile.id = invitations.receiver_id
-                    WHERE email = @email;
+                    WHERE email = @Email;
                 ", 
                 param: parameters);
 
         return result.ToList();
 
+    }
+
+    public async Task<RecentPeerInformation?> GetRecentPeersInformation(string peerEmail, CancellationToken cancellationToken = default)
+    {
+        var connection = await _factory.CreateConnectionAsync(cancellationToken);
+
+        var parameters = new
+        {
+            PeerEmail = peerEmail
+        };
+        
+        IEnumerable<RecentPeerInformation> result = await connection
+            .QueryAsync<RecentPeerInformation>(
+                @"
+                    SELECT email as Email, user_name as UserName, rating as Rating, avatar as Avatar
+                    FROM user_profiles
+                    WHERE email = @PeerEmail;
+                ", 
+                param: parameters);
+
+        return result.FirstOrDefault();
     }
 }

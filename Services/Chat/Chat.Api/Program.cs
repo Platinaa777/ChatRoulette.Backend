@@ -1,3 +1,4 @@
+using Chat.Api.GrpcServices;
 using Chat.Api.Infrastructure;
 using Chat.Api.WebSockets;
 using MassTransit.Client.Extensions;
@@ -17,6 +18,7 @@ builder.AddMassTransit();
 builder.AddApplicationServices();
 builder.AddMetricsAndTracing();
 builder.AddBackgroundJobs();
+builder.Services.AddGrpc();
 
 var app = builder.Build();
 
@@ -27,6 +29,8 @@ app.UseCors(x => x
     .AllowAnyHeader()
     .SetIsOriginAllowed(_ => true)
     .AllowCredentials());
+
+app.MapGrpcService<ChatApiGrpcService>();
 
 app.UseEndpoints(routes =>
 {

@@ -1,4 +1,5 @@
 using AuthService.Api.Mappers;
+using AuthService.Api.Utils;
 using AuthService.Application.Commands.GenerateToken;
 using AuthService.Application.Commands.LogoutUser;
 using AuthService.HttpModels.Requests;
@@ -16,10 +17,14 @@ namespace AuthService.Api.Controllers;
 public class AuthController : ControllerBase
 {
     private readonly IMediator _mediator;
+    private readonly RoleIdentifier _identifier;
 
-    public AuthController(IMediator mediator)
+    public AuthController(
+        IMediator mediator,
+        RoleIdentifier identifier)
     {
         _mediator = mediator;
+        _identifier = identifier;
     }
 
     [HttpGet("test")]
@@ -31,14 +36,16 @@ public class AuthController : ControllerBase
     }
 
     [HttpGet("info")]
-    public async Task<ActionResult<Result<UserInformationResponse>>> GetUserInfo(
-        [FromQuery] string email,
-        [FromQuery] string password)
+    public ActionResult<Result<UserInformationResponse>> GetUserInfo()
     {
-        var request = new GetUserDataRequest() { Email = email, Password = password }; 
-        var result = await _mediator.Send(request.ToQuery());
+        var role = _identifier.GetRoleFromJwtHeader(Request.Headers["Authorization"]
+            .FirstOrDefault()?
+            .Replace("Bearer ", string.Empty));
 
-        return Ok(result);
+        if (role is null)
+            return BadRequest("Role not found in token");
+
+        return Ok(role);
     }
     
     /// <summary>

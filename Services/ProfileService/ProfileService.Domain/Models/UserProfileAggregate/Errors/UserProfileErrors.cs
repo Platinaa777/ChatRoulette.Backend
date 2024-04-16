@@ -22,6 +22,7 @@ public class UserProfileErrors : Error
     public static readonly Error AvatarDoesNotExists = new("UserProfile.Error.Avatar", "Avatar cant be update because does not exist");
     public static readonly Error YoungUser = new("UserProfile.Error.Age", "User is too young");
     public static readonly Error OldUser = new("UserProfile.Error.Age", "User is older than 100 years old");
+    public static readonly Error NoRecentPeerHistory = new("UserProfile.Error.Age", "User does not have peer history");
 
 
     public UserProfileErrors(string code, string message) : base(code, message)

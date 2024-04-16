@@ -135,4 +135,12 @@ public static class ServicesRegistrator
 
         return builder;
     }
+
+    public static WebApplicationBuilder AddGrpcServices(this WebApplicationBuilder builder)
+    {
+        builder.Services.AddGrpc();
+
+        return builder;
+    }
+
 }
