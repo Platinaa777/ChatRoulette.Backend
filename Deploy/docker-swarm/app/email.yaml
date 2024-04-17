@@ -2,15 +2,14 @@ version: '3.9'
 
 services:
   email_app:
-    image: platinaa777/chat-roulette:email${EMAIL_TAG}
+    image: platinaa777/chat-roulette:email${BUILD_NUMBER}
     environment:
-      EMAIL_TAG: ${EMAIL_TAG}
       MessageBroker__UserName: ${MESSAGE_BROKER_USER}
       MessageBroker__Password: ${MESSAGE_BROKER_PASSWORD}
       OtlpExporter__Uri: ${OPEN_TELEMETRY_EXPORTER}
       SmtpClientConfig__Password: ${EMAIL_PASSWORD}
       ApiUrl__Url: ${EMAIL_API_URL}
-      Redirect__Url: ${EMAIL_REDIRECT_URL}
+      Redirect__Url: ${EMAIL_REDIRECT_URL}~
     networks: [ chat-net ]
 
   redis_cache_email:
