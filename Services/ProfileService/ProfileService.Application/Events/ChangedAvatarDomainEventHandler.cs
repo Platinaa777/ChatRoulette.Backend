@@ -11,15 +11,20 @@ public class ChangedAvatarDomainEventHandler
     : INotificationHandler<ChangedAvatarDomainEvent>
 {
     private readonly IUserHistoryRepository _historyRepository;
+    private readonly IUnitOfWork _unitOfWork;
 
     public ChangedAvatarDomainEventHandler(
-        IUserHistoryRepository historyRepository)
+        IUserHistoryRepository historyRepository,
+        IUnitOfWork unitOfWork)
     {
         _historyRepository = historyRepository;
+        _unitOfWork = unitOfWork;
     }
     
     public async Task Handle(ChangedAvatarDomainEvent notification, CancellationToken cancellationToken)
     {
+
+        await _unitOfWork.StartTransaction(cancellationToken);
         var userId = Id.Create(notification.UserId).Value;
 
         var userHistory = await _historyRepository.FindByUserId(userId);
@@ -38,5 +43,7 @@ public class ChangedAvatarDomainEventHandler
         userHistory.IncreaseAvatarPoints();
 
         await _historyRepository.UpdateHistory(userHistory);
+
+        await _unitOfWork.SaveChangesAsync(cancellationToken);
     }
 }

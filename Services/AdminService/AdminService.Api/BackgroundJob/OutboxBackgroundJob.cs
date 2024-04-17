@@ -6,6 +6,7 @@ using Quartz;
 
 namespace AdminService.Api.BackgroundJob;
 
+[DisallowConcurrentExecution]
 public class OutboxBackgroundJob : IJob
 {
     private readonly DataContext.Database.DataContext _dbContext;

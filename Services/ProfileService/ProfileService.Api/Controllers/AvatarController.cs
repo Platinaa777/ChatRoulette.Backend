@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using ProfileService.Api.Utils;
 using ProfileService.Application.Commands.ChangeAvatar;
 using ProfileService.Application.Commands.GenerateNewAvatarUrl;
+using ProfileService.Application.Constants;
 using ProfileService.Application.Models;
 using S3.Client;
 
@@ -59,7 +60,7 @@ public class AvatarController : ControllerBase
     [HttpGet("get-objects/{id}")]
     public async Task<ActionResult<List<string>>> GetPhoto(string id)
     {
-        var s3Object = await _s3Client.FindFileAsync(bucket: "achievement-s3-objects",
+        var s3Object = await _s3Client.FindFileAsync(bucket: S3Buckets.Achievement,
             filename: id + ".jpg");
 
         if (s3Object is null)

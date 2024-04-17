@@ -1,5 +1,6 @@
 using AuthService.Application.Cache;
 using Microsoft.Extensions.Caching.Distributed;
+using Newtonsoft.Json;
 
 namespace AuthService.Infrastructure.Cache;
 
@@ -24,5 +25,6 @@ public class RedisCache : ICacheStorage
             AbsoluteExpirationRelativeToNow = TimeSpan.FromHours(1)
         }, cancellationToken);
 
+        await _cache.SetStringAsync(key, JsonConvert.SerializeObject(DateTime.UtcNow.AddHours(1)), cancellationToken);
     }
 }

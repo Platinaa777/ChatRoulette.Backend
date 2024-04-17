@@ -3,6 +3,7 @@ using Quartz;
 
 namespace Chat.Api.BackgroundJobs;
 
+[DisallowConcurrentExecution]
 public class DefineWinnerJob : IJob
 {
     private readonly ChatHub _chatHub;

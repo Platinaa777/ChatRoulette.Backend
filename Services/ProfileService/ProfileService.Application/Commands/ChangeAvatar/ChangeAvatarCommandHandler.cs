@@ -1,6 +1,7 @@
 using Amazon.Runtime.Internal.Endpoints.StandardLibrary;
 using DomainDriverDesignAbstractions;
 using MediatR;
+using ProfileService.Application.Constants;
 using ProfileService.Application.Models;
 using ProfileService.Domain.Models.UserHistoryAggregate.Repos;
 using ProfileService.Domain.Models.UserProfileAggregate.Errors;
@@ -36,12 +37,12 @@ public class ChangeAvatarCommandHandler
 
         if (profile.Avatar.IsExists())
         {
-            await _s3Client.DeleteFile("bucket-chat-roulette", profile.Id.Value.ToString());
+            await _s3Client.DeleteFile(S3Buckets.Avatar, profile.Id.Value.ToString());
         }
 
         var url =await _s3Client.UploadFileAsync(
             request.Avatar!,
-            bucket: "bucket-chat-roulette",
+            bucket: S3Buckets.Avatar,
             profile.Id.Value.ToString(),
             request.ContentType);
         

@@ -7,6 +7,7 @@ using Quartz;
 
 namespace AuthService.Api.BackgroundJobs;
 
+[DisallowConcurrentExecution]
 public class OutboxMessageJob : IJob
 {
     private readonly UserDb _dbContext;

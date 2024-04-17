@@ -1,5 +1,6 @@
 using DomainDriverDesignAbstractions;
 using MediatR;
+using ProfileService.Application.Constants;
 using ProfileService.Application.Models;
 using ProfileService.Domain.Models.UserHistoryAggregate.Repos;
 using ProfileService.Domain.Models.UserProfileAggregate.Errors;
@@ -37,7 +38,7 @@ public class GenerateNewAvatarUrlCommandHandler
             return Result.Failure<AvatarInformation>(UserProfileErrors.AvatarDoesNotExists);
 
         var url = await _s3Client.FindFileAsync(
-            bucket: "bucket-chat-roulette",
+            bucket: S3Buckets.Avatar,
             profile.Id.Value.ToString());
         
         if (url is null || url.Link is null)

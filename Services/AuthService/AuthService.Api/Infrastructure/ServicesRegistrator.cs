@@ -127,6 +127,7 @@ public static class ServicesRegistrator
         builder.Services.AddQuartz(cfg =>
         {
             var key = new JobKey(nameof(OutboxMessageJob));
+            var key2 = new JobKey(nameof(DeleteUnactivatedUserJob));
 
             cfg.AddJob<OutboxMessageJob>(key)
                 .AddTrigger(tg => 
@@ -135,6 +136,12 @@ public static class ServicesRegistrator
                             schedule.WithIntervalInSeconds(10)
                                 .RepeatForever()));
             
+            cfg.AddJob<DeleteUnactivatedUserJob>(key2)
+                .AddTrigger(tg => 
+                    tg.ForJob(key2)
+                        .WithSimpleSchedule(schedule => 
+                            schedule.WithIntervalInMinutes(5)
+                                .RepeatForever()));
         });
 
         builder.Services.AddQuartzHostedService();

@@ -1,5 +1,6 @@
 using DomainDriverDesignAbstractions;
 using MediatR;
+using ProfileService.Application.Constants;
 using ProfileService.Application.Models;
 using ProfileService.Domain.Models.Identity;
 using ProfileService.Domain.Models.UserProfileAggregate;
@@ -57,7 +58,7 @@ public class GetUserProfileQueryHandler
                 continue;
             
             var photoUrl = await _s3Client.FindFileAsync(
-                bucket: "achievement-s3-objects",
+                bucket: S3Buckets.Achievement,
                 filename: achievement.Id + ".jpg");
             
             achievementResponses.Add(new AchievementResponse()
