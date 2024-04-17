@@ -10,12 +10,16 @@ public static class OtlpExtensions
 {
     public static WebApplicationBuilder AddMetricsAndTracing(this WebApplicationBuilder builder)
     {
+        Console.WriteLine("OTLP CONNECTION: " + builder.Configuration.GetSection("OtlpExporter:Uri").Value!);
+        
         builder.Services.AddOpenTelemetry()
             .WithTracing(b =>
             {
-                b.SetResourceBuilder(ResourceBuilder.CreateDefault()
-                    .AddService(Assembly.GetExecutingAssembly().GetName().Name!));
-                
+                b.SetResourceBuilder(
+                    ResourceBuilder.CreateDefault()
+                    .AddService(Assembly.GetCallingAssembly()?.GetName().Name ?? "OTLP"));
+
+                b.AddHttpClientInstrumentation();
                 b.AddAspNetCoreInstrumentation();
                 b.AddEntityFrameworkCoreInstrumentation();
                 b.AddRedisInstrumentation();

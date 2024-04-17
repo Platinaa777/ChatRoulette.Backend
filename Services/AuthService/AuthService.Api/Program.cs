@@ -18,7 +18,7 @@ builder.AddMassTransit();
 builder.AddCacheUserConfirmation();
 builder.AddLoggingWithSerilog();
 builder.AddBackgroundJobs();
-builder.AddMetricsAndTracing();
+builder.AddOpenTelemetryTracing();
         
 var app = builder.Build();
 

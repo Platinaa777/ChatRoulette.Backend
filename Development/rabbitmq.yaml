@@ -18,7 +18,8 @@ services:
     volumes:
       - rabbitdata:/var/lib/rabbitmq
     networks:
-      - chat-app
+      - chat-net
 
 networks:
-  chat-app:
+  chat-net:
+    external: true

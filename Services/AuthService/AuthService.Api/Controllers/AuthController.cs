@@ -57,6 +57,10 @@ public class AuthController : ControllerBase
     public async Task<ActionResult<bool>> Register(RegisterRequest request)
     {
         var result = await _mediator.Send(request.ToCommand());
+
+        if (result.IsFailure)
+            return BadRequest(result);
+        
         return Ok(result);
     }
 
