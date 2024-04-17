@@ -1,3 +1,4 @@
+using System.Net;
 using Chat.GrpcClient;
 using DomainDriverDesignAbstractions;
 using MediatR;
@@ -19,16 +20,16 @@ public class UserProfileController : ControllerBase
 {
     private readonly IMediator _mediator;
     private readonly CredentialsChecker _credentialsChecker;
-    private readonly IChatGrpcClient _chatGrpcClient;
+    private readonly HttpClient _httpChatClient;
 
     public UserProfileController(
         IMediator mediator,
         CredentialsChecker credentialsChecker,
-        IChatGrpcClient chatGrpcClient)
+        IHttpClientFactory httpClientFactory)
     {
         _mediator = mediator;
         _credentialsChecker = credentialsChecker;
-        _chatGrpcClient = chatGrpcClient;
+        _httpChatClient = httpClientFactory.CreateClient("ChatClient");
     }
 
     [HttpGet("get-user-info")]
@@ -109,15 +110,19 @@ public class UserProfileController : ControllerBase
         if (email is null)
             return Unauthorized();
 
-        var peerEmails = await _chatGrpcClient.GetRecentPeers(email);
+        var response = await _httpChatClient.GetAsync($"/chat/get-recent-peers/{email}");
 
-        if (peerEmails.Count == 0)
+        if (response.StatusCode != HttpStatusCode.OK)
+        {
+            return BadRequest("No peer history");
+        }
+
+        var content = await response.Content.ReadFromJsonAsync<List<string>>();
+
+        if (content is null)
             return BadRequest("No peer history");
 
-        var result = await _mediator.Send(new GetPeersInformationQuery()
-        {
-            PeerEmails = peerEmails.Select(x => x.Email).ToList()
-        });
+        var result = await _mediator.Send(new GetPeersInformationQuery() { PeerEmails = content });
 
         if (result.IsFailure)
             return BadRequest(result);

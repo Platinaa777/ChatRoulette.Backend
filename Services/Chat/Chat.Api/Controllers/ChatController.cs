@@ -1,4 +1,6 @@
 using Chat.Api.Extensions.Mappers;
+using Chat.Application.Queries.GetRecentPeers;
+using Chat.Grpc;
 using Chat.HttpModels.HttpRequests;
 using Chat.HttpModels.HttpResponses;
 using MediatR;
@@ -24,5 +26,21 @@ public class ChatController : ControllerBase
         var response = await _mediator.Send(user.ToCommand());
 
         return Ok(response);
+    }
+
+    [HttpGet("get-recent-peers/{email}")]
+    public async Task<ActionResult<List<string>>> GetRecentPeers(string email)
+    {
+        var result = await _mediator.Send(new GetRecentPeersQuery(email));
+
+        if (result.IsFailure)
+            return BadRequest();
+
+        var list = new List<string>();
+
+        foreach (var peer in result.Value)
+            list.Add(peer.Email);
+
+        return list;
     }
 }

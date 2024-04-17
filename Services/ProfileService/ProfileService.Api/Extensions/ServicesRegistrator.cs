@@ -162,4 +162,20 @@ public static class ServicesRegistrator
 
         return builder;
     }
+
+    public static WebApplicationBuilder AddHttpChatClient(this WebApplicationBuilder builder)
+    {
+        builder.Services.Configure<ChatApiConnectionString>(
+            builder.Configuration.GetSection("ChatApiConnectionString"));
+        builder.Services.AddSingleton<ChatApiConnectionString>(
+            sp => sp.GetRequiredService<IOptions<ChatApiConnectionString>>().Value);
+        
+        builder.Services.AddHttpClient("ChatClient", client =>
+        {
+            client.BaseAddress = new Uri($"http://{builder.Configuration["ChatApiConnectionString:Host"]}:{builder.Configuration["ChatApiConnectionString:Port"]}");
+        });
+
+        return builder;
+    }
+
 }
