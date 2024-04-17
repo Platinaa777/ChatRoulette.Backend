@@ -4,6 +4,13 @@ services:
   email_app:
     image: platinaa777/chat-roulette:email${BUILD_NUMBER}
     environment:
+      EMAIL_TAG: ${EMAIL_TAG}
+      MESSAGE_BROKER_USER: ${MESSAGE_BROKER_USER}
+      MESSAGE_BROKER_PASSWORD: ${MESSAGE_BROKER_PASSWORD}
+      OPEN_TELEMETRY_EXPORTER: ${OPEN_TELEMETRY_EXPORTER}
+      EMAIL_PASSWORD: ${EMAIL_PASSWORD}
+      EMAIL_API_URL: ${EMAIL_API_URL}
+      EMAIL_REDIRECT_URL: ${EMAIL_REDIRECT_URL}
       MessageBroker__UserName: ${MESSAGE_BROKER_USER}
       MessageBroker__Password: ${MESSAGE_BROKER_PASSWORD}
       OtlpExporter__Uri: ${OPEN_TELEMETRY_EXPORTER}
