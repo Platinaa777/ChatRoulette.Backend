@@ -310,7 +310,7 @@
       }
     },
     {
-      "UpstreamHttpMethod": [ "PUT" ],
+      "UpstreamHttpMethod": [ "POST" ],
       "UpstreamPathTemplate": "/avatar/change-avatar/",
       "DownstreamPathTemplate": "/avatar/change-avatar/",
       "DownstreamScheme": "http",

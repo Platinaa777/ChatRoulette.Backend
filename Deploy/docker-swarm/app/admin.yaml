@@ -1,8 +1,8 @@
 version: '3.9'
 
 services:
-  auth_app:
-    image: platinaa777/chat-roulette:admin01
+  admin_app:
+    image: platinaa777/chat-roulette:admin02
     environment:
       Jwt__Key: ${AUTH_JWT_KEY}
       ConnectionStrings__PostgresSQL: ${ADMIN_CONN_STRING}

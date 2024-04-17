@@ -4,6 +4,7 @@ WORKDIR /src
 COPY "ChatRoulette.sln" "ChatRoulette.sln"
 
 COPY "ApiGateways/Ocelot.Gateway/Ocelot.Gateway.csproj" "ApiGateways/Ocelot.Gateway/Ocelot.Gateway.csproj"
+COPY "ApiGateways/Yarp.Proxy/Yarp.Proxy.csproj" "ApiGateways/Yarp.Proxy/Yarp.Proxy.csproj"
 
 COPY "Infrastructure/AmazonS3/S3.Client/S3.Client.csproj"        "Infrastructure/AmazonS3/S3.Client/S3.Client.csproj"
 COPY "Infrastructure/AmazonS3/S3.Contracts/S3.Contracts.csproj"  "Infrastructure/AmazonS3/S3.Contracts/S3.Contracts.csproj"
@@ -38,6 +39,8 @@ COPY "Services/Chat/Chat.DataContext/Chat.DataContext.csproj"       "Services/Ch
 COPY "Services/Chat/Chat.Domain/Chat.Domain.csproj"                 "Services/Chat/Chat.Domain/Chat.Domain.csproj"
 COPY "Services/Chat/Chat.HttpModels/Chat.HttpModels.csproj"         "Services/Chat/Chat.HttpModels/Chat.HttpModels.csproj"
 COPY "Services/Chat/Chat.Infrastructure/Chat.Infrastructure.csproj" "Services/Chat/Chat.Infrastructure/Chat.Infrastructure.csproj"
+COPY "Services/Chat/Chat.Grpc/Chat.Grpc.csproj"                     "Services/Chat/Chat.Grpc/Chat.Grpc.csproj"
+COPY "Services/Chat/Chat.GrpcClient/Chat.GrpcClient.csproj"         "Services/Chat/Chat.GrpcClient/Chat.GrpcClient.csproj"
 
 # EMAIL
 COPY "Services/EmailingService/Emailing.HttpModels/Emailing.HttpModels.csproj" "Services/EmailingService/Emailing.HttpModels/Emailing.HttpModels.csproj"
@@ -55,7 +58,18 @@ COPY "Services/ProfileService/ProfileService.Migrations/ProfileService.Migration
 # DDD
 COPY "SharedAbstractions/DomainDriverDesignAbstractions/DomainDriverDesignAbstractions.csproj" "SharedAbstractions/DomainDriverDesignAbstractions/DomainDriverDesignAbstractions.csproj"
 
-COPY "Tests/Domain.Tests/Domain.Tests.csproj" "Tests/Domain.Tests/Domain.Tests.csproj"
+# TESTS
+COPY "Tests/Admin.Tests/Application.Tests/Application.Tests.csproj"   "Tests/Admin.Tests/Application.Tests/Application.Tests.csproj"
+COPY "Tests/Admin.Tests/Domain.Tests/Domain.Tests.csproj"             "Tests/Admin.Tests/Domain.Tests/Domain.Tests.csproj"
+
+COPY "Tests/Auth.Tests/Application.Tests/Application.Tests.csproj"    "Tests/Auth.Tests/Application.Tests/Application.Tests.csproj"
+COPY "Tests/Auth.Tests/Domain.Tests/Domain.Tests.csproj"              "Tests/Auth.Tests/Domain.Tests/Domain.Tests.csproj"
+
+COPY "Tests/Chat.Tests/Application.Tests/Application.Tests.csproj"    "Tests/Chat.Tests/Application.Tests/Application.Tests.csproj"
+COPY "Tests/Chat.Tests/Domain.Tests/Domain.Tests.csproj"              "Tests/Chat.Tests/Domain.Tests/Domain.Tests.csproj"
+
+COPY "Tests/Profile.Tests/Application.Tests/Application.Tests.csproj" "Tests/Profile.Tests/Application.Tests/Application.Tests.csproj"
+COPY "Tests/Profile.Tests/Domain.Tests/Domain.Tests.csproj"           "Tests/Profile.Tests/Domain.Tests/Domain.Tests.csproj"
 
 RUN dotnet restore "ChatRoulette.sln"
 

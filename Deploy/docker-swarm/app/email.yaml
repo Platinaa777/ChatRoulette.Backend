@@ -2,7 +2,7 @@ version: '3.9'
 
 services:
   email_app:
-    image: platinaa777/chat-roulette:email05
+    image: platinaa777/chat-roulette:email-latest
     environment:
       MessageBroker__UserName: ${MESSAGE_BROKER_USER}
       MessageBroker__Password: ${MESSAGE_BROKER_PASSWORD}

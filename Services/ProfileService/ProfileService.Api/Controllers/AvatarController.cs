@@ -1,6 +1,7 @@
 using DomainDriverDesignAbstractions;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using ProfileService.Api.Models;
 using ProfileService.Api.Utils;
 using ProfileService.Application.Commands.ChangeAvatar;
 using ProfileService.Application.Commands.GenerateNewAvatarUrl;
@@ -28,8 +29,8 @@ public class AvatarController : ControllerBase
         _credentialsChecker = credentialsChecker;
     }
 
-    [HttpPut("change-avatar")]
-    public async Task<ActionResult<Result<AvatarInformation>>> ChangeAvatar(IFormFile formFile)
+    [HttpPost("change-avatar")]
+    public async Task<ActionResult<Result<AvatarInformation>>> ChangeAvatar([FromForm] AvatarRequest formFile)
     {
         var email = _credentialsChecker.GetEmailFromJwtHeader(Request.Headers["Authorization"]
             .FirstOrDefault()?
@@ -40,8 +41,8 @@ public class AvatarController : ControllerBase
         
         var result = await _mediator.Send(new ChangeAvatarCommand()
         {
-            Avatar = formFile.OpenReadStream(),
-            ContentType = formFile.ContentType,
+            Avatar = formFile.File.OpenReadStream(),
+            ContentType = formFile.File.ContentType,
             Email = email
         });
 
