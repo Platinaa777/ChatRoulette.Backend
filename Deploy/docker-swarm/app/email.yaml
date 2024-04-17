@@ -4,6 +4,7 @@ services:
   email_app:
     image: platinaa777/chat-roulette:email${EMAIL_TAG}
     environment:
+      EMAIL_TAG: ${EMAIL_TAG}
       MessageBroker__UserName: ${MESSAGE_BROKER_USER}
       MessageBroker__Password: ${MESSAGE_BROKER_PASSWORD}
       OtlpExporter__Uri: ${OPEN_TELEMETRY_EXPORTER}
