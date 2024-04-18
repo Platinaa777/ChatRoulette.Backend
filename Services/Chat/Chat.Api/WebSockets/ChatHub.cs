@@ -10,21 +10,26 @@ using MediatR;
 using Microsoft.AspNetCore.SignalR;
 using Quartz;
 using Quartz.Impl;
+using Serilog;
 
 namespace Chat.Api.WebSockets;
 
 public class ChatHub : Hub
 {
     private readonly IMediator _mediator;
+    private readonly ILogger<ChatHub> _logger;
 
-    public ChatHub(IMediator mediator)
+    public ChatHub(
+        IMediator mediator,
+        ILogger<ChatHub> logger)
     {
         _mediator = mediator;
+        _logger = logger;
     }
 
     public override Task OnConnectedAsync()
     {
-        Console.WriteLine("Connection Id: " + Context.ConnectionId);
+        _logger.LogInformation("Connection Id: {@ConnectionId}", Context.ConnectionId);
         return base.OnConnectedAsync();
     }
 
@@ -36,6 +41,7 @@ public class ChatHub : Hub
     // for client side (for messaging)
     public async Task SendMessageInRoom(string message, string roomId, string email)
     {
+        _logger.LogInformation("Send message: {@Email}", email);
         await Clients.Groups(roomId).SendAsync("onReceiveMessage", 
             $"{email}: {message}");
     }
@@ -43,11 +49,14 @@ public class ChatHub : Hub
     public async Task FindRoom(string connectionId, string email)
     {
         var findRoomCommand = new ConnectUserCommand() { ConnectionId = connectionId, Email = email };
+        _logger.LogInformation("FindRoom: {@Email}", email);
 
         var result = await _mediator.Send(findRoomCommand);
         
         if (result.IsFailure)
             return;
+        
+        _logger.LogInformation("New room: {@room}", result.Value.RoomId);
         
         // add client to special group
         await Groups.AddToGroupAsync(Context.ConnectionId, result.Value.RoomId);
@@ -72,6 +81,7 @@ public class ChatHub : Hub
     {
         var room = await _mediator.Send(new GetRoomQuery() { RoomId = roomId });
         
+        _logger.LogInformation("OnPeerOffer: {roomId}", roomId);
         if (room is null)
             return;
 
@@ -95,6 +105,7 @@ public class ChatHub : Hub
         if (room is null)
             return;
         
+        _logger.LogInformation("OnPeerOffer: {roomId}", roomId);
         foreach (var peer in room.PeerLinks)
         {
             if (peer.ConnectionId != Context.ConnectionId)
@@ -110,6 +121,7 @@ public class ChatHub : Hub
     
     public async Task OnStartRelayIce(string roomId)
     {
+        _logger.LogInformation("OnPeerOffer: {roomId}", roomId);
         await Clients.Groups(roomId).SendAsync("PeerConnection",
             roomId,
             "",
@@ -118,6 +130,7 @@ public class ChatHub : Hub
     
     public async Task OnIceCandidate(string roomId, string candidates)
     {
+        _logger.LogInformation("OnPeerOffer: {roomId}", roomId);
         var room = await _mediator.Send(new GetRoomQuery() { RoomId = roomId });
         
         if (room is null)

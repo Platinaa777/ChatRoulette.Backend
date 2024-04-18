@@ -140,7 +140,7 @@ public static class ServicesRegistrator
                 .AddTrigger(tg => 
                     tg.ForJob(key2)
                         .WithSimpleSchedule(schedule => 
-                            schedule.WithIntervalInMinutes(5)
+                            schedule.WithIntervalInMinutes(1)
                                 .RepeatForever()));
         });
 

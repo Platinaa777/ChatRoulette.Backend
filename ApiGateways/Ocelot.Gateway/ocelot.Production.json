@@ -75,7 +75,7 @@
     {
       "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE", "OPTIONS" ],
       "UpstreamPathTemplate": "/chat/negotiate/",
-      "DownstreamPathTemplate": "/my-chat/negotiate/",
+      "DownstreamPathTemplate": "/chat/negotiate/",
       "DownstreamScheme": "ws",
       "DownstreamHostAndPorts": [
         { "Host": "chat_app", "Port": 80 }
@@ -84,7 +84,7 @@
     {
       "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE", "OPTIONS" ],
       "UpstreamPathTemplate": "/chat/",
-      "DownstreamPathTemplate": "/my-chat/",
+      "DownstreamPathTemplate": "/chat/",
       "DownstreamScheme": "ws",
       "DownstreamHostAndPorts": [
         { "Host": "chat_app", "Port": 80 }

@@ -32,6 +32,7 @@ public class DeleteUnactivatedUserJob : IJob
 
         try
         {
+            _logger.LogInformation("Minimum Count of unactivated users {@Count}", unactivatedUsers.Count);
             foreach (var user in unactivatedUsers)
             {
                 var cachedValue = await _cache.GetStringAsync(user.Id.Value);
@@ -45,6 +46,7 @@ public class DeleteUnactivatedUserJob : IJob
                 var dateUtc = JsonConvert.DeserializeObject<DateTime>(cachedValue);
                 if (dateUtc < DateTime.UtcNow)
                 {
+                    _logger.LogInformation("User with id: {@Id} was deleted by {@Job}", user.Id.Value, nameof(DeleteUnactivatedUserJob));
                     await _cache.RemoveAsync(user.Id.Value);
                     _dbContext.Users.Remove(user);    
                 }

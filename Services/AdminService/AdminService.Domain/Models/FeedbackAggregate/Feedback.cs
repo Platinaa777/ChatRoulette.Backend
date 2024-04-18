@@ -19,6 +19,11 @@ public class Feedback : AggregateRoot<Id>
         IsWatched = isWatched;
     }
 
+    public void HandleByAdmin()
+    {
+        IsWatched = true;
+    }
+
     public Email EmailFrom { get; private set; }
     public FeedbackContent Content { get; private set; }
     public bool IsWatched { get; set; }

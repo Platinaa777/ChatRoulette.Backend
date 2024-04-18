@@ -1,5 +1,6 @@
 using AuthService.Application.Cache;
 using Microsoft.Extensions.Caching.Distributed;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 
 namespace AuthService.Infrastructure.Cache;
@@ -7,10 +8,14 @@ namespace AuthService.Infrastructure.Cache;
 public class RedisCache : ICacheStorage 
 {
     private readonly IDistributedCache _cache;
+    private readonly ILogger<RedisCache> _logger;
 
-    public RedisCache(IDistributedCache cache)
+    public RedisCache(
+        IDistributedCache cache,
+        ILogger<RedisCache> logger)
     {
         _cache = cache;
+        _logger = logger;
     }
     
     public async Task<string?> GetAsync(string key, CancellationToken cancellationToken = default)
@@ -25,6 +30,8 @@ public class RedisCache : ICacheStorage
             AbsoluteExpirationRelativeToNow = TimeSpan.FromHours(1)
         }, cancellationToken);
 
-        await _cache.SetStringAsync(key, JsonConvert.SerializeObject(DateTime.UtcNow.AddHours(1)), cancellationToken);
+        var date = DateTime.UtcNow.AddHours(1);
+        await _cache.SetStringAsync(key, JsonConvert.SerializeObject(date), cancellationToken);
+        _logger.LogInformation("User with {@Key} will be deleted at {@Date}", key, date);
     }
 }

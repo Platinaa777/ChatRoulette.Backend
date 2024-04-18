@@ -18,7 +18,6 @@ builder.AddMassTransit();
 builder.AddApplicationServices();
 builder.AddMetricsAndTracing();
 builder.AddBackgroundJobs();
-builder.Services.AddGrpc();
 
 var app = builder.Build();
 
@@ -30,11 +29,9 @@ app.UseCors(x => x
     .SetIsOriginAllowed(_ => true)
     .AllowCredentials());
 
-app.MapGrpcService<ChatApiGrpcService>();
-
 app.UseEndpoints(routes =>
 {
-    routes.MapHub<ChatHub>("/my-chat");
+    routes.MapHub<ChatHub>("/chat");
 });
 
 app.MapControllers();

@@ -33,4 +33,11 @@ public class FeedbackRepository : IFeedbackRepository
             .Take(count)
             .ToListAsync();
     }
+
+    public async Task UpdateFeedback(Feedback feedback)
+    {
+        var result = await _dbContext.Feedbacks.Where(fd => fd.Id == feedback.Id)
+            .ExecuteUpdateAsync(entity => entity
+                .SetProperty(watched => watched.IsWatched, true));
+    }
 }

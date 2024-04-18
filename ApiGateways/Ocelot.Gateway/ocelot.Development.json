@@ -170,8 +170,8 @@
     },
     {
       "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE", "OPTIONS" ],
-      "UpstreamPathTemplate": "/api/chat/negotiate",
-      "DownstreamPathTemplate": "/my-chat/negotiate",
+      "UpstreamPathTemplate": "/chat/negotiate",
+      "DownstreamPathTemplate": "/chat/negotiate",
       "DownstreamScheme": "ws",
       "DownstreamHostAndPorts": [
         { "Host": "localhost", "Port": 8003 }
@@ -179,8 +179,8 @@
     },
     {
       "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE", "OPTIONS" ],
-      "UpstreamPathTemplate": "/api/chat",
-      "DownstreamPathTemplate": "/my-chat",
+      "UpstreamPathTemplate": "/chat",
+      "DownstreamPathTemplate": "/chat",
       "DownstreamScheme": "ws",
       "DownstreamHostAndPorts": [
         { "Host": "localhost", "Port": 8003 }

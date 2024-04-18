@@ -31,7 +31,7 @@ public class UserQueryRepository : IUserQueryRepository
             .QueryAsync<InvitationResponse>(
                 @"
                     SELECT email as Email, user_name as UserName, avatar as Avatar
-                    FROM user_profiles LEFT JOIN invitations ON user_profile.id = invitations.receiver_id
+                    FROM user_profiles LEFT JOIN invitations ON user_profiles.id = invitations.receiver_id
                     WHERE email = @Email;
                 ", 
                 param: parameters);
