@@ -31,7 +31,6 @@ public class OutboxBackgroundJob : IJob
             .Take(3)
             .ToListAsync();
 
-        _logger.LogInformation("outbox message count: " + outboxMessages.Count());
         foreach (var message in outboxMessages)
         {
             try

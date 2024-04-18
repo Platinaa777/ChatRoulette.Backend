@@ -8,6 +8,5 @@ public class ChangeAvatarCommandValidator : AbstractValidator<ChangeAvatarComman
     {
         RuleFor(x => x.Avatar).NotNull();
         RuleFor(x => x.Email).EmailAddress();
-        RuleFor(x => x.ContentType).NotEmpty();
     }
 }
