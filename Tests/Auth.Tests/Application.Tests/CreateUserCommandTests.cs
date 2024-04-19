@@ -51,7 +51,7 @@ public class CreateUserCommandTests
         
         // Asser
         Assert.True(result.IsFailure);
-        Assert.Equal(UserError.UserAlreadyExist, result.Error);
+        Assert.Equal(UserError.UserNameAlreadyExist, result.Error);
         
         mockEventBus.Verify(x => x.PublishAsync(It.IsAny<UserRegistered>(), default), Times.Never);
     }
