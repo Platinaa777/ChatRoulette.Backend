@@ -9,7 +9,9 @@ services:
       OtlpExporter__Uri: ${OPEN_TELEMETRY_EXPORTER}
       SmtpClientConfig__Password: ${EMAIL_PASSWORD}
       ApiUrl__Url: ${EMAIL_API_URL}
-      Redirect__Url: ${EMAIL_REDIRECT_URL}~
+      Redirect__Url: ${EMAIL_REDIRECT_URL}
+    env_file:
+      - .env
     networks: [ chat-net ]
 
   redis_cache_email:

@@ -47,7 +47,7 @@ public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, Resul
         user.Register(user.BirthDateUtc);
 
         if (!response)
-            return Result.Failure(UserError.UserAlreadyExist);
+            return Result.Failure(UserError.UserNameAlreadyExist);
         
         // Publish message to event bus 
         await _eventBusClient.PublishAsync(user.ToBusMessage(), cancellationToken);

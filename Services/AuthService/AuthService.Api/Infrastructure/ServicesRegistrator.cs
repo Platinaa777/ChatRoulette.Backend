@@ -136,12 +136,12 @@ public static class ServicesRegistrator
                             schedule.WithIntervalInSeconds(10)
                                 .RepeatForever()));
             
-            cfg.AddJob<DeleteUnactivatedUserJob>(key2)
-                .AddTrigger(tg => 
-                    tg.ForJob(key2)
-                        .WithSimpleSchedule(schedule => 
-                            schedule.WithIntervalInMinutes(1)
-                                .RepeatForever()));
+            // cfg.AddJob<DeleteUnactivatedUserJob>(key2)
+            //     .AddTrigger(tg => 
+            //         tg.ForJob(key2)
+            //             .WithSimpleSchedule(schedule => 
+            //                 schedule.WithIntervalInMinutes(1)
+            //                     .RepeatForever()));
         });
 
         builder.Services.AddQuartzHostedService();

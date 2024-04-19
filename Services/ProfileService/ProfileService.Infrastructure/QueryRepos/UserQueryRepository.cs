@@ -18,21 +18,21 @@ public class UserQueryRepository : IUserQueryRepository
         _factory = factory;
     }
     
-    public async Task<List<InvitationResponse>> GetAllUserInvitations(string email, CancellationToken cancellationToken)
+    public async Task<List<InvitationSenderId>> GetAllUserInvitations(string id, CancellationToken cancellationToken)
     {
         var connection = await _factory.CreateConnectionAsync(cancellationToken);
 
         var parameters = new
         {
-            Email = email
+            Id = id
         };
         
-        IEnumerable<InvitationResponse> result = await connection
-            .QueryAsync<InvitationResponse>(
+        IEnumerable<InvitationSenderId> result = await connection
+            .QueryAsync<InvitationSenderId>(
                 @"
-                    SELECT email as Email, user_name as UserName, avatar as Avatar
-                    FROM user_profiles LEFT JOIN invitations ON user_profiles.id = invitations.receiver_id
-                    WHERE email = @Email;
+                    SELECT sender_id As SenderId
+                    FROM invitations
+                    WHERE receiver_id = @Id;
                 ", 
                 param: parameters);
 

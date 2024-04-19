@@ -2,12 +2,12 @@ using System.Text;
 using DomainDriverDesignAbstractions;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using ProfileService.Api.Models;
 using ProfileService.Api.Utils;
 using ProfileService.Application.Commands.ChangeAvatar;
 using ProfileService.Application.Commands.GenerateNewAvatarUrl;
 using ProfileService.Application.Constants;
 using ProfileService.Application.Models;
+using ProfileService.HttpModels.Requests;
 using S3.Client;
 
 namespace ProfileService.Api.Controllers;
@@ -34,7 +34,7 @@ public class AvatarController : ControllerBase
     }
 
     [HttpPost("change-avatar")]
-    public async Task<ActionResult<Result<AvatarInformation>>> ChangeAvatar([FromBody] string picture)
+    public async Task<ActionResult<Result<AvatarInformation>>> ChangeAvatar([FromBody] AvatarRequest req)
     {
         var email = _credentialsChecker.GetEmailFromJwtHeader(Request.Headers["Authorization"]
             .FirstOrDefault()?
@@ -42,16 +42,17 @@ public class AvatarController : ControllerBase
 
         if (email is null)
             return Unauthorized();
-
+        
+        _logger.LogInformation($"Picture: {req.Picture}");
         try
         {
-            byte[] byteArray = Encoding.UTF8.GetBytes(picture);
+            // byte[] byteArray = Encoding.UTF8.GetBytes(req.Picture);
             //byte[] byteArray = Encoding.ASCII.GetBytes(contents);
-            MemoryStream stream = new MemoryStream(byteArray);
+            // MemoryStream stream = new MemoryStream(byteArray);
         
             var result = await _mediator.Send(new ChangeAvatarCommand()
             {
-                Avatar = stream, // formFile.File.OpenReadStream(),
+                Avatar = req.Picture, // formFile.File.OpenReadStream(),
                 ContentType = "image/png",
                 Email = email
             });

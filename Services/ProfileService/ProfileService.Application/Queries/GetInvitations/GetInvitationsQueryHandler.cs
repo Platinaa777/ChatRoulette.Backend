@@ -29,11 +29,29 @@ public class GetInvitationsQueryHandler
         if (user is null)
             return Result.Failure<List<InvitationResponse>>(UserProfileErrors.UserNotFound);
 
-        var invitations = await _userQueryRepository.GetAllUserInvitations(request.Email, cancellationToken);
+        var invitations = await _userQueryRepository.GetAllUserInvitations(user.Id.Value.ToString(), cancellationToken);
 
         if (invitations.Count == 0)
             return Result.Failure<List<InvitationResponse>>(InvitationErrors.NoInvitations);
+
+        List<InvitationResponse> invitationResponses = new();
+
+        foreach (var invitation in invitations)
+        {
+            var userInfo = await _profileRepository.FindUserByIdAsync(invitation.SenderId);
+
+            if (userInfo is not null)
+            {
+                invitationResponses.Add(new InvitationResponse()
+                {
+                    Avatar = userInfo.Avatar.Value,
+                    Email = userInfo.Email.Value,
+                    UserName = userInfo.UserName.Value,
+                    Rating = userInfo.Rating.Value
+                });
+            }
+        }
         
-        return invitations;
+        return invitationResponses;
     }
 }
