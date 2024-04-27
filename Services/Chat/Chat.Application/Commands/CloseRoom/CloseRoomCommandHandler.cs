@@ -1,3 +1,4 @@
+using Chat.Application.Extensions;
 using Chat.Application.Models;
 using Chat.Domain.Aggregates;
 using Chat.Domain.Aggregates.Room;
@@ -69,9 +70,9 @@ public class CloseRoomCommandHandler : IRequestHandler<CloseRoomCommand, Result<
         if (durationOfConversation > 0)
         {
             _busClient.PublishAsync(new UserWasTalked(chatUser1.Email, durationOfConversation),
-                cancellationToken);
+                cancellationToken).IngoreAsyncWarning();
             _busClient.PublishAsync(new UserWasTalked(chatUser2.Email, durationOfConversation),
-                cancellationToken);    
+                cancellationToken).IngoreAsyncWarning();    
         }
 
         return new TwoSeatsRoomInformation

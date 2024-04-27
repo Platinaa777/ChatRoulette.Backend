@@ -13,18 +13,17 @@ public class S3Client : IS3Client
         _amazonS3 = amazonS3;
     }
     
-    public async Task<S3ObjectDto?> UploadFileAsync(string avatar, string bucket, string filename)
+    public async Task<S3ObjectDto?> UploadFileAsync(Stream avatar, string bucket, string filename, string contentType)
     {
         var request = new PutObjectRequest()
         {
             BucketName = bucket,
             Key = filename,
-            ContentBody = avatar
+            InputStream = avatar,
+            ContentType = contentType
         };
         
-        // request.Metadata.Add("Content-Type", contentType);
         await _amazonS3.PutObjectAsync(request);
-
         return await FindFileAsync(bucket, filename);
     }
 

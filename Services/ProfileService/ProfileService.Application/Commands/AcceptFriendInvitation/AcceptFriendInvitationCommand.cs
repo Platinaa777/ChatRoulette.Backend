@@ -5,12 +5,12 @@ namespace ProfileService.Application.Commands.AcceptFriendInvitation;
 
 public class AcceptFriendInvitationCommand : IRequest<Result>
 {
-    public string InvitationSenderEmail { get; set; }
-    public string InvitationReceiverEmail { get; set; }
+    public string AnswerEmail { get; set; }
+    public string SenderEmail { get; set; }
 
-    public AcceptFriendInvitationCommand(string invitationSenderEmail, string invitationReceiverEmail)
+    public AcceptFriendInvitationCommand(string AnswerEmail, string SenderEmail)
     {
-        InvitationSenderEmail = invitationSenderEmail;
-        InvitationReceiverEmail = invitationReceiverEmail;
+        this.AnswerEmail = AnswerEmail;
+        this.SenderEmail = SenderEmail;
     }
 }

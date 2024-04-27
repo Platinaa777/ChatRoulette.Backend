@@ -6,7 +6,7 @@ namespace ProfileService.Application.Commands.ChangeAvatar;
 
 public class ChangeAvatarCommand : IRequest<Result<AvatarInformation>>
 {
-    public string Avatar { get; set; } = string.Empty;
+    public Stream? Avatar { get; set; } 
     public string Email { get; set; } = string.Empty;
     public string ContentType { get; set; } = string.Empty;
 }

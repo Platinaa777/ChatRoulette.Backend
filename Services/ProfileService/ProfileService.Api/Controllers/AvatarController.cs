@@ -34,7 +34,7 @@ public class AvatarController : ControllerBase
     }
 
     [HttpPost("change-avatar")]
-    public async Task<ActionResult<Result<AvatarInformation>>> ChangeAvatar([FromBody] AvatarRequest req)
+    public async Task<ActionResult<Result<AvatarInformation>>> ChangeAvatar([FromBody] string picture)
     {
         var email = _credentialsChecker.GetEmailFromJwtHeader(Request.Headers["Authorization"]
             .FirstOrDefault()?
@@ -43,16 +43,15 @@ public class AvatarController : ControllerBase
         if (email is null)
             return Unauthorized();
         
-        _logger.LogInformation($"Picture: {req.Picture}");
         try
         {
-            // byte[] byteArray = Encoding.UTF8.GetBytes(req.Picture);
-            //byte[] byteArray = Encoding.ASCII.GetBytes(contents);
-            // MemoryStream stream = new MemoryStream(byteArray);
-        
+            var words = picture.Split(',', 2);
+            byte[] byteArray = Convert.FromBase64String(words[1]);
+            MemoryStream stream = new MemoryStream(byteArray);
+
             var result = await _mediator.Send(new ChangeAvatarCommand()
             {
-                Avatar = req.Picture, // formFile.File.OpenReadStream(),
+                Avatar = stream,
                 ContentType = "image/png",
                 Email = email
             });

@@ -38,7 +38,7 @@ public class FriendController : ControllerBase
         var response = await _mediator.Send(
             new SendFriendInvitationCommand(
                 invitationSenderEmail: email,
-                request.InvitationReceiverEmail));
+                invitationReceiverEmail: request.NewFriendEmail));
 
         if (response.IsFailure)
             return BadRequest(response);
@@ -47,7 +47,7 @@ public class FriendController : ControllerBase
     }
     
     [HttpPut("accept-invitation-to-friends")]
-    public async Task<ActionResult<Result>> AcceptInvitationToFriends([FromBody] FriendRequest request)
+    public async Task<ActionResult<Result>> AcceptInvitationToFriends([FromBody] AcceptFriendRequest request)
     {
         var email = _credentialsChecker.GetEmailFromJwtHeader(Request.Headers["Authorization"]
             .FirstOrDefault()?
@@ -58,8 +58,8 @@ public class FriendController : ControllerBase
         
         var response = await _mediator.Send(
             new AcceptFriendInvitationCommand(
-                invitationSenderEmail: email,
-                request.InvitationReceiverEmail));
+                AnswerEmail: request.AcceptNewFriendEmail,
+                SenderEmail: email));
 
         if (response.IsFailure)
             return BadRequest(response);
@@ -68,7 +68,7 @@ public class FriendController : ControllerBase
     }
     
     [HttpPut("reject-invitation-to-friends")]
-    public async Task<ActionResult<Result>> RejectInvitationToFriends([FromBody] FriendRequest request)
+    public async Task<ActionResult<Result>> RejectInvitationToFriends([FromBody] RejectFriendRequest request)
     {
         var email = _credentialsChecker.GetEmailFromJwtHeader(Request.Headers["Authorization"]
             .FirstOrDefault()?
@@ -79,8 +79,8 @@ public class FriendController : ControllerBase
         
         var response = await _mediator.Send(
             new RejectFriendInvitationCommand(
-                invitationSenderEmail: email,
-                request.InvitationReceiverEmail));
+                AnswerEmail: request.RejectPersonEmail ,
+                SenderEmail: email));
 
         if (response.IsFailure)
             return BadRequest(response);

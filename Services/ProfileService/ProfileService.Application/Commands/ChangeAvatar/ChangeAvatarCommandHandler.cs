@@ -43,7 +43,8 @@ public class ChangeAvatarCommandHandler
         var url =await _s3Client.UploadFileAsync(
             request.Avatar!,
             bucket: S3Buckets.Avatar,
-            profile.Id.Value.ToString());
+            profile.Id.Value.ToString(),
+            request.ContentType);
         
         if (url is null || string.IsNullOrWhiteSpace(url.Link))
             return Result.Failure<AvatarInformation>(UserProfileErrors.AvatarUploadError);

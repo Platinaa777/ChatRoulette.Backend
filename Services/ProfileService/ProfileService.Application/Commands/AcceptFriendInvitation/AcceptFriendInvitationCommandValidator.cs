@@ -6,9 +6,9 @@ public class AcceptFriendInvitationCommandValidator : AbstractValidator<AcceptFr
 {
     public AcceptFriendInvitationCommandValidator()
     {
-        RuleFor(x => x.InvitationReceiverEmail).EmailAddress();
-        RuleFor(x => x.InvitationSenderEmail).EmailAddress();
-        RuleFor(x => x.InvitationReceiverEmail)
-            .NotEqual(x => x.InvitationSenderEmail);
+        RuleFor(x => x.SenderEmail).EmailAddress();
+        RuleFor(x => x.AnswerEmail).EmailAddress();
+        RuleFor(x => x.SenderEmail)
+            .NotEqual(x => x.AnswerEmail);
     }
 }

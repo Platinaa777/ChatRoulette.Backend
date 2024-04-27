@@ -18,8 +18,7 @@ public class UserError : Error
     public static readonly Error BanUser = new("User.Error", "User was banned");
     public static readonly Error YoungUser = new("User.Error", "User is not older than 16 years old");
     public static readonly Error OldUser = new("User.Error", "User is older than 100 years old");
-    public static readonly Error UserNameAlreadyExist = new("User.Error", "User with this email already exist");
-
+    public static readonly Error UserNameAlreadyExist = new("User.Error", "User with this name already exist");
 
     public UserError(string code, string message) : base(code, message)
     {

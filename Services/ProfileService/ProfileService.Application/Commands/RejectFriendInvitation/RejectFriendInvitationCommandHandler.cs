@@ -28,11 +28,11 @@ public class RejectFriendInvitationCommandHandler
     {
         await _unitOfWork.StartTransaction(cancellationToken);
         
-        var firstProfile = await _profileRepository.FindUserByEmailAsync(request.InvitationSenderEmail);
+        var firstProfile = await _profileRepository.FindUserByEmailAsync(request.AnswerEmail);
         if (firstProfile is null)
             return Result.Failure(UserProfileErrors.EmailNotFound);
         
-        var secondProfile = await _profileRepository.FindUserByEmailAsync(request.InvitationReceiverEmail);
+        var secondProfile = await _profileRepository.FindUserByEmailAsync(request.SenderEmail);
         if (secondProfile is null)
             return Result.Failure(UserProfileErrors.EmailNotFound);
         
