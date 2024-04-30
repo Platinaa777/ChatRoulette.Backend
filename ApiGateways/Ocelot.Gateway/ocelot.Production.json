@@ -130,6 +130,21 @@
       }
     },
     {
+      "UpstreamHttpMethod": [ "POST" ],
+      "UpstreamPathTemplate": "/feedback/{complaintId}/",
+      "DownstreamPathTemplate": "/feedback/{complaintId}/",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        { "Host": "admin_app", "Port": 80 }
+      ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+      },
+      "RouteClaimsRequirement": {
+        "Role" : [ "Admin" ]
+      }
+    },
+    {
       "UpstreamHttpMethod": [ "GET" ],
       "UpstreamPathTemplate": "/complaint/{count}/",
       "DownstreamPathTemplate": "/complaint/{count}/",

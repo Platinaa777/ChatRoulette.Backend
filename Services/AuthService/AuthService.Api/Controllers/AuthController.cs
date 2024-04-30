@@ -2,12 +2,14 @@ using AuthService.Api.Mappers;
 using AuthService.Api.Utils;
 using AuthService.Application.Commands.GenerateToken;
 using AuthService.Application.Commands.LogoutUser;
+using AuthService.Application.Models;
 using AuthService.HttpModels.Requests;
 using AuthService.HttpModels.Responses;
 using DomainDriverDesignAbstractions;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using CookieOptions = Microsoft.AspNetCore.Http.CookieOptions;
 
 namespace AuthService.Api.Controllers;
@@ -31,7 +33,6 @@ public class AuthController : ControllerBase
     [Authorize]
     public ActionResult<string> GetAnswer()
     {
-        var a = Request.Cookies;
         return Ok("hello world");
     }
 
@@ -67,28 +68,26 @@ public class AuthController : ControllerBase
     /// <summary>
     /// for getting token by email and password
     /// </summary>
-    /// <param name="request"></param>
     /// <returns></returns>
     [HttpPost("refresh-token")]
-    public async Task<ActionResult<AuthenticationResponse>> GetToken()
+    public async Task<ActionResult<AuthTokens>> GetToken()
     {
-        if (!HttpContext.Request.Cookies.TryGetValue("refresh-token", out string? refreshToken))
+        if (!HttpContext.Request.Headers.TryGetValue("refresh-token", out var refreshToken))
         {
             return BadRequest(ResponseMapper.NotFoundRefreshToken);
         }
         
-        var result = await _mediator.Send(new GenerateTokenCommand() { RefreshToken = refreshToken });
+        var result = await _mediator.Send(new GenerateTokenCommand() { RefreshToken = refreshToken.ToString()  });
 
         if (result.IsSuccess)
         {
-            HttpContext.Response.Cookies.Append("refresh-token", result.Value.RefreshToken!,
+            HttpContext.Response.Cookies.Append("refresh-token-s", result.Value.RefreshToken!,
                 new CookieOptions()
                     { 
                         Expires = DateTimeOffset.Now.AddHours(2),
                         HttpOnly = true,
-                        Secure = true, 
-                        IsEssential = true
-                        
+                        SameSite = SameSiteMode.None,
+                        Secure = true
                     });
 
             return Ok(result);
@@ -97,27 +96,22 @@ public class AuthController : ControllerBase
         return BadRequest(result);
     }
 
-    private string CutBearer(string token)
-    {
-        return token.Replace("Bearer ", "");
-    }
-
     [HttpPost("login")]
-    public async Task<ActionResult> Login(LoginRequest request)
+    public async Task<ActionResult<AuthTokens>> Login(LoginRequest request)
     {
         var result = await _mediator.Send(request.ToCommand());
 
         if (result.IsSuccess)
         {
-            HttpContext.Response.Cookies.Append("refresh-token", result.Value.RefreshToken!,
+            HttpContext.Response.Cookies.Append("refresh-token-s", result.Value.RefreshToken!,
                 new CookieOptions()
                 { 
                     Expires = DateTimeOffset.Now.AddHours(2),
                     HttpOnly = true,
-                    Secure = true, 
-                    IsEssential = true
+                    SameSite = SameSiteMode.None,
+                    Secure = true
                 });
-
+            
             return Ok(result);
         }
         
@@ -127,12 +121,13 @@ public class AuthController : ControllerBase
     [HttpDelete("logout")]
     public async Task<ActionResult<string>> Logout()
     {
-        if (!HttpContext.Request.Cookies.TryGetValue("refresh-token", out string? refreshToken))
+        if (!HttpContext.Request.Headers.TryGetValue("refresh-token", out var refreshToken))
         {
             return BadRequest(ResponseMapper.NotFoundRefreshToken);
         }
 
-        var result = await _mediator.Send(new LogoutUserCommand() { RefreshToken = refreshToken });
+        Console.WriteLine(refreshToken.ToString());
+        var result = await _mediator.Send(new LogoutUserCommand() { RefreshToken = refreshToken.ToString() });
 
         HttpContext.Response.Cookies.Delete("refresh-token");
         
@@ -140,5 +135,10 @@ public class AuthController : ControllerBase
             return BadRequest(result.Error.Message);
 
         return Ok(string.Empty);
+    }
+    
+    private string CutBearer(string token)
+    {
+        return token.Replace("Bearer ", "");
     }
 }

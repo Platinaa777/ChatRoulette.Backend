@@ -35,9 +35,6 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
                 name => name.Value, // to database
                 value => Name.Create(value).Value); // from database
 
-        builder.HasIndex(x => x.UserName)
-            .IsUnique();
-
         builder.Property(u => u.Email)
             .HasColumnName("email")
             .HasConversion(

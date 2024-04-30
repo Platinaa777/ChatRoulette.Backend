@@ -1,3 +1,4 @@
+using AuthService.Application.Constants;
 using FluentValidation;
 
 namespace AuthService.Application.Commands.GenerateToken;
@@ -6,6 +7,8 @@ public class GenerateTokenCommandValidator : AbstractValidator<GenerateTokenComm
 {
     public GenerateTokenCommandValidator()
     {
-        RuleFor(x => x.RefreshToken).NotEmpty();
+        RuleFor(x => x.RefreshToken)
+            .NotEmpty()
+            .WithMessage(ValidationConstants.EmptyRefreshToken);
     }
 }

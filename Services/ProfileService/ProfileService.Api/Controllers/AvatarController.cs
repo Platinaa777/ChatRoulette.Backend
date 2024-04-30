@@ -34,7 +34,7 @@ public class AvatarController : ControllerBase
     }
 
     [HttpPost("change-avatar")]
-    public async Task<ActionResult<Result<AvatarInformation>>> ChangeAvatar([FromBody] string picture)
+    public async Task<ActionResult<Result<AvatarInformation>>> ChangeAvatar([FromBody] AvatarRequest picture)
     {
         var email = _credentialsChecker.GetEmailFromJwtHeader(Request.Headers["Authorization"]
             .FirstOrDefault()?
@@ -45,7 +45,7 @@ public class AvatarController : ControllerBase
         
         try
         {
-            var words = picture.Split(',', 2);
+            var words = picture.Picture.Split(',', 2);
             byte[] byteArray = Convert.FromBase64String(words[1]);
             MemoryStream stream = new MemoryStream(byteArray);
 

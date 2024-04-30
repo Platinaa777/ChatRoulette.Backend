@@ -16,12 +16,11 @@ var cfg = builder.Configuration.SetBasePath(builder.Environment.ContentRootPath)
 
 builder.Services.AddCors(corsOptions =>
 {
-    corsOptions.AddDefaultPolicy(policy =>
-    {
-        policy.AllowAnyOrigin()
+    corsOptions.AddPolicy("frontend",x =>
+        x.WithOrigins("http://82.146.62.254","http://localhost:3000")
             .AllowAnyMethod()
-            .AllowAnyHeader();
-    });
+            .AllowAnyHeader()
+            .AllowCredentials());
 });
 
 builder.Host.UseSerilog((ctx, config) =>
@@ -39,11 +38,7 @@ var app = builder.Build();
 app.UseSerilogRequestLogging();
 app.UseMiddleware<LoggingRequestMiddleware>();
 
-app.UseCors(x => x
-    .AllowAnyMethod()
-    .AllowAnyHeader()
-    .SetIsOriginAllowed(origin => true) // allow any origin
-    .AllowCredentials()); // allow credentials
+app.UseCors("frontend");
 
 var configuration = new OcelotPipelineConfiguration
 {

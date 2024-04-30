@@ -1,3 +1,4 @@
+using AuthService.Application.Constants;
 using FluentValidation;
 
 namespace AuthService.Application.Commands.ConfirmEmail;
@@ -6,6 +7,8 @@ public class ConfirmEmailCommandValidator : AbstractValidator<ConfirmEmailComman
 {
     public ConfirmEmailCommandValidator()
     {
-        RuleFor(x => x.Email).EmailAddress();
+        RuleFor(x => x.Email)
+            .EmailAddress()
+            .WithMessage(ValidationConstants.InvalidEmail);
     }
 }

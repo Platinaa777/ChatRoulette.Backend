@@ -1,4 +1,5 @@
 using AdminService.Application.Commands.AddFeedback;
+using AdminService.Application.Commands.SetFeedbackWatched;
 using AdminService.Application.Models;
 using AdminService.Application.Queries.GetUnwatchedFeedbacks;
 using AdminService.Domain.Models.FeedbackAggregate;
@@ -39,5 +40,16 @@ public class FeedbackController : ControllerBase
     public async Task<ActionResult<List<FeedbackInformation>>> GetFeedbacks(int count)
     {
         return Ok(await _mediator.Send(new GetUnwatchedFeedbacksQuery() { Count = count }));
+    }
+
+    [HttpPost("{complaintId}")]
+    public async Task<ActionResult<Result>> MarkFeedbackAsHandled(string complaintId)
+    {
+        var result = await _mediator.Send(new SetFeedbackWatchedCommand() { Id = complaintId });
+
+        if (result.IsFailure)
+            return BadRequest(result);
+
+        return Ok(result);
     }
 }

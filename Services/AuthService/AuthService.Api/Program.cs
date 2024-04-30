@@ -1,7 +1,6 @@
 using AuthService.Api.Infrastructure;
 using AuthService.Infrastructure.Extensions.UsersSeed;
 using MassTransit.Client.Extensions;
-using Otlp.Configuration.Extensions;
 using Serilog;
 using SwaggerConfigurations.Extensions;
 
@@ -24,11 +23,7 @@ var app = builder.Build();
 
 app.UseSerilogRequestLogging();
 
-app.UseCors(x => x
-    .AllowAnyMethod()
-    .AllowAnyHeader()
-    .SetIsOriginAllowed(origin => true)
-    .AllowCredentials());
+app.UseCors("frontend");
 
 app.UseAuthentication();
 app.UseAuthorization();

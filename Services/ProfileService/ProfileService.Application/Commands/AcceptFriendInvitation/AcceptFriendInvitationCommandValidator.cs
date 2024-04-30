@@ -1,14 +1,20 @@
 using FluentValidation;
+using ProfileService.Application.Constants;
 
 namespace ProfileService.Application.Commands.AcceptFriendInvitation;
 
-public class AcceptFriendInvitationCommandValidator : AbstractValidator<AcceptFriendInvitation.AcceptFriendInvitationCommand>
+public class AcceptFriendInvitationCommandValidator : AbstractValidator<AcceptFriendInvitationCommand>
 {
     public AcceptFriendInvitationCommandValidator()
     {
-        RuleFor(x => x.SenderEmail).EmailAddress();
-        RuleFor(x => x.AnswerEmail).EmailAddress();
         RuleFor(x => x.SenderEmail)
-            .NotEqual(x => x.AnswerEmail);
+            .EmailAddress()
+            .WithMessage(ValidationConstants.SenderEmailInvalid);
+        RuleFor(x => x.AnswerEmail)
+            .EmailAddress()
+            .WithMessage(ValidationConstants.ReceiverEmailInvalid);
+        RuleFor(x => x.SenderEmail)
+            .NotEqual(x => x.AnswerEmail)
+            .WithMessage(ValidationConstants.EqualitySenderAndReceiver);
     }
 }

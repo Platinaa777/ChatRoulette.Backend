@@ -49,12 +49,11 @@ public static class ServicesRegistrator
     {
         builder.Services.AddCors(corsOptions =>
         {
-            corsOptions.AddDefaultPolicy(policy =>
-            {
-                policy.AllowAnyOrigin()
+            corsOptions.AddPolicy("frontend",x =>
+                x.WithOrigins("http://82.146.62.254","http://localhost:3000")
                     .AllowAnyMethod()
-                    .AllowAnyHeader();
-            });
+                    .AllowAnyHeader()
+                    .AllowCredentials());
         });
 
         return builder;
@@ -136,12 +135,12 @@ public static class ServicesRegistrator
                             schedule.WithIntervalInSeconds(10)
                                 .RepeatForever()));
             
-            // cfg.AddJob<DeleteUnactivatedUserJob>(key2)
-            //     .AddTrigger(tg => 
-            //         tg.ForJob(key2)
-            //             .WithSimpleSchedule(schedule => 
-            //                 schedule.WithIntervalInMinutes(1)
-            //                     .RepeatForever()));
+            cfg.AddJob<DeleteUnactivatedUserJob>(key2)
+                .AddTrigger(tg => 
+                    tg.ForJob(key2)
+                        .WithSimpleSchedule(schedule => 
+                            schedule.WithIntervalInMinutes(1)
+                                .RepeatForever()));
         });
 
         builder.Services.AddQuartzHostedService();

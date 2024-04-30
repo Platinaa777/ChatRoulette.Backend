@@ -5,7 +5,7 @@ namespace AuthService.Domain.Models.TokenAggregate.ValueObjects;
 
 public class Token : ValueObject
 {
-    public string Value { get; set; }
+    public string Value { get; private set; }
     private Token(string token)
     {
         Value = token;

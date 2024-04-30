@@ -6,6 +6,7 @@ using AuthService.Domain.Models.TokenAggregate.ValueObjects;
 using AuthService.Domain.Models.UserAggregate.Repos;
 using DomainDriverDesignAbstractions;
 using MediatR;
+using Microsoft.Extensions.Logging;
 
 namespace AuthService.Application.Commands.LogoutUser;
 
@@ -14,15 +15,18 @@ public class LogoutUserCommandHandler : IRequestHandler<LogoutUserCommand, Resul
     private readonly ITokenRepository _tokenRepository;
     private readonly IUserRepository _userRepository;
     private readonly IUnitOfWork _unitOfWork;
+    private readonly ILogger<LogoutUserCommandHandler> _logger;
 
     public LogoutUserCommandHandler(
         ITokenRepository tokenRepository,
         IUserRepository userRepository,
-        IUnitOfWork unitOfWork)
+        IUnitOfWork unitOfWork, 
+        ILogger<LogoutUserCommandHandler> logger)
     {
         _tokenRepository = tokenRepository;
         _userRepository = userRepository;
         _unitOfWork = unitOfWork;
+        _logger = logger;
     }
     
     public async Task<Result> Handle(LogoutUserCommand request, CancellationToken cancellationToken)
@@ -32,6 +36,8 @@ public class LogoutUserCommandHandler : IRequestHandler<LogoutUserCommand, Resul
             return Result.Failure(tokenResult.Error);
 
         var storedToken = await _tokenRepository.GetRefreshTokenByValue(tokenResult.Value);
+        
+        _logger.LogInformation("Token {@Token}", storedToken);
         
         if (storedToken is null || storedToken.WasUsed() || storedToken.IsExpired())
             return Result.Failure(TokenError.InvalidRefreshToken);
