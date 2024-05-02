@@ -2,7 +2,7 @@ version: '3.9'
 
 services:
   chat_app:
-    image: platinaa777/chat-roulette:chat03
+    image: platinaa777/chat-roulette:chat-latest
     environment:
       ChatDbConnection__CHAT_DB_USER: ${CHAT_DB_USER}
       ChatDbConnection__CHAT_DB_PASSWORD: ${CHAT_DB_PASS}
@@ -22,6 +22,8 @@ services:
     networks: [ chat-net ]
     volumes:
       - chat_db_data:/var/lib/postgresql/data
+    ports:
+      - "9090:5432"
     deploy:
       placement:
         constraints:

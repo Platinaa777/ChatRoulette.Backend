@@ -23,11 +23,7 @@ var app = builder.Build();
 
 app.UseSerilogRequestLogging();
 app.UseRouting();
-app.UseCors(x => x
-    .AllowAnyMethod()
-    .AllowAnyHeader()
-    .SetIsOriginAllowed(_ => true)
-    .AllowCredentials());
+app.UseCors("frontend");
 
 app.UseEndpoints(routes =>
 {

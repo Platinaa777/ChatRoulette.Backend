@@ -40,7 +40,7 @@ public class ChangeAvatarCommandHandler
             await _s3Client.DeleteFile(S3Buckets.Avatar, profile.Id.Value.ToString());
         }
 
-        var url =await _s3Client.UploadFileAsync(
+        var url = await _s3Client.UploadFileAsync(
             request.Avatar!,
             bucket: S3Buckets.Avatar,
             profile.Id.Value.ToString(),

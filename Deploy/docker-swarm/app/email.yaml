@@ -10,8 +10,6 @@ services:
       SmtpClientConfig__Password: ${EMAIL_PASSWORD}
       ApiUrl__Url: ${EMAIL_API_URL}
       Redirect__Url: ${EMAIL_REDIRECT_URL}
-    env_file:
-      - .env
     networks: [ chat-net ]
 
   redis_cache_email:
@@ -22,7 +20,7 @@ services:
     deploy:
       placement:
         constraints:
-          - "node.hostname==worker02"
+          - "node.hostname==worker01"
 
 volumes:
   redis_data_email:

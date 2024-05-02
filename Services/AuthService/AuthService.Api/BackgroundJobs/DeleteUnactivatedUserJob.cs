@@ -39,7 +39,9 @@ public class DeleteUnactivatedUserJob : IJob
 
                 if (cachedValue is null)
                 {
-                    _logger.LogWarning("Cant handle delete user {@Email}", user.Email.Value);
+                    _logger.LogWarning("User with email: {@Email} was deleted by {@Job}", user.Email.Value, nameof(DeleteUnactivatedUserJob));
+                    _dbContext.Users.Remove(user);
+                    await _dbContext.SaveChangesAsync(context.CancellationToken);
                     continue;
                 }
 
@@ -48,7 +50,8 @@ public class DeleteUnactivatedUserJob : IJob
                 {
                     _logger.LogInformation("User with id: {@Id} was deleted by {@Job}", user.Id.Value, nameof(DeleteUnactivatedUserJob));
                     await _cache.RemoveAsync(user.Id.Value);
-                    _dbContext.Users.Remove(user);    
+                    _dbContext.Users.Remove(user);
+                    await _dbContext.SaveChangesAsync(context.CancellationToken);
                 }
             }
         }

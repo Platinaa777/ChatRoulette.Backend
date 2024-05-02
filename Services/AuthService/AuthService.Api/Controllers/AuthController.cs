@@ -81,13 +81,10 @@ public class AuthController : ControllerBase
 
         if (result.IsSuccess)
         {
-            HttpContext.Response.Cookies.Append("refresh-token-s", result.Value.RefreshToken!,
+            HttpContext.Response.Cookies.Append("refresh-token", result.Value.RefreshToken!,
                 new CookieOptions()
                     { 
-                        Expires = DateTimeOffset.Now.AddHours(2),
-                        HttpOnly = true,
-                        SameSite = SameSiteMode.None,
-                        Secure = true
+                        Expires = DateTimeOffset.Now.AddHours(2)
                     });
 
             return Ok(result);
@@ -103,13 +100,10 @@ public class AuthController : ControllerBase
 
         if (result.IsSuccess)
         {
-            HttpContext.Response.Cookies.Append("refresh-token-s", result.Value.RefreshToken!,
+            HttpContext.Response.Cookies.Append("refresh-token", result.Value.RefreshToken!,
                 new CookieOptions()
                 { 
-                    Expires = DateTimeOffset.Now.AddHours(2),
-                    HttpOnly = true,
-                    SameSite = SameSiteMode.None,
-                    Secure = true
+                    Expires = DateTimeOffset.Now.AddHours(2)
                 });
             
             return Ok(result);

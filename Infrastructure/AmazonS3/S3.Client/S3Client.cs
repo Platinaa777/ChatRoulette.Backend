@@ -43,7 +43,7 @@ public class S3Client : IS3Client
             {
                 BucketName = bucket,
                 Key = filename,
-                Expires = DateTime.Now.AddHours(180)
+                Expires = DateTime.Now.AddDays(1800)
             };
 
             S3ObjectDto s3Object = new S3ObjectDto()

@@ -42,7 +42,7 @@ public class OutboxBackgroundJob : IJob
                     });
                 if (domainEvent is null)
                 {
-                    _logger.LogWarning(@"Should debug background job: {@job} with domain event: {@event}",
+                    _logger.LogWarning("Should debug background job: {@job} with domain event: {@event}",
                         nameof(OutboxBackgroundJob),
                         message.Id);
                     continue;

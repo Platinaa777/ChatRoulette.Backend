@@ -50,7 +50,7 @@ public static class ServicesRegistrator
         builder.Services.AddCors(corsOptions =>
         {
             corsOptions.AddPolicy("frontend",x =>
-                x.WithOrigins("http://82.146.62.254","http://localhost:3000")
+                x.WithOrigins("https://langskillup.ru","http://82.146.62.254","http://localhost:3000")
                     .AllowAnyMethod()
                     .AllowAnyHeader()
                     .AllowCredentials());
@@ -127,6 +127,7 @@ public static class ServicesRegistrator
         {
             var key = new JobKey(nameof(OutboxMessageJob));
             var key2 = new JobKey(nameof(DeleteUnactivatedUserJob));
+            var key3 = new JobKey(nameof(RefreshTokenCleanerJob));
 
             cfg.AddJob<OutboxMessageJob>(key)
                 .AddTrigger(tg => 
@@ -140,6 +141,13 @@ public static class ServicesRegistrator
                     tg.ForJob(key2)
                         .WithSimpleSchedule(schedule => 
                             schedule.WithIntervalInMinutes(1)
+                                .RepeatForever()));
+            
+            cfg.AddJob<RefreshTokenCleanerJob>(key3)
+                .AddTrigger(tg => 
+                    tg.ForJob(key3)
+                        .WithSimpleSchedule(schedule => 
+                            schedule.WithIntervalInHours(24)
                                 .RepeatForever()));
         });
 

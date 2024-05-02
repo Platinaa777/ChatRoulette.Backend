@@ -2,7 +2,7 @@ version: '3.9'
 
 services:
   auth_app:
-    image: platinaa777/chat-roulette:auth12
+    image: platinaa777/chat-roulette:auth-latest
     environment:
       Jwt__Key: ${AUTH_JWT_KEY}
       AuthDbConnection__AUTH_DB_USER: ${AUTH_DB_USER}
@@ -23,14 +23,16 @@ services:
       POSTGRES_USER: ${AUTH_DB_USER}
       POSTGRES_PASSWORD: ${AUTH_DB_PASS}
     networks: [ chat-net ]
+    ports:
+      - "8082:5432"
     volumes:
       - auth_db_data:/var/lib/postgresql/data
     deploy:
       placement:
         constraints:
           - "node.hostname==worker01"
-      endpoint_mode: dnsrr
-
+  
+  
   redis_cache_auth:
     image: redis
     volumes:
@@ -40,7 +42,7 @@ services:
       placement:
         constraints:
           - "node.hostname==worker01"
-      endpoint_mode: dnsrr
+
 
 volumes:
   auth_db_data:

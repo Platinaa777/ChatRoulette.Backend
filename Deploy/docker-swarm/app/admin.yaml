@@ -2,7 +2,7 @@ version: '3.9'
 
 services:
   admin_app:
-    image: platinaa777/chat-roulette:admin02
+    image: platinaa777/chat-roulette:admin-latest
     environment:
       Jwt__Key: ${AUTH_JWT_KEY}
       ConnectionStrings__PostgresSQL: ${ADMIN_CONN_STRING}
@@ -23,7 +23,7 @@ services:
     deploy:
       placement:
         constraints:
-          - "node.hostname==worker02"
+          - "node.hostname==worker01"
 
 volumes:
   admin_db_data:

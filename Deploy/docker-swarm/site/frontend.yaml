@@ -1,13 +1,11 @@
-version: "3.9"
+version: '3.9'
 
 services:
-  front:
-    image: platinaa777/chat-roulette:front01
-    ports:
-      - "8082:3000"
+  frontend:
+    image: platinaa777/chat-roulette:frontend-latest
+
     networks: [ chat-net ]
 
 networks:
   chat-net:
     external: true
-    

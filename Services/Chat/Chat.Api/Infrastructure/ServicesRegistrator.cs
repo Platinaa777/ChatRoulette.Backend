@@ -1,3 +1,4 @@
+using Chat.Api.BackgroundJobs;
 using Chat.Api.WebSockets;
 using Chat.Application.Behavior;
 using Chat.Application.Commands.CloseRoom;
@@ -110,12 +111,11 @@ public static class ServicesRegistrator
     {
         builder.Services.AddCors(corsOptions =>
         {
-            corsOptions.AddDefaultPolicy(policy =>
-            {
-                policy.AllowAnyOrigin()
+            corsOptions.AddPolicy("frontend",x =>
+                x.WithOrigins("https://langskillup.ru","http://82.146.62.254","http://localhost:3000")
                     .AllowAnyMethod()
-                    .AllowAnyHeader();
-            });
+                    .AllowAnyHeader()
+                    .AllowCredentials());
         });
 
         return builder;
@@ -130,7 +130,18 @@ public static class ServicesRegistrator
     
     public static WebApplicationBuilder AddBackgroundJobs(this WebApplicationBuilder builder)
     {
-        builder.Services.AddQuartz();
+        builder.Services.AddQuartz(cfg =>
+        {
+            var key = new JobKey(nameof(ChatUserHistoryCleanerJob));
+
+            cfg.AddJob<ChatUserHistoryCleanerJob>(key)
+                .AddTrigger(tg => 
+                    tg.ForJob(key)
+                        .WithSimpleSchedule(schedule => 
+                            schedule.WithIntervalInMinutes(15)
+                                .RepeatForever()));
+            
+        });
         builder.Services.AddQuartzHostedService();
 
         return builder;
