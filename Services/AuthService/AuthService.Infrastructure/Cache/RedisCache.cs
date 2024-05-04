@@ -1,4 +1,5 @@
 using AuthService.Application.Cache;
+using AuthService.Application.Constants;
 using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
@@ -31,7 +32,7 @@ public class RedisCache : ICacheStorage
         }, cancellationToken);
 
         var date = DateTime.UtcNow.AddHours(1);
-        await _cache.SetStringAsync(key, JsonConvert.SerializeObject(date), cancellationToken);
+        await _cache.SetStringAsync(key + CacheConstants.Delete, JsonConvert.SerializeObject(date), cancellationToken);
         _logger.LogInformation("User with {@Key} will be deleted at {@Date}", key, date);
     }
 }

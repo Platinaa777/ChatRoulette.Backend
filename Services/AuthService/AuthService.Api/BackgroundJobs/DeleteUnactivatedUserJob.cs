@@ -1,3 +1,4 @@
+using AuthService.Application.Constants;
 using AuthService.DataContext.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Distributed;
@@ -35,7 +36,7 @@ public class DeleteUnactivatedUserJob : IJob
             _logger.LogInformation("Minimum Count of unactivated users {@Count}", unactivatedUsers.Count);
             foreach (var user in unactivatedUsers)
             {
-                var cachedValue = await _cache.GetStringAsync(user.Id.Value);
+                var cachedValue = await _cache.GetStringAsync(user.Id.Value + CacheConstants.Delete);
 
                 if (cachedValue is null)
                 {

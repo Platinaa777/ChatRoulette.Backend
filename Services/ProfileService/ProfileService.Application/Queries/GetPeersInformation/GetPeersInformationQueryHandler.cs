@@ -35,9 +35,6 @@ public class GetPeersInformationQueryHandler
                 });
         }
 
-        if (recentPeers.Count == 0)
-            return Result.Failure<List<RecentPeerInformation>>(UserProfileErrors.NoRecentPeerHistory);
-
         return recentPeers;
     }
 }

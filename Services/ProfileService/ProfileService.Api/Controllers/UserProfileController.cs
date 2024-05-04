@@ -20,15 +20,18 @@ public class UserProfileController : ControllerBase
 {
     private readonly IMediator _mediator;
     private readonly CredentialsChecker _credentialsChecker;
+    private readonly ILogger<UserProfileController> _logger;
     private readonly HttpClient _httpChatClient;
 
     public UserProfileController(
         IMediator mediator,
         CredentialsChecker credentialsChecker,
-        IHttpClientFactory httpClientFactory)
+        IHttpClientFactory httpClientFactory,
+        ILogger<UserProfileController> logger)
     {
         _mediator = mediator;
         _credentialsChecker = credentialsChecker;
+        _logger = logger;
         _httpChatClient = httpClientFactory.CreateClient("ChatClient");
     }
 
@@ -112,6 +115,8 @@ public class UserProfileController : ControllerBase
 
         var response = await _httpChatClient.GetAsync($"/chat/get-recent-peers/{email}");
 
+        _logger.LogInformation("User {@Email} was requested recent users, response: {@ResponseFromChat}", email, response);
+        
         if (response.StatusCode != HttpStatusCode.OK)
         {
             return BadRequest("No peer history");
@@ -123,10 +128,20 @@ public class UserProfileController : ControllerBase
             return BadRequest("No peer history");
 
         var result = await _mediator.Send(new GetPeersInformationQuery() { PeerEmails = content });
-
+        
         if (result.IsFailure)
+        {
+            _logger.LogInformation("User {@Email} fetched info about users from chat db, Error: {@Response}", 
+                email,  
+                result.Error);
+            
             return BadRequest(result);
+        }
 
+        _logger.LogInformation("User {@Email} fetched info about users from chat db, Response: {@Result}",
+            email,
+            result.Value);
+        
         return Ok(result);
     }
 }

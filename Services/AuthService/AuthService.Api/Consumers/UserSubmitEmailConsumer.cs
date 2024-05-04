@@ -28,34 +28,33 @@ public class UserSubmitEmailConsumer : IConsumer<UserSubmittedEmail>
 
     public async Task Consume(ConsumeContext<UserSubmittedEmail> context)
     {
-        using (var scope = _scopeFactory.CreateScope())
+        using var scope = _scopeFactory.CreateScope();
+        
+        var mediator = scope.ServiceProvider.GetRequiredService<IMediator>();
+            
+        var responseIdResult = await mediator.Send(new ConfirmEmailCommand(context.Message.Email),
+            context.CancellationToken);
+
+        if (responseIdResult.IsFailure)
         {
-            var mediator = scope.ServiceProvider.GetRequiredService<IMediator>();
-            
-            var responseIdResult = await mediator.Send(new ConfirmEmailCommand(context.Message.Email),
-                context.CancellationToken);
-
-            if (responseIdResult.IsFailure)
-            {
-                _logger.LogInformation("Cant confirm user: {@Email}", context.Message.Email);
-                return;
-            }
-            
-            _logger.LogInformation("Confirmation email: {@Email}", context.Message.Email);
-
-            var userDetails = await _cache.GetAsync(
-                responseIdResult.Value,
-                context.CancellationToken);
-
-            if (userDetails == null)
-            {
-                _logger.LogError("User has not account details {@Email}",
-                    context.Message.Email);
-                return;
-            }
-
-            var userObject = JsonConvert.DeserializeObject<UserInformation>(userDetails)!;
-            await context.Publish(userObject.ToBusMessage());
+            _logger.LogInformation("Cant confirm user: {@Email}", context.Message.Email);
+            return;
         }
+            
+        _logger.LogInformation("Confirmation email: {@Email}", context.Message.Email);
+
+        var userDetails = await _cache.GetAsync(
+            responseIdResult.Value,
+            context.CancellationToken);
+
+        if (userDetails == null)
+        {
+            _logger.LogError("User has not account details {@Email}",
+                context.Message.Email);
+            return;
+        }
+
+        var userObject = JsonConvert.DeserializeObject<UserInformation>(userDetails)!;
+        await context.Publish(userObject.ToBusMessage());
     }
 }

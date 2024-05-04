@@ -13,10 +13,14 @@ namespace Chat.Api.Controllers;
 public class ChatController : ControllerBase
 {
     private readonly IMediator _mediator;
+    private readonly ILogger<ChatController> _logger;
 
-    public ChatController(IMediator mediator)
+    public ChatController(
+        IMediator mediator,
+        ILogger<ChatController> logger)
     {
         _mediator = mediator;
+        _logger = logger;
     }
     
     [HttpPost("join-room")]
@@ -33,6 +37,7 @@ public class ChatController : ControllerBase
     {
         var result = await _mediator.Send(new GetRecentPeersQuery(email));
 
+        _logger.LogInformation("Email: {@Email} was requested about recent users, response: {@ResultRecentList}", email, result);
         if (result.IsFailure)
             return BadRequest();
 
