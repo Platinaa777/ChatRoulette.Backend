@@ -1,6 +1,7 @@
-# LangSkillUp 
+# LangSkillUp 💬
 
-## Course work for 2nd year
+## Course work 👨‍🎓
+### :star: Nominated as one of the best projects at the Faculty of Computer Science of the National Research University Higher School of Economics :star:
 
 ## Legend 
 
