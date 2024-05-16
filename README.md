@@ -76,6 +76,7 @@ star in the repository and after 15 likes I will
 launch the application with paid servers for video
 traffic.
 ```
+
 <a href="https://getstream.io/glossary/turn-server/#:~:text=TURN%20and%20STUN%20servers%20are,Session%20Traversal%20Utilities%20for%20NAT." style="font-size: small;">Click here for more details on TURN and STUN servers</a>
 
 ### Status last build:</br>
