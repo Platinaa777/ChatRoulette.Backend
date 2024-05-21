@@ -1,9 +1,10 @@
 # LangSkillUp 💬
 
 ## Course work 👨‍🎓
+
 ### :star: Nominated as one of the best projects at the Faculty of Computer Science of the National Research University Higher School of Economics :star:
 
-## Legend 
+## Legend
 
 **How often do you hang out in chat roulette?**
 
@@ -11,23 +12,26 @@
 
 The web application “Chat Roulette “LangSkillUp”” implements the mechanics of Chat Roulette, providing users with the opportunity to communicate in English language through video communication (the main type of communication) and text chat (an auxiliary type of communication). The built-in game mechanics will allow you to develop communication skills in English language.
 
+![1716313742257](images/README/1716313742257.png)
+
 ## What I use to implement all of this?
 
 ### Backend
-  - .NET
-  - EF Core
-  - Dapper
-  - Redis
-  - RabbitMQ with MassTransit library
-  - Serilog for structure logging
-  - Amazon S3
-  - Jenkins / GitHub Actions for CI/CD pipelines
-  - SignalR for realtime communication
-  - Quartz for background jobs
-  - Ocelot
-  - Docker Swarm for orchestration
 
-## Architecture 
+- .NET
+- EF Core
+- Dapper
+- Redis
+- RabbitMQ with MassTransit library
+- Serilog for structure logging
+- Amazon S3
+- Jenkins / GitHub Actions for CI/CD pipelines
+- SignalR for realtime communication
+- Quartz for background jobs
+- Ocelot
+- Docker Swarm for orchestration
+
+## Architecture
 
 ```
 AdminService: Only for admin purposes
@@ -59,8 +63,8 @@ ProfileService: all core features
    to friends
 
 ```
-**For visualization please check assets folder**
 
+![1716313770049](images/README/1716313770049.png)
 
 ```html
 Also this project implements Domain Driven Design 
