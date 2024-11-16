@@ -12,8 +12,6 @@
 
 The web application “Chat Roulette “LangSkillUp”” implements the mechanics of Chat Roulette, providing users with the opportunity to communicate in English language through video communication (the main type of communication) and text chat (an auxiliary type of communication). The built-in game mechanics will allow you to develop communication skills in English language.
 
-![1716313742257](images/README/1716313742257.png)
-
 ## What I use to implement all of this?
 
 ### Backend
